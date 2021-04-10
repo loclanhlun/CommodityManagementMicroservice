@@ -1,0 +1,5 @@
+package com.commoditymanagement.core.constant;
+
+public class ResponseConstant {
+
+}

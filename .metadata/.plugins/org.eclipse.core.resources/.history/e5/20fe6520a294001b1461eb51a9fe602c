@@ -1,0 +1,61 @@
+package com.commoditymanagement.userservice.controller;
+
+import com.commoditymanagement.userservice.request.UserOutput;
+import com.commoditymanagement.userservice.request.UserRequest;
+import com.commoditymanagement.userservice.response.MessageResponse;
+import com.commoditymanagement.userservice.response.UserResponse;
+import com.commoditymanagement.userservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/rest/v1/user")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> getListUser(@RequestParam("page") int page,
+                                                          @RequestParam("limit") int limit){
+        UserOutput userOutput = new UserOutput();
+        userOutput.setPage(page);
+        Pageable pageable = PageRequest.of(page-1,limit);
+        userOutput.setUsers(userService.findAll(pageable));
+        userOutput.setTotalPage((int)Math.ceil((double) (userService.totalItem())/limit));
+        return ResponseEntity.ok(userOutput);
+    }
+    
+    @PostMapping(value = "/add-user")
+    public ResponseEntity<?> addUser(@RequestBody UserRequest request){
+    	MessageResponse response = new MessageResponse();
+    	UserRequest userRequest = new UserRequest();
+    	userRequest.setFullName(request.getFullName());
+    	userRequest.setEmail(request.getEmail());
+    	userRequest.setPassword(request.getPassword());
+    	userRequest.setAddress(request.getAddress());
+    	userRequest.setGender(request.getGender());
+    	userRequest.setPhoneNumber(request.getPhoneNumber());
+    	userRequest.setRoleId(request.getRoleId());
+    	try {
+    		userService.addUser(userRequest);
+    		response = new MessageResponse("0", "Add Success");
+		} catch (Exception e) {
+			response = new MessageResponse("999", "Add fail");
+		}
+    	
+    	
+    	return ResponseEntity.ok(response);
+    }
+
+}

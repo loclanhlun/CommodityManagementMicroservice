@@ -1,0 +1,15 @@
+package com.commoditymanagement.core.constant;
+
+import java.util.HashMap;
+
+public class ResponseConstant {
+	
+	private static HashMap<String, String> resultCode = new HashMap<>();
+	
+	public final static String RESULT_CODE_SUCCESS = "0";
+	
+	public final static String RESULT_CODE_ERROR = "999";
+	
+	
+
+}

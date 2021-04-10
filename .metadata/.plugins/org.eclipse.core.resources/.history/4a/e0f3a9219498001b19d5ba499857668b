@@ -1,0 +1,15 @@
+package com.commoditymanagement.commodityservice.service;
+
+import java.util.List;
+
+import com.commoditymanagement.core.data.Category;
+
+public interface CategoryService {
+	List<Category> findAllByCode();
+	
+	void save(Category category);
+	
+	void update(Category category);
+	
+	void remove(Long id);
+}

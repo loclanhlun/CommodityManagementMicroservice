@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'maven-publish'
+}
+
+group = 'com.commoditymanagement.core'
+version = '1.0'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name
+                from project.components.java
+                artifact(sourcesJar) {
+                    classifier = 'sources'
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.0'
+    implementation 'org.apache.camel:camel-core:3.0.0'
+    implementation 'io.swagger:swagger-annotations:1.5.23'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation 'org.springframework.data:spring-data-commons:2.1.11.RELEASE'
+    implementation 'org.springframework:spring-context:5.1.10.RELEASE'
+    implementation 'org.springframework.data:spring-data-jpa:2.2.4.RELEASE'
+    implementation 'org.hibernate:hibernate-core:5.3.12.Final'
+    implementation 'com.vladmihalcea:hibernate-types-52:1.0.0'
+    implementation 'org.springframework.security:spring-security-core:5.1.6.RELEASE'
+    implementation 'com.rabbitmq:amqp-client:5.7.3'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'joda-time:joda-time:2.10.5'
+    implementation 'com.github.dozermapper:dozer-core:6.4.1'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.11'
+    implementation 'com.sun.mail:javax.mail:1.5.6'
+    implementation 'commons-net:commons-net:3.6'
+
+    testImplementation 'junit:junit:4.12'
+}
+
+
+
+task sourcesJar(type: org.gradle.jvm.tasks.Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}

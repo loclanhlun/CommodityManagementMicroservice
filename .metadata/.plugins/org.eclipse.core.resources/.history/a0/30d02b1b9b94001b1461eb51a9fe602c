@@ -1,0 +1,5 @@
+package com.commoditymanagement.userservice.response;
+
+public class MessageResponse {
+
+}

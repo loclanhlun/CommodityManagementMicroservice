@@ -1,0 +1,8 @@
+package com.commoditymanagement.userservice.config;
+
+public class Snippet {
+	public static void main(String[] args) {
+		userDetails
+	}
+}
+

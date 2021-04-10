@@ -1,0 +1,53 @@
+package com.commoditymanagement.commodityservice.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.commoditymanagement.commodityservice.repository.CategoryRepository;
+import com.commoditymanagement.commodityservice.request.CategoryRequest;
+import com.commoditymanagement.commodityservice.service.CategoryService;
+import com.commoditymanagement.core.data.Category;
+
+@Service
+public class CategoryServiceImpl implements CategoryService {
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Override
+	public List<Category> findAllByCode(String code) {
+		
+		
+		return null;
+	}
+
+	@Override
+	public void save(Category category) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Category category) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Category> findAllCategory() {
+		List<CategoryRequest> categoriesDTO = new ArrayList<>();
+		List<Category> categoriesEntity = categoryRepository.findAll();
+		
+		return null;
+	}
+
+}

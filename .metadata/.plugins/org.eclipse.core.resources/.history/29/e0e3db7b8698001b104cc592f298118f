@@ -1,0 +1,5 @@
+package com.commoditymanagement.commodityservice.controller;
+
+public class CategoryController {
+	
+}

@@ -1,0 +1,5 @@
+package com.commoditymanagement.userservice.jwt;
+
+public class JwtUtils {
+
+}

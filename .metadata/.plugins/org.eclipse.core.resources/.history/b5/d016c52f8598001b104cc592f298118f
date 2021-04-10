@@ -1,0 +1,5 @@
+package com.commoditymanagement.commodityservice.response;
+
+public class CommodityResponse {
+
+}

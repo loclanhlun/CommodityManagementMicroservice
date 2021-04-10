@@ -1,0 +1,8 @@
+package com.commoditymanagement.restapiservice.response;
+
+public class Snippet {
+	public static void main(String[] args) {
+		eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2NsYW5obHVuOUBnbWFpbC5jb20iLCJpYXQiOjE2MTc4MTE5NzgsImV4cCI6MTYxNzg5ODM3OH0.8C8eBssPLxEIPlV4wrtcfq7eGKlfS55WSZ45gcMsKRcVXH41znJvkcGIHG28ALkwDcg0-ZIt9NBx18KZD6zFGw
+	}
+}
+

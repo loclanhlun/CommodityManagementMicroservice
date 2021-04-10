@@ -1,0 +1,7 @@
+package com.commoditymanagement.commodityservice.service.impl;
+
+import com.commoditymanagement.commodityservice.service.CategoryService;
+
+public class CategoryServiceImpl implements CategoryService {
+
+}
