@@ -41,6 +41,11 @@ public class Warehouse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ImportBill> importBills;
 
+    @OneToMany(mappedBy = "warehouse")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<CommodityWarehouse> commodityWarehouses;
+
     public Long getId() {
         return id;
     }
@@ -87,5 +92,13 @@ public class Warehouse {
 
     public void setImportBills(Set<ImportBill> importBills) {
         this.importBills = importBills;
+    }
+
+    public Set<CommodityWarehouse> getCommodityWarehouses() {
+        return commodityWarehouses;
+    }
+
+    public void setCommodityWarehouses(Set<CommodityWarehouse> commodityWarehouses) {
+        this.commodityWarehouses = commodityWarehouses;
     }
 }

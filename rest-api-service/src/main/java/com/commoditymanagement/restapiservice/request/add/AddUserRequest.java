@@ -1,4 +1,4 @@
-package com.commoditymanagement.restapiservice.request;
+package com.commoditymanagement.restapiservice.request.add;
 
 import javax.validation.constraints.NotBlank;
 

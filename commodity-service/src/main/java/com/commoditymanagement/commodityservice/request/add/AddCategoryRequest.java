@@ -1,4 +1,4 @@
-package com.commoditymanagement.commodityservice.request;
+package com.commoditymanagement.commodityservice.request.add;
 
 public class AddCategoryRequest {
 

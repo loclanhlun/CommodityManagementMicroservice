@@ -2,16 +2,15 @@ package com.commoditymanagement.commodityservice.service;
 
 import java.util.List;
 
-import com.commoditymanagement.commodityservice.request.AddCategoryRequest;
-import com.commoditymanagement.commodityservice.request.EditCategoryRequest;
+import com.commoditymanagement.commodityservice.request.add.AddCategoryRequest;
+import com.commoditymanagement.commodityservice.request.edit.EditCategoryRequest;
 import com.commoditymanagement.commodityservice.response.CategoryResponse;
-import com.commoditymanagement.core.data.Category;
 
 public interface CategoryService {
 	
 	List<CategoryResponse> findAllCategory();
 
-	List<CategoryResponse> findById(Long id);
+	CategoryResponse findById(Long id) throws Exception;
 	
 	List<CategoryResponse> findAllByCode(String code);
 	
@@ -19,5 +18,5 @@ public interface CategoryService {
 	
 	void update(EditCategoryRequest categoryRequest, Long id) throws Exception;
 	
-	void remove(Long id);
+	void remove(Long id) throws Exception;
 }

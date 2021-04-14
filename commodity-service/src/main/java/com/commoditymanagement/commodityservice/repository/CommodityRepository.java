@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommodityRepository extends JpaRepository<Commodity, Long> {
-//	List<Commodity> findByCodeCommodities(String code);
-//	
-//	List<Commodity> findByNameCommodities(String name);
+    List<Commodity> findCommoditiesByStatus(int status);
+
+    List<Commodity> findByCode(String code);
+
+    List<Commodity> findCommoditiesByName(String name);
 }

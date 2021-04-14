@@ -47,6 +47,12 @@ public class Commodity {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ImportBillDetail> importBillDetails;
 
+    @OneToMany(mappedBy = "commodity")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<CommodityWarehouse> commodityWarehouses;
+
+
     public Long getId() {
         return id;
     }

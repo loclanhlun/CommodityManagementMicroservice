@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.commoditymanagement.core.data.Role;
@@ -24,11 +25,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     @Override
-    public List<UserResponse> findAll(Pageable pageable) {
+    public List<UserResponse> findAll() {
         List<UserResponse> listUser = new ArrayList<>();
-        List<User> userEntity = userRepository.findAll(pageable).getContent();
+        List<User> userEntity = userRepository.findAll();
         for(User item : userEntity){
             UserResponse dto = new UserResponse();
             dto.setId(item.getId());
@@ -39,16 +43,10 @@ public class UserServiceImpl implements UserService {
             dto.setFullName(item.getFullName());
             dto.setPhoneNumber(item.getPhoneNumber());
             dto.setStatus(item.getStatus());
-
             listUser.add(dto);
         }
 
         return listUser;
-    }
-
-    @Override
-    public int totalItem() {
-        return (int) userRepository.count();
     }
 
 	@Override
@@ -58,7 +56,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setFullName(userRequest.getFullName());
 		user.setEmail(userRequest.getEmail());
-		user.setPassword(userRequest.getPassword());
+		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		user.setGender(userRequest.getGender());
 		user.setPhoneNumber(userRequest.getPhoneNumber());
 		user.setRole(role);

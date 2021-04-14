@@ -17,13 +17,13 @@ public class ExportBillDetail {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "exportbillid")
+    @JoinColumn(name = "exportbillId")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ExportBill exportBill;
 
     @ManyToOne
-    @JoinColumn(name = "commodityid")
+    @JoinColumn(name = "commodityId")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Commodity commodity;
@@ -33,10 +33,10 @@ public class ExportBillDetail {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private int quantity;
 
-    @Column(name = "amount")
+    @Column(name = "price")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private BigDecimal amount;
+    private BigDecimal price;
 
     public Long getId() {
         return id;
@@ -70,11 +70,11 @@ public class ExportBillDetail {
         this.quantity = quantity;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

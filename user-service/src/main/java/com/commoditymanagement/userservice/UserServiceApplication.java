@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableEurekaClient
 @EntityScan(basePackages = {"com.commoditymanagement.core.data"})
-@EnableJpaRepositories(basePackages = {"com.commoditymanagement.userservice.repository"} )
+@EnableJpaRepositories(basePackages = {"com.commoditymanagement.userservice.repository"})
 @SpringBootApplication
 
 public class UserServiceApplication {

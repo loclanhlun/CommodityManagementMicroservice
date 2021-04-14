@@ -1,21 +1,31 @@
 package com.commoditymanagement.userservice.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserResponse {
 
+    @JsonProperty
     private Long id;
 
+    @JsonProperty
     private String email;
 
+    @JsonProperty
     private String address;
 
+    @JsonProperty
     private int gender;
 
+    @JsonProperty
     private String phoneNumber;
 
+    @JsonProperty
     private String roleCode;
 
+    @JsonProperty
     private String fullName;
 
+    @JsonProperty
     private int status;
 
     public int getGender() {

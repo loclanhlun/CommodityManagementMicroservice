@@ -26,6 +26,17 @@ public class Supplier {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
+    @Column(name = "address")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String address;
+
+    @Column(name = "phonenumber")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String phoneNumber;
+
+
     @Column(name = "status")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -58,6 +69,22 @@ public class Supplier {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public int getStatus() {

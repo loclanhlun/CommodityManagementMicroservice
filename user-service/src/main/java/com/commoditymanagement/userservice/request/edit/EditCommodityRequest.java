@@ -1,9 +1,19 @@
-package com.commoditymanagement.restapiservice.request;
+package com.commoditymanagement.userservice.request.edit;
 
-public class EditCategoryRequest {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
+
+public class EditCommodityRequest {
+
+    @JsonProperty
     private String code;
 
+    @JsonProperty
     private String name;
+
+    @JsonProperty
+    private Long categoryId;
 
     private int status;
 
@@ -21,6 +31,14 @@ public class EditCategoryRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getStatus() {

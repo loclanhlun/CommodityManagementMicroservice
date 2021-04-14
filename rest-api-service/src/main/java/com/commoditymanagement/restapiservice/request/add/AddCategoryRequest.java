@@ -1,9 +1,17 @@
-package com.commoditymanagement.userservice.request;
+package com.commoditymanagement.restapiservice.request.add;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
 
 public class AddCategoryRequest {
 
+    @NotBlank(message = "Category Code is mandatory")
+    @JsonProperty
     private String code;
 
+    @NotBlank(message = "Category Name is mandatory")
+    @JsonProperty
     private String name;
 
     public String getCode() {
