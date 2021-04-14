@@ -1,5 +1,6 @@
 package com.commoditymanagement.userservice.controller;
 
+import com.commoditymanagement.userservice.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,8 @@ import com.commoditymanagement.userservice.response.JwtResponse;
 import com.commoditymanagement.userservice.service.UserService;
 import com.commoditymanagement.userservice.service.impl.UserDetailImpl;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/user")
 public class UserController {
@@ -46,15 +49,9 @@ public class UserController {
     
 
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getListUser(@RequestParam("page") int page,
-                                                          @RequestParam("limit") int limit){
-        ResponseModel response = new ResponseModel();
-        UserInput input = new UserInput();
-        Pageable pageable = PageRequest.of(page-1,limit);
-        response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
-        response.setMessage("Success");
-        response.setObject(userService.findAll(pageable));
-        input.setTotalPage((int)Math.ceil((double) (userService.totalItem())/limit));
+    public ResponseEntity<?> getListUser(){
+		List<UserResponse> listUser = userService.findAll();
+        ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
         return ResponseEntity.ok(response);
     }
     
@@ -77,16 +74,8 @@ public class UserController {
     @PostMapping(value = "/add-user")
     public ResponseEntity<?> addUser(@RequestBody UserRequest request){
     	ResponseModel response = new ResponseModel();
-    	UserRequest userRequest = new UserRequest();
-    	userRequest.setFullName(request.getFullName());
-    	userRequest.setEmail(request.getEmail());
-    	userRequest.setPassword(encoder.encode(request.getPassword()));
-    	userRequest.setAddress(request.getAddress());
-    	userRequest.setGender(request.getGender());
-    	userRequest.setPhoneNumber(request.getPhoneNumber());
-    	userRequest.setRoleCode(request.getRoleCode());
     	try {
-    		userService.addUser(userRequest);
+    		userService.addUser(request);
     		response.setMessage("Success");
     		response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 		} catch (Exception e) {

@@ -1,9 +1,12 @@
-package com.commoditymanagement.restapiservice.request;
+package com.commoditymanagement.userservice.request.add;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AddCategoryRequest {
 
+    @JsonProperty
     private String code;
-
+    @JsonProperty
     private String name;
 
     public String getCode() {

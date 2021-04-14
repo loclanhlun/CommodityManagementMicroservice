@@ -18,7 +18,11 @@ public class ResponseModel {
     	
     }
 
-
+	public ResponseModel(String resultCode, String message, Object object) {
+		this.resultCode = resultCode;
+		this.message = message;
+		this.object = object;
+	}
 
 	public String getResultCode() {
 		return resultCode;

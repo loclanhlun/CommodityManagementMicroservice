@@ -6,7 +6,9 @@ public class CommodityResponse {
 	
 	private String name;
 	
-	private String categoryCode;
+	private String categoryName;
+
+	private int status;
 
 	public String getCode() {
 		return code;
@@ -24,13 +26,19 @@ public class CommodityResponse {
 		this.name = name;
 	}
 
-	public String getCategoryCode() {
-		return categoryCode;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
-	public void setCategoryCode(String categoryCode) {
-		this.categoryCode = categoryCode;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
-	
-	
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 }

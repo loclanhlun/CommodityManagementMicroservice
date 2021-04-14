@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserResponse> findAll(Pageable pageable);
-
-    int totalItem();
+    List<UserResponse> findAll();
 
     void addUser(UserRequest userRequest) throws Exception;
 }

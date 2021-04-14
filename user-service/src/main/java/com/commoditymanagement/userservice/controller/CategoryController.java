@@ -1,14 +1,13 @@
 package com.commoditymanagement.userservice.controller;
 
 import com.commoditymanagement.core.response.ResponseModel;
-import com.commoditymanagement.userservice.request.AddCategoryRequest;
-import com.commoditymanagement.userservice.request.EditCategoryRequest;
+import com.commoditymanagement.userservice.request.add.AddCategoryRequest;
+import com.commoditymanagement.userservice.request.edit.EditCategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +27,17 @@ public class CategoryController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getCategoryById(@PathVariable("id") Long categoryId){
+        String url = URL + "/{id}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Long> params = new HashMap<>();
+        params.put("id", categoryId);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
@@ -50,6 +60,19 @@ public class CategoryController {
         params.put("id", categoryId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
+        return response;
+    }
+
+    @PutMapping(value = "/remove-category/{id}")
+    public ResponseEntity<?> removeCategory(@PathVariable("id") Long categoryId){
+
+        String url = URL + "/remove-category/{id}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Long> params = new HashMap<>();
+        params.put("id", categoryId);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
         return response;
     }
 }

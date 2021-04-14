@@ -1,19 +1,28 @@
 package com.commoditymanagement.userservice.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserRequest {
 
+    @JsonProperty
     private String password;
 
+    @JsonProperty
     private String fullName;
 
+    @JsonProperty
     private String email;
 
+    @JsonProperty
     private int gender;
 
+    @JsonProperty
     private String phoneNumber;
 
+    @JsonProperty
     private String address;
 
+    @JsonProperty
     private String roleCode;
 
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.commoditymanagement.core.response.ResponseModel;
-import com.commoditymanagement.restapiservice.request.AddUserRequest;
+import com.commoditymanagement.restapiservice.request.add.AddUserRequest;
 import com.commoditymanagement.restapiservice.request.SignInRequest;
 import javax.servlet.http.HttpServletRequest;
 

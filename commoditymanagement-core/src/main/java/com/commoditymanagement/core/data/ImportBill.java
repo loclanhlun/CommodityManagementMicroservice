@@ -40,6 +40,11 @@ public class ImportBill {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date importDate;
 
+    @Column(name = "status")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private int status;
+
     @OneToMany(mappedBy = "importBill")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -91,6 +96,14 @@ public class ImportBill {
 
     public void setWarehouses(Warehouse warehouses) {
         this.warehouses = warehouses;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public Set<ImportBillDetail> getImportBillDetails() {

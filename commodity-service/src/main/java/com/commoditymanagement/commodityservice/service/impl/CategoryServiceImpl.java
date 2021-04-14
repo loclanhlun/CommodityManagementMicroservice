@@ -3,8 +3,8 @@ package com.commoditymanagement.commodityservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.commoditymanagement.commodityservice.request.AddCategoryRequest;
-import com.commoditymanagement.commodityservice.request.EditCategoryRequest;
+import com.commoditymanagement.commodityservice.request.add.AddCategoryRequest;
+import com.commoditymanagement.commodityservice.request.edit.EditCategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,6 @@ import com.commoditymanagement.core.data.Category;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-
-	
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -30,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 			CategoryResponse response = new CategoryResponse();
 			response.setCode(item.getCode());
 			response.setName(item.getName());
+			response.setStatus(item.getStatus());
 			categoriesDTO.add(response);
 		}
 
@@ -37,8 +36,16 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryResponse> findById(Long id) {
-		return null;
+	public CategoryResponse findById(Long id) throws Exception {
+		CategoryResponse response = new CategoryResponse();
+		Category categoriesEntity = categoryRepository.findById(id).orElse(null);
+		if(categoriesEntity == null){
+			throw new Exception("Category id does not exist");
+		}
+		response.setCode(categoriesEntity.getCode());
+		response.setName(categoriesEntity.getName());
+		response.setStatus(categoriesEntity.getStatus());
+		return response;
 	}
 
 	@Override
@@ -70,9 +77,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 
 	@Override
-	public void remove(Long id) {
-		// TODO Auto-generated method stub
-		
+	public void remove(Long id) throws Exception {
+		Category oldCategory = categoryRepository.findById(id).orElse(null);
+		if(oldCategory == null){
+			throw new Exception("Category id does not exist");
+		}
+		oldCategory.setStatus(1);
+		categoryRepository.save(oldCategory);
 	}
 
 	private void validateRequest(EditCategoryRequest categoryRequest, Category oldCategory )throws Exception{

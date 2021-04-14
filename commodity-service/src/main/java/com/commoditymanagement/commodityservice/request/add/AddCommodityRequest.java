@@ -1,15 +1,12 @@
-package com.commoditymanagement.restapiservice.request;
+package com.commoditymanagement.commodityservice.request.add;
 
-public class CommodityRequest {
+public class AddCommodityRequest {
 
     private String code;
 
     private String name;
 
-    private Long categoryCode;
-
-    public CommodityRequest() {
-    }
+    private Long categoryId;
 
     public String getCode() {
         return code;
@@ -27,11 +24,11 @@ public class CommodityRequest {
         this.name = name;
     }
 
-    public Long getCategoryCode() {
-        return categoryCode;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryCode(Long categoryCode) {
-        this.categoryCode = categoryCode;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

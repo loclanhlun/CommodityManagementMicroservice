@@ -18,19 +18,19 @@ public class ExportBill {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "userId")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "agencyid")
+    @JoinColumn(name = "agencyId")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Agency agency;
 
     @ManyToOne
-    @JoinColumn(name = "warehouseid")
+    @JoinColumn(name = "warehouseId")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Warehouse warehouse;
@@ -40,10 +40,18 @@ public class ExportBill {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date exportDate;
 
+    @Column(name = "status")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private int status;
+
+
     @OneToMany(mappedBy = "exportBill")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ExportBillDetail> exportBillDetails;
+
+
 
     public Long getId() {
         return id;
@@ -83,6 +91,14 @@ public class ExportBill {
 
     public void setExportDate(Date exportDate) {
         this.exportDate = exportDate;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public Set<ExportBillDetail> getExportBillDetails() {

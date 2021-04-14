@@ -1,13 +1,14 @@
-package com.commoditymanagement.restapiservice.request;
+package com.commoditymanagement.commodityservice.request.edit;
 
-public class CategoryRequest {
+public class EditCategoryRequest {
 
     private String code;
 
     private String name;
+    
+    private int status;
 
-    public CategoryRequest() {
-    }
+
 
     public String getCode() {
         return code;
@@ -23,5 +24,13 @@ public class CategoryRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
