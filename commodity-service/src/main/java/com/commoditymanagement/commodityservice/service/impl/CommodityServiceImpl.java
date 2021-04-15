@@ -30,6 +30,7 @@ public class CommodityServiceImpl implements CommodityService{
         List<Commodity> commodityEntity = commodityRepository.findCommoditiesByStatus(0);
         for(Commodity item : commodityEntity){
             CommodityResponse commodityResponse = new CommodityResponse();
+            commodityResponse.setId(item.getId());
             commodityResponse.setCode(item.getCode());
             commodityResponse.setName(item.getName());
             commodityResponse.setCategoryName(item.getCategory().getName());
@@ -81,8 +82,8 @@ public class CommodityServiceImpl implements CommodityService{
     }
 
     @Override
-    public void update(EditCommodityRequest request, Long id) throws Exception {
-        Commodity oldCommodity = commodityRepository.findById(id).orElse(null);
+    public void update(EditCommodityRequest request) throws Exception {
+        Commodity oldCommodity = commodityRepository.findById(request.getId()).orElse(null);
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         if(category == null){
             throw new Exception("Category does not exist!");

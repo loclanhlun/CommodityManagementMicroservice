@@ -18,7 +18,7 @@ public interface CommodityService {
 
     void save(AddCommodityRequest request) throws Exception;
 
-    void update(EditCommodityRequest request, Long id) throws Exception;
+    void update(EditCommodityRequest request) throws Exception;
 
     void remove(Long id) throws Exception;
 

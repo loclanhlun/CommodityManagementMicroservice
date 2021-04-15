@@ -56,7 +56,7 @@ public class SupplierController {
                                           @RequestBody EditSupplierRequest request) {
         ResponseModel response;
         try {
-            supplierService.update(request, supplierId);
+            supplierService.update(request);
             response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
         } catch (Exception e) {
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);

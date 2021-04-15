@@ -57,7 +57,7 @@ public class CommodityController {
                                            @RequestBody EditCommodityRequest request){
         ResponseModel response;
         try {
-            commodityService.update(request, commodityId);
+            commodityService.update(request);
             response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success",null);
         } catch (Exception e) {
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);

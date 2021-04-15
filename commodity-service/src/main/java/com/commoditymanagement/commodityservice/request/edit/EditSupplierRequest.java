@@ -4,6 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EditSupplierRequest {
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @JsonProperty
+    private Long id;
+
     @JsonProperty
     private String code;
 

@@ -2,6 +2,8 @@ package com.commoditymanagement.commodityservice.request.edit;
 
 public class EditCategoryRequest {
 
+    private Long id;
+
     private String code;
 
     private String name;
@@ -9,6 +11,13 @@ public class EditCategoryRequest {
     private int status;
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

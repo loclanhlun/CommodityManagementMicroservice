@@ -13,7 +13,7 @@ public interface AgencyService {
 
     void save(AddAgencyRequest request) throws Exception;
 
-    void update(EditAgencyRequest request, Long id) throws Exception;
+    void update(EditAgencyRequest request) throws Exception;
 
     void remove(Long id) throws Exception;
 

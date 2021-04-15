@@ -53,8 +53,8 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public void update(EditSupplierRequest request, Long id) throws Exception {
-        Supplier oldSupplier = supplierRepository.findById(id).orElse(null);
+    public void update(EditSupplierRequest request) throws Exception {
+        Supplier oldSupplier = supplierRepository.findById(request.getId()).orElse(null);
         if(oldSupplier == null){
             throw new Exception("Agency id does not exist!");
         }

@@ -26,6 +26,16 @@ public class Warehouse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
+    @Column(name = "address")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String address;
+
+    @Column(name = "phoneNumber")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String phoneNumber;
+
     @Column(name = "status")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -100,5 +110,21 @@ public class Warehouse {
 
     public void setCommodityWarehouses(Set<CommodityWarehouse> commodityWarehouses) {
         this.commodityWarehouses = commodityWarehouses;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

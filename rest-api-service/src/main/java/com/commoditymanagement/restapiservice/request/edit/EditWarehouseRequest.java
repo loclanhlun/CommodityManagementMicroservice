@@ -1,23 +1,27 @@
-package com.commoditymanagement.commodityservice.request.edit;
+package com.commoditymanagement.restapiservice.request.edit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
 
-public class EditAgencyRequest {
+public class EditWarehouseRequest {
 
     @JsonProperty
     private Long id;
 
+    @NotBlank(message = "Warehouse code is mandatory")
     @JsonProperty
     private String code;
 
+    @NotBlank(message = "Warehouse name is mandatory")
     @JsonProperty
     private String name;
 
+    @NotBlank(message = "Warehouse address is mandatory")
     @JsonProperty
     private String address;
 
+    @NotBlank(message = "Warehouse phone number is mandatory")
     @JsonProperty
     private String phoneNumber;
 

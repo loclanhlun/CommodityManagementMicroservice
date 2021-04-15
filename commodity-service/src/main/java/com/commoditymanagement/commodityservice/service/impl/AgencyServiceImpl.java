@@ -52,8 +52,8 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public void update(EditAgencyRequest request, Long id) throws Exception {
-        Agency oldAgency = agencyRepository.findById(id).orElse(null);
+    public void update(EditAgencyRequest request) throws Exception {
+        Agency oldAgency = agencyRepository.findById(request.getId()).orElse(null);
         if(oldAgency == null){
             throw new Exception("Agency id does not exist!");
         }

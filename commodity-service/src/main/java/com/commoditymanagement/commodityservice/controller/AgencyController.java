@@ -57,7 +57,7 @@ public class AgencyController {
     public ResponseEntity<?> editAgency(@PathVariable("id") Long agencyId,@RequestBody EditAgencyRequest request){
         ResponseModel response;
         try {
-            agencyService.update(request,agencyId);
+            agencyService.update(request);
             response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
         }catch (Exception e){
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);

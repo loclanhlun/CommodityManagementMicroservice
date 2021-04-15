@@ -2,9 +2,8 @@ package com.commoditymanagement.commodityservice.request.edit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
+public class EditWarehouseRequest {
 
-public class EditAgencyRequest {
 
     @JsonProperty
     private Long id;

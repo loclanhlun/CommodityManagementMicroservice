@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CategoryResponse {
 
 	@JsonProperty
+	private Long id;
+
+	@JsonProperty
 	private String name;
 
 	@JsonProperty
@@ -16,6 +19,13 @@ public class CategoryResponse {
 	public CategoryResponse() {
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

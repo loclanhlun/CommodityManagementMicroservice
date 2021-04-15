@@ -23,9 +23,10 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<CategoryResponse> findAllCategory() {
 		List<CategoryResponse> categoriesDTO = new ArrayList<>();
-		List<Category> categoriesEntity = categoryRepository.findAll();
+		List<Category> categoriesEntity = categoryRepository.findCategoriesByStatus(0);
 		for(Category item : categoriesEntity) {
 			CategoryResponse response = new CategoryResponse();
+			response.setId(item.getId());
 			response.setCode(item.getCode());
 			response.setName(item.getName());
 			response.setStatus(item.getStatus());
@@ -42,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
 		if(categoriesEntity == null){
 			throw new Exception("Category id does not exist");
 		}
+		response.setId(categoriesEntity.getId());
 		response.setCode(categoriesEntity.getCode());
 		response.setName(categoriesEntity.getName());
 		response.setStatus(categoriesEntity.getStatus());
@@ -54,6 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
 		return null;
 	}
 
+
 	@Override
 	public void save(AddCategoryRequest AddCategoryRequest) throws Exception {
 		checkCategoryCodeAndName(AddCategoryRequest.getCode(), AddCategoryRequest.getName());
@@ -65,8 +68,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void update(EditCategoryRequest categoryRequest, Long id) throws Exception {
-		Category oldCategory = categoryRepository.findById(id).orElse(null);
+	public void update(EditCategoryRequest categoryRequest) throws Exception {
+		Category oldCategory = categoryRepository.findById(categoryRequest.getId()).orElse(null);
 		if(oldCategory == null) {
 			throw new Exception("category id does not exist");
 		}

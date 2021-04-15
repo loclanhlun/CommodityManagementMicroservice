@@ -6,6 +6,9 @@ import javax.validation.constraints.NotBlank;
 
 public class EditAgencyRequest {
 
+    @JsonProperty
+    private Long id;
+
     @NotBlank(message = "Agency Code is mandatory")
     @JsonProperty
     private String code;
@@ -24,6 +27,14 @@ public class EditAgencyRequest {
 
     @JsonProperty
     private int status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

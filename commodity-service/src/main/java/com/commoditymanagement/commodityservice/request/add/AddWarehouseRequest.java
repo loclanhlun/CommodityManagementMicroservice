@@ -1,13 +1,8 @@
-package com.commoditymanagement.commodityservice.request.edit;
+package com.commoditymanagement.commodityservice.request.add;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
-
-public class EditAgencyRequest {
-
-    @JsonProperty
-    private Long id;
+public class AddWarehouseRequest {
 
     @JsonProperty
     private String code;
@@ -20,17 +15,6 @@ public class EditAgencyRequest {
 
     @JsonProperty
     private String phoneNumber;
-
-    @JsonProperty
-    private int status;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCode() {
         return code;
@@ -62,13 +46,5 @@ public class EditAgencyRequest {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }

@@ -1,10 +1,8 @@
-package com.commoditymanagement.commodityservice.request.edit;
+package com.commoditymanagement.commodityservice.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
-
-public class EditAgencyRequest {
+public class WarehouseResponse {
 
     @JsonProperty
     private Long id;

@@ -64,7 +64,7 @@ public class CategoryController {
 	public ResponseEntity<?> editCategory(@PathVariable("id") Long categoryId,@RequestBody EditCategoryRequest request){
 		ResponseModel response = new ResponseModel();
 		try {
-			categoryService.update(request, categoryId);
+			categoryService.update(request);
 			response.setMessage("success");
 			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 		} catch (Exception e) {

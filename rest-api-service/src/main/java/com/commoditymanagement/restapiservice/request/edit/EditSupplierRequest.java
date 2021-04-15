@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 public class EditSupplierRequest {
 
+    private Long id;
+
     @NotBlank(message = "Supplier code is mandatory")
     @JsonProperty
     private String code;
@@ -24,6 +26,14 @@ public class EditSupplierRequest {
 
     @JsonProperty
     private int status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

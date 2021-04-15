@@ -16,7 +16,7 @@ public interface CategoryService {
 	
 	void save(AddCategoryRequest AddCategoryRequest) throws Exception;
 	
-	void update(EditCategoryRequest categoryRequest, Long id) throws Exception;
+	void update(EditCategoryRequest categoryRequest) throws Exception;
 	
 	void remove(Long id) throws Exception;
 }

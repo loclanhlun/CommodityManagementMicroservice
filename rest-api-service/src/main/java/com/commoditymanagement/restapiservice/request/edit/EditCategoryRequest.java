@@ -6,6 +6,9 @@ import javax.validation.constraints.NotBlank;
 
 public class EditCategoryRequest {
 
+    @JsonProperty
+    private Long id;
+
     @NotBlank(message = "Category Code is mandatory")
     @JsonProperty
     private String code;
@@ -16,6 +19,14 @@ public class EditCategoryRequest {
 
     @JsonProperty
     private int status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

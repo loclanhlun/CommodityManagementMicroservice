@@ -15,7 +15,7 @@ public interface SupplierService {
 
     void save(AddSupplierRequest request) throws Exception;
 
-    void update(EditSupplierRequest request, Long id) throws Exception;
+    void update(EditSupplierRequest request) throws Exception;
 
     void remove(Long id) throws Exception;
 }
