@@ -1,20 +1,15 @@
 package com.commoditymanagement.userservice.request.edit;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class EditCategoryRequest {
 
-    @JsonProperty
     private Long id;
 
-    @JsonProperty
     private String code;
 
-    @JsonProperty
     private String name;
-
-    @JsonProperty
+    
     private int status;
+
 
     public Long getId() {
         return id;

@@ -95,11 +95,4 @@ public class Supplier {
         this.status = status;
     }
 
-    public Set<ImportBill> getImportBills() {
-        return importBills;
-    }
-
-    public void setImportBills(Set<ImportBill> importBills) {
-        this.importBills = importBills;
-    }
 }

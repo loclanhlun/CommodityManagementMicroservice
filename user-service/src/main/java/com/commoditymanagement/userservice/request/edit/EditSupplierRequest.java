@@ -2,9 +2,15 @@ package com.commoditymanagement.userservice.request.edit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
-
 public class EditSupplierRequest {
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @JsonProperty
     private Long id;
@@ -23,15 +29,6 @@ public class EditSupplierRequest {
 
     @JsonProperty
     private int status;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCode() {
         return code;

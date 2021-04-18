@@ -1,5 +1,12 @@
 package com.commoditymanagement.warehouseservice.service;
 
-public interface CommodityWarehouseService
-{
+import com.commoditymanagement.core.data.CommodityWarehouse;
+import com.commoditymanagement.warehouseservice.request.add.AddImportBillRequest;
+
+import java.util.List;
+
+public interface CommodityWarehouseService {
+    List<CommodityWarehouse> findAllCommodityWarehouse();
+
+    void save(AddImportBillRequest request);
 }

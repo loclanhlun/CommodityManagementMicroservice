@@ -1,6 +1,8 @@
 package com.commoditymanagement.core.data;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -62,12 +64,27 @@ public class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ExportBill> exportBills;
 
-
     @OneToMany(mappedBy = "supplier")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+
     private Set<ImportBill> importBills;
 
+    public Set<ExportBill> getExportBills() {
+        return exportBills;
+    }
+
+    public void setExportBills(Set<ExportBill> exportBills) {
+        this.exportBills = exportBills;
+    }
+
+    public Set<ImportBill> getImportBills() {
+        return importBills;
+    }
+
+    public void setImportBills(Set<ImportBill> importBills) {
+        this.importBills = importBills;
+    }
 
     public Long getId() {
         return id;
@@ -139,21 +156,5 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public Set<ExportBill> getExportBills() {
-        return exportBills;
-    }
-
-    public void setExportBills(Set<ExportBill> exportBills) {
-        this.exportBills = exportBills;
-    }
-
-    public Set<ImportBill> getImportBills() {
-        return importBills;
-    }
-
-    public void setImportBills(Set<ImportBill> importBills) {
-        this.importBills = importBills;
     }
 }

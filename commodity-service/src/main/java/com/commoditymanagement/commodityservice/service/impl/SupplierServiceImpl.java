@@ -1,14 +1,10 @@
 package com.commoditymanagement.commodityservice.service.impl;
 
 import com.commoditymanagement.commodityservice.repository.SupplierRepository;
-import com.commoditymanagement.commodityservice.request.add.AddAgencyRequest;
 import com.commoditymanagement.commodityservice.request.add.AddSupplierRequest;
-import com.commoditymanagement.commodityservice.request.edit.EditAgencyRequest;
 import com.commoditymanagement.commodityservice.request.edit.EditSupplierRequest;
-import com.commoditymanagement.commodityservice.response.AgencyResponse;
 import com.commoditymanagement.commodityservice.response.SupplierResponse;
 import com.commoditymanagement.commodityservice.service.SupplierService;
-import com.commoditymanagement.core.data.Agency;
 import com.commoditymanagement.core.data.Supplier;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +28,15 @@ public class SupplierServiceImpl implements SupplierService {
             listResponse.add(response);
         }
         return listResponse;
+    }
+
+    @Override
+    public Supplier findByCodeFromImportBill(String supplierCode) throws Exception {
+        if(supplierCode == null){
+            throw new Exception("Supplier code is null");
+        }
+        Supplier supplierEntity = supplierRepository.findByCode(supplierCode).get(0);
+        return supplierEntity;
     }
 
     @Override

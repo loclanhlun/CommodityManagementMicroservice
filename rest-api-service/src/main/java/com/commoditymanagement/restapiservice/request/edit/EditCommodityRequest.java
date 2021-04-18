@@ -17,7 +17,6 @@ public class EditCommodityRequest {
     @JsonProperty
     private String name;
 
-    @NotBlank(message = "Category is mandatory")
     @JsonProperty
     private Long categoryId;
 

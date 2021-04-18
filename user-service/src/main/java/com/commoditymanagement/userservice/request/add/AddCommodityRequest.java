@@ -1,18 +1,11 @@
 package com.commoditymanagement.userservice.request.add;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotBlank;
-
 public class AddCommodityRequest {
 
-    @JsonProperty
     private String code;
 
-    @JsonProperty
     private String name;
 
-    @JsonProperty
     private Long categoryId;
 
     public String getCode() {

@@ -1,14 +1,10 @@
 package com.commoditymanagement.commodityservice.service.impl;
 
 import com.commoditymanagement.commodityservice.repository.WarehouseRepository;
-import com.commoditymanagement.commodityservice.request.add.AddSupplierRequest;
 import com.commoditymanagement.commodityservice.request.add.AddWarehouseRequest;
-import com.commoditymanagement.commodityservice.request.edit.EditSupplierRequest;
 import com.commoditymanagement.commodityservice.request.edit.EditWarehouseRequest;
-import com.commoditymanagement.commodityservice.response.SupplierResponse;
 import com.commoditymanagement.commodityservice.response.WarehouseResponse;
 import com.commoditymanagement.commodityservice.service.WarehouseService;
-import com.commoditymanagement.core.data.Supplier;
 import com.commoditymanagement.core.data.Warehouse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +38,15 @@ public class WarehouseServiceImpl implements WarehouseService {
         }
         WarehouseResponse response = getWarehouseResponse(warehouseEntity);
         return response;
+    }
+
+    @Override
+    public Warehouse findByCodeFromImportBill(String warehouseCode) throws Exception {
+        if(warehouseCode == null){
+            throw new Exception("Warehouse code is null");
+        }
+        Warehouse warehouseEntity = warehouseRepository.findByCode(warehouseCode).get(0);
+        return warehouseEntity;
     }
 
     @Override

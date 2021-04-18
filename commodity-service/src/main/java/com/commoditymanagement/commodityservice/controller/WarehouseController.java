@@ -1,11 +1,12 @@
 package com.commoditymanagement.commodityservice.controller;
 
+import com.commoditymanagement.commodityservice.request.RequestFromImportBill;
 import com.commoditymanagement.commodityservice.request.add.AddWarehouseRequest;
 import com.commoditymanagement.commodityservice.request.edit.EditWarehouseRequest;
-import com.commoditymanagement.commodityservice.response.SupplierResponse;
 import com.commoditymanagement.commodityservice.response.WarehouseResponse;
 import com.commoditymanagement.commodityservice.service.WarehouseService;
 import com.commoditymanagement.core.constant.ResponseConstant;
+import com.commoditymanagement.core.data.Warehouse;
 import com.commoditymanagement.core.response.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,17 @@ public class WarehouseController {
         List<WarehouseResponse> listsWarehouse = warehouseService.findAllWarehouse();
         ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listsWarehouse);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/get-warehouse")
+    public Warehouse getWarehouseByIdFromImportBillRequest(@RequestBody RequestFromImportBill request) throws Exception {
+        Warehouse warehouseResponse = null;
+        try {
+            warehouseResponse = warehouseService.findByCodeFromImportBill(request.getWarehouseCode());
+        }catch (Exception e){
+           throw new Exception(e.getMessage());
+        }
+        return warehouseResponse;
     }
 
     @GetMapping(value = "/{id}")

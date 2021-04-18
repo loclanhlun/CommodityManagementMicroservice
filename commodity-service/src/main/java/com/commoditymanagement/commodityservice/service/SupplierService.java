@@ -11,6 +11,8 @@ public interface SupplierService {
 
     List<SupplierResponse> findAllSupplier() throws Exception;
 
+    Supplier findByCodeFromImportBill(String supplierCode) throws Exception;
+
     SupplierResponse findById(Long supplierId) throws Exception;
 
     void save(AddSupplierRequest request) throws Exception;

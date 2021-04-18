@@ -1,78 +1,81 @@
 package com.commoditymanagement.userservice.controller;
 
+import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddCommodityRequest;
 import com.commoditymanagement.userservice.request.edit.EditCommodityRequest;
+import com.commoditymanagement.userservice.response.CommodityResponse;
+import com.commoditymanagement.userservice.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/commodity")
 public class CommodityController {
 
-    private static final String URL = "http://commodity-service/rest/v1/commodity";
-
     @Autowired
-    private RestTemplate restTemplate;
+    private CommodityService commodityService;
+
 
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListCommodity(){
-        String url = URL + "/list";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
-        return response;
+        List<CommodityResponse> lists = commodityService.findAllCommodity();
+        ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success", lists);
+        return ResponseEntity.ok(response);
     }
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getCommodityById(@PathVariable("id") Long commodityId){
-        String url = URL + "/{id}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", commodityId);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
-        return response;
+    public ResponseEntity<?> getCommodityById(@PathVariable("id") Long commodityId) throws Exception {
+        ResponseModel response;
+        CommodityResponse commodityResponse = null;
+        try{
+            commodityResponse = commodityService.findById(commodityId);
+            response = new ResponseModel("Success", ResponseConstant.RESULT_CODE_SUCCESS,commodityResponse);
+        }catch (Exception e){
+            response = new ResponseModel(e.getMessage(), ResponseConstant.RESULT_CODE_SUCCESS,commodityResponse);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/add-commodity")
-    public ResponseEntity<?> addCommodity(@RequestBody AddCommodityRequest request){
-        String url = URL + "/add-commodity";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
-        return response;
+    public ResponseEntity<?> addCommodity(@RequestBody AddCommodityRequest request)throws Exception{
+        ResponseModel response;
+        try {
+            commodityService.save(request);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success",  null);
+        }catch (Exception e){
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),  null);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping(value = "/edit-commodity/{id}")
-    public ResponseEntity<?> addCommodity(@PathVariable("id") Long commodityId, @RequestBody EditCommodityRequest request){
-        String url = URL + "/edit-commodity/{id}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", commodityId);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
-        return response;
+    public ResponseEntity<?> editCommodity(@PathVariable("id") Long commodityId,
+                                           @RequestBody EditCommodityRequest request){
+        ResponseModel response;
+        try {
+            commodityService.update(request);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success",null);
+        } catch (Exception e) {
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping(value = "/remove-commodity/{id}")
     public ResponseEntity<?> removeCommodity(@PathVariable("id") Long commodityId){
-
-        String url = URL + "/remove-commodity/{id}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", commodityId);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
-        return response;
+        ResponseModel response;
+        try {
+            commodityService.remove(commodityId);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success",null);
+        }catch (Exception e){
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR,e.getMessage(),null);
+        }
+        return ResponseEntity.ok(response);
     }
+
+
 }

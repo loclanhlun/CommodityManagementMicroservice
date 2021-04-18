@@ -1,6 +1,7 @@
 package com.commoditymanagement.core.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -44,16 +45,19 @@ public class Warehouse {
     @OneToMany(mappedBy = "warehouse")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonManagedReference
     private Set<ExportBill> exportBills;
 
     @OneToMany(mappedBy = "warehouses")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonManagedReference
     private Set<ImportBill> importBills;
 
     @OneToMany(mappedBy = "warehouse")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonManagedReference
     private Set<CommodityWarehouse> commodityWarehouses;
 
     public Long getId() {
@@ -80,38 +84,6 @@ public class Warehouse {
         this.name = name;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public Set<ExportBill> getExportBills() {
-        return exportBills;
-    }
-
-    public void setExportBills(Set<ExportBill> exportBills) {
-        this.exportBills = exportBills;
-    }
-
-    public Set<ImportBill> getImportBills() {
-        return importBills;
-    }
-
-    public void setImportBills(Set<ImportBill> importBills) {
-        this.importBills = importBills;
-    }
-
-    public Set<CommodityWarehouse> getCommodityWarehouses() {
-        return commodityWarehouses;
-    }
-
-    public void setCommodityWarehouses(Set<CommodityWarehouse> commodityWarehouses) {
-        this.commodityWarehouses = commodityWarehouses;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -126,5 +98,13 @@ public class Warehouse {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

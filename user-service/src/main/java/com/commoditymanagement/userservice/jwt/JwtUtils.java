@@ -40,6 +40,7 @@ public class JwtUtils {
 	public String getEmailFormJwtToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 	}
+
 	
 	public boolean validateJwtToken(String authToken) {
 		try {

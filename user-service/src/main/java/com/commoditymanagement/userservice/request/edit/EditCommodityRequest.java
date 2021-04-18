@@ -1,21 +1,13 @@
 package com.commoditymanagement.userservice.request.edit;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotBlank;
-
 public class EditCommodityRequest {
 
-    @JsonProperty
     private Long id;
 
-    @JsonProperty
     private String code;
 
-    @JsonProperty
     private String name;
 
-    @JsonProperty
     private Long categoryId;
 
     private int status;

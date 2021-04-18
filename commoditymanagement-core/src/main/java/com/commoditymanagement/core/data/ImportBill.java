@@ -1,5 +1,6 @@
 package com.commoditymanagement.core.data;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -74,12 +75,12 @@ public class ImportBill {
         this.supplier = supplier;
     }
 
-    public Warehouse getWarehouse() {
+    public Warehouse getWarehouses() {
         return warehouses;
     }
 
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouses = warehouse;
+    public void setWarehouses(Warehouse warehouses) {
+        this.warehouses = warehouses;
     }
 
     public Date getImportDate() {
@@ -88,14 +89,6 @@ public class ImportBill {
 
     public void setImportDate(Date importDate) {
         this.importDate = importDate;
-    }
-
-    public Warehouse getWarehouses() {
-        return warehouses;
-    }
-
-    public void setWarehouses(Warehouse warehouses) {
-        this.warehouses = warehouses;
     }
 
     public int getStatus() {

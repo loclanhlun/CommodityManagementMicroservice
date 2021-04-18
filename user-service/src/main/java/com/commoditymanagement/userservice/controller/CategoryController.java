@@ -1,78 +1,97 @@
 package com.commoditymanagement.userservice.controller;
 
+
+import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddCategoryRequest;
 import com.commoditymanagement.userservice.request.edit.EditCategoryRequest;
+import com.commoditymanagement.userservice.response.CategoryResponse;
+import com.commoditymanagement.userservice.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/category")
 public class CategoryController {
+	
+	@Autowired
+	private CategoryService categoryService;
+	
+	@GetMapping(value = "/list")
+	public ResponseEntity<?> getListCategory(){
+		List<CategoryResponse> lists = categoryService.findAllCategory();
+		ResponseModel response = buildResponse(lists);
+		return ResponseEntity.ok(response);
+	}
 
-    private static final String URL = "http://commodity-service/rest/v1/category";
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getCategoryById(@PathVariable("id") Long categoryId) throws Exception {
+		ResponseModel response = new ResponseModel();
+		CategoryResponse categoryResponse = new CategoryResponse();
+		try {
+			categoryResponse = categoryService.findById(categoryId);
+			response.setMessage("Success");
+			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
+			response.setObject(categoryResponse);
+		}catch (Exception e){
+			response.setMessage(e.getMessage());
+			response.setResultCode(ResponseConstant.RESULT_CODE_ERROR);
+			response.setObject(new CategoryResponse());
+		}
+		return ResponseEntity.ok(response);
+	}
 
-    @Autowired
-    private RestTemplate restTemplate;
+	@PostMapping(value = "/add-category")
+	public ResponseEntity<?> addCategory(@RequestBody AddCategoryRequest request){
+		ResponseModel response = new ResponseModel();
+		try {
+			categoryService.save(request);
+			response.setMessage("Success");
+			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
+		}catch (Exception e){
+			response.setMessage(e.getMessage());
+			response.setResultCode(ResponseConstant.RESULT_CODE_ERROR);
+		}
 
-    @GetMapping(value = "/list")
-    public ResponseEntity<?> getListCategory(){
-        String url = URL + "/list";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
-        return response;
-    }
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getCategoryById(@PathVariable("id") Long categoryId){
-        String url = URL + "/{id}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", categoryId);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
-        return response;
-    }
+		return ResponseEntity.ok(response);
+	}
 
-    @PostMapping(value = "/add-category")
-    public ResponseEntity<?> addCategory(@RequestBody AddCategoryRequest request){
-        String url = URL + "/add-category";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
-        return response;
-    }
+	@PutMapping(value = "/edit-category/{id}")
+	public ResponseEntity<?> editCategory(@PathVariable("id") Long categoryId,@RequestBody EditCategoryRequest request){
+		ResponseModel response = new ResponseModel();
+		try {
+			categoryService.update(request);
+			response.setMessage("success");
+			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
+		} catch (Exception e) {
+			response.setMessage(e.getMessage());
+			response.setResultCode(ResponseConstant.RESULT_CODE_ERROR);
+		}
+		return ResponseEntity.ok(response);
+	}
 
-    @PutMapping(value = "/edit-category/{id}")
-    public ResponseEntity<?> addCategory(@PathVariable("id") Long categoryId, @RequestBody EditCategoryRequest request){
-        String url = URL + "/edit-category/{id}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", categoryId);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
-        return response;
-    }
+	@PutMapping(value = "/remove-category/{id}")
+	public ResponseEntity<?> updateStatus(@PathVariable("id") Long categoryId) throws Exception {
+		ResponseModel response = new ResponseModel();
+		try {
+			categoryService.remove(categoryId);
+			response.setMessage("Success");
+			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
+		}catch (Exception e){
+			response.setMessage(e.getMessage());
+			response.setResultCode(ResponseConstant.RESULT_CODE_ERROR);
+		}
+		return ResponseEntity.ok(response);
+	}
 
-    @PutMapping(value = "/remove-category/{id}")
-    public ResponseEntity<?> removeCategory(@PathVariable("id") Long categoryId){
-
-        String url = URL + "/remove-category/{id}";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", categoryId);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
-        return response;
+	private ResponseModel buildResponse(List<CategoryResponse> lists) {
+    	ResponseModel responseModel = new ResponseModel();
+    	responseModel.setMessage("Success");
+    	responseModel.setResultCode("0");
+    	responseModel.setObject(lists);
+    	return responseModel;
     }
 }

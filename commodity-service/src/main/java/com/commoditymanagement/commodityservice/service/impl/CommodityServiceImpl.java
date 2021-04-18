@@ -50,6 +50,7 @@ public class CommodityServiceImpl implements CommodityService{
             throw new Exception("Commodity id does not exist!");
         }
         CommodityResponse response = new CommodityResponse();
+        response.setId(commodity.getId());
         response.setCode(commodity.getCode());
         response.setName(commodity.getName());
         response.setCategoryName(commodity.getCategory().getName());

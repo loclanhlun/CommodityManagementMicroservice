@@ -1,22 +1,23 @@
 package com.commoditymanagement.userservice.controller;
 
+import com.commoditymanagement.core.data.User;
+import com.commoditymanagement.userservice.request.GetUserRequest;
 import com.commoditymanagement.userservice.response.UserResponse;
+import com.commoditymanagement.userservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
@@ -27,12 +28,17 @@ import com.commoditymanagement.userservice.request.UserRequest;
 import com.commoditymanagement.userservice.response.JwtResponse;
 import com.commoditymanagement.userservice.service.UserService;
 import com.commoditymanagement.userservice.service.impl.UserDetailImpl;
+import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/user")
 public class UserController {
+
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -45,6 +51,9 @@ public class UserController {
     
     @Autowired
     private JwtUtils jwtUtils;
+
+	@Autowired
+	private UserDetailsServiceImpl userDetailsService;
     
     
 
@@ -54,7 +63,19 @@ public class UserController {
         ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
         return ResponseEntity.ok(response);
     }
-    
+
+    @PostMapping(value = "/get-user")
+    public User getUserByIdFromImportBill(@RequestBody GetUserRequest request) throws Exception {
+		User userResponse = null;
+		try {
+			userResponse = userService.findByIdFromImportBill(request.getUserId());
+		}catch (Exception e){
+			throw new Exception(e.getMessage());
+		}
+		return userResponse;
+	}
+
+
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@Validated @RequestBody SignInRequest request){
     	Authentication authentication = 
@@ -101,11 +122,20 @@ public class UserController {
     	responseModel.setObject(jwtResponse);
     	return responseModel;
     }
-    
-    
-    
 
-    
-    
+	private String parseJwt(HttpServletRequest request) {
+		String headerAuth = request.getHeader("Authorization");
+
+		if(StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+			return headerAuth.substring(7, headerAuth.length());
+		}
+		return null;
+	}
+
+
+
+
+
+
 
 }

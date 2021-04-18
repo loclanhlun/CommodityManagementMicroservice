@@ -2,8 +2,6 @@ package com.commoditymanagement.userservice.request.add;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
-
 public class AddSupplierRequest {
 
     @JsonProperty

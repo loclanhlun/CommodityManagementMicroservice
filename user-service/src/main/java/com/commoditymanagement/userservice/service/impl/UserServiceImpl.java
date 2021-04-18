@@ -50,6 +50,33 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
+	public UserResponse findById(Long id) {
+    	User user = userRepository.findById(id).orElse(null);
+		UserResponse dto = new UserResponse();
+		dto.setId(user.getId());
+		dto.setEmail(user.getEmail());
+		dto.setAddress(user.getAddress());
+		dto.setGender(user.getGender());
+		dto.setRoleCode(user.getRole().getCode());
+		dto.setFullName(user.getFullName());
+		dto.setPhoneNumber(user.getPhoneNumber());
+		dto.setStatus(user.getStatus());
+		return dto;
+	}
+
+	@Override
+	public User findByIdFromImportBill(Long id) {
+		User user = userRepository.findById(id).orElse(null);
+		return user;
+	}
+
+	@Override
+	public User findByEmail(String email) {
+    	List<User> list = userRepository.findByEmail(email);
+		return list.get(0);
+	}
+
+	@Override
 	public void addUser(UserRequest userRequest) throws Exception {
 		Role role = getRoleCode(userRequest.getRoleCode());
 		getEmail(userRequest.getEmail());
