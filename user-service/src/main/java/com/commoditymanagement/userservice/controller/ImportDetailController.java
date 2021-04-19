@@ -1,5 +1,7 @@
 package com.commoditymanagement.userservice.controller;
 
+import com.commoditymanagement.core.constant.ResponseConstant;
+import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddImportBillDetailRequest;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;
@@ -18,8 +20,15 @@ public class ImportDetailController {
     private ImportBillDetailService importBillDetailService;
 
     @PostMapping(value = "/add-import-bill-detail")
-    public ResponseEntity<?> addImportBill(@RequestBody AddImportBillDetailRequest request){
-        importBillDetailService.save(request);
-        return null;
+    public ResponseEntity<?> addImportBill(@RequestBody AddImportBillDetailRequest request) throws Exception {
+        ResponseModel responseModel;
+        try {
+            importBillDetailService.save(request);
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success",null);
+        }catch (Exception e){
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
+        }
+
+        return ResponseEntity.ok(responseModel);
     }
 }

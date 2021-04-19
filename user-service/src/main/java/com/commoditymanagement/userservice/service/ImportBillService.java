@@ -5,6 +5,6 @@ import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 
 public interface ImportBillService {
 
-    void save(AddImportBillRequest request, User user);
+    void save(AddImportBillRequest request, User user) throws Exception;
 
 }

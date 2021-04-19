@@ -4,5 +4,5 @@ import com.commoditymanagement.userservice.request.add.AddImportBillDetailReques
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 
 public interface ImportBillDetailService {
-    void save(AddImportBillDetailRequest request);
+    void save(AddImportBillDetailRequest request) throws Exception;
 }

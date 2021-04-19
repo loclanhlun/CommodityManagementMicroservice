@@ -7,7 +7,6 @@ import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.service.ImportBillService;
 import com.commoditymanagement.userservice.service.UserService;
-import com.commoditymanagement.userservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
@@ -35,21 +34,24 @@ public class ImportController {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
     private ImportBillService importBillService;
 
     @PostMapping(value = "/add-import-bill")
     public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,
-                                           @RequestBody AddImportBillRequest request){
+                                           @RequestBody AddImportBillRequest request) throws Exception {
 
         ResponseModel responseModel ;
         String jwt = parseJwt(httpServletRequest);
         String email = jwtUtils.getEmailFormJwtToken(jwt);
         User user = userService.findByEmail(email);
-        importBillService.save(request,user);
-        responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+        try {
+            importBillService.save(request,user);
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+        }catch (Exception e){
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR,e.getMessage(), null);
+        }
+
+
         return ResponseEntity.ok(responseModel);
     }
 

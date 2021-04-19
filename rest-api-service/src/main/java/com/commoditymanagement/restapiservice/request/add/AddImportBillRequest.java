@@ -12,8 +12,6 @@ public class AddImportBillRequest {
     @JsonProperty
     private String supplierCode;
 
-//    private List<AddImportBillDetailRequest> importBillDetailRequest;
-
     public String getWarehouseCode() {
         return warehouseCode;
     }
@@ -30,11 +28,4 @@ public class AddImportBillRequest {
         this.supplierCode = supplierCode;
     }
 
-//    public List<AddImportBillDetailRequest> getImportBillDetailRequest() {
-//        return importBillDetailRequest;
-//    }
-//
-//    public void setImportBillDetailRequest(List<AddImportBillDetailRequest> importBillDetailRequest) {
-//        this.importBillDetailRequest = importBillDetailRequest;
-//    }
 }

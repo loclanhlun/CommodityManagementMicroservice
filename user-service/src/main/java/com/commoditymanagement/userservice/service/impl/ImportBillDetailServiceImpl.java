@@ -1,17 +1,15 @@
 package com.commoditymanagement.userservice.service.impl;
 
-import com.commoditymanagement.core.data.Commodity;
-import com.commoditymanagement.core.data.ImportBill;
-import com.commoditymanagement.core.data.ImportBillDetail;
-import com.commoditymanagement.userservice.repository.CommodityRepository;
-import com.commoditymanagement.userservice.repository.ImportBillDetailRepository;
-import com.commoditymanagement.userservice.repository.ImportBillRepository;
+import com.commoditymanagement.core.data.*;
+import com.commoditymanagement.userservice.repository.*;
 import com.commoditymanagement.userservice.request.add.AddImportBillDetailRequest;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.request.add.ImportBillDetailRequest;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,23 +24,68 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
     private CommodityRepository commodityRepository;
 
     @Autowired
+    private WarehouseRepository warehouseRepository;
+
+    @Autowired
+    private CommodityWarehouseRepository commodityWarehouseRepository;
+
+    @Autowired
     private ImportBillDetailRepository importBillDetailRepository;
     @Override
-    public void save(AddImportBillDetailRequest request) {
-        ImportBill importBill = importBillRepository.findById(request.getBillId()).orElse(null);
+    public void save(AddImportBillDetailRequest request) throws Exception {
+        ImportBill importBill = importBillRepository.findImportBillOderByIdDesc().get(0);
         List<ImportBillDetailRequest> listImportBillDetail = request.getData();
+        Commodity commodity = null;
 
-
+        int count = 0;
         for(ImportBillDetailRequest item : listImportBillDetail){
-            Commodity commodity = commodityRepository.findByCode(item.getCommodityCode()).get(0);
-            System.out.println(commodity.toString());
-//            ImportBillDetail importBillDetail = new ImportBillDetail();
-//            importBillDetail.setImportBill(importBill);
-//            importBillDetail.setCommodities(commodity);
-//            importBillDetail.setPrice(item.getPrice());
-//            importBillDetail.setQuantity(item.getQuantity());
-//            importBillDetailRepository.save(importBillDetail);
+            if(checkCommodityCode(item.getCommodityCode())){
+                throw new Exception("Commodity " + item.getCommodityCode() + "is not found!");
+            }
+            count ++;
         }
+        if(count == listImportBillDetail.size()){
+            Warehouse warehouse = warehouseRepository.findById(importBill.getWarehouse().getId()).orElse(null);
+            for(ImportBillDetailRequest item : listImportBillDetail){
+                commodity = commodityRepository.findByCode(item.getCommodityCode()).get(0);
+                ImportBillDetail importBillDetail = new ImportBillDetail();
+                importBillDetail.setImportBill(importBill);
+                importBillDetail.setCommodities(commodity);
+                importBillDetail.setPrice(item.getPrice());
+                importBillDetail.setQuantity(item.getQuantity());
+                importBillDetailRepository.save(importBillDetail);
+                //
 
+                CommodityWarehouse commodityWarehouse = new CommodityWarehouse();
+                if(checkCommodityWarehouseByCommodityCodeAndWarehouseCode(commodity,warehouse)){
+                    commodityWarehouse.setCommodity(commodity);
+                    commodityWarehouse.setWarehouse(warehouse);
+                    commodityWarehouse.setQuantity(item.getQuantity());
+                    commodityWarehouseRepository.save(commodityWarehouse);
+                }else{
+                    CommodityWarehouse oldCommodityWarehouses = commodityWarehouseRepository.findCommodityWarehouseByCommodityAndWarehouse(commodity, warehouse).get(0);
+                    oldCommodityWarehouses.setCommodity(commodity);
+                    oldCommodityWarehouses.setWarehouse(warehouse);
+                    oldCommodityWarehouses.setQuantity(oldCommodityWarehouses.getQuantity() + item.getQuantity());
+                    commodityWarehouseRepository.save(oldCommodityWarehouses);
+                }
+            }
+        }
+    }
+
+    public boolean checkCommodityWarehouseByCommodityCodeAndWarehouseCode(Commodity commodity, Warehouse warehouse){
+        List<CommodityWarehouse> commodityWarehouses = commodityWarehouseRepository.findCommodityWarehouseByCommodityAndWarehouse(commodity, warehouse);
+        if(CollectionUtils.isEmpty(commodityWarehouses)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkCommodityCode(String code){
+        List<Commodity> commodity = commodityRepository.findByCode(code);
+        if(CollectionUtils.isEmpty(commodity)){
+            return true;
+        }
+        return false;
     }
 }
