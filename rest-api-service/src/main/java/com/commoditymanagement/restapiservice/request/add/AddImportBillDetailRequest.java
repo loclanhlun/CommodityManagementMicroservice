@@ -1,46 +1,20 @@
 package com.commoditymanagement.restapiservice.request.add;
 
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public class AddImportBillDetailRequest {
 
-    private String commodityCode;
+    @JsonProperty
+    private List<ImportBillDetailRequest> data;
 
-    private Long billId;
-
-    private BigDecimal price;
-
-    private int quantity;
-
-    public String getCommodityCode() {
-        return commodityCode;
+    public List<ImportBillDetailRequest> getData() {
+        return data;
     }
 
-    public void setCommodityCode(String commodityCode) {
-        this.commodityCode = commodityCode;
-    }
-
-    public Long getBillId() {
-        return billId;
-    }
-
-    public void setBillId(Long billId) {
-        this.billId = billId;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setData(List<ImportBillDetailRequest> data) {
+        this.data = data;
     }
 }

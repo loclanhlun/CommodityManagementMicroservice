@@ -22,6 +22,18 @@ public class ImportController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> getListImportBill(HttpServletRequest httpServletRequest){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        String url = URL + "/list";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
     @PostMapping(value = "/add-import-bill")
     public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,
                                            @Valid @RequestBody AddImportBillRequest request){

@@ -6,12 +6,14 @@ import com.commoditymanagement.userservice.repository.ImportBillRepository;
 import com.commoditymanagement.userservice.repository.SupplierRepository;
 import com.commoditymanagement.userservice.repository.WarehouseRepository;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
+import com.commoditymanagement.userservice.response.ImportBillResponse;
 import com.commoditymanagement.userservice.service.ImportBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,21 @@ public class ImportBillServiceImpl implements ImportBillService {
     @Autowired
     private ImportBillRepository importBillRepository;
 
+
+    @Override
+    public List<ImportBillResponse> findAllImportBill() {
+        List<ImportBillResponse> listResult = new ArrayList<>();
+        List<ImportBill> listEntity = importBillRepository.findAll();
+        for(ImportBill item : listEntity){
+            ImportBillResponse response = new ImportBillResponse();
+            response.setId(item.getId());
+            response.setFullName(item.getUser().getFullName());
+            response.setSupplierName(item.getSupplier().getName());
+            response.setWarehouseName(item.getWarehouses().getName());
+            listResult.add(response);
+        }
+        return listResult;
+    }
 
     @Override
     public void save(AddImportBillRequest request, User user) throws Exception {

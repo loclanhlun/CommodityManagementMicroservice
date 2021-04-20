@@ -5,18 +5,17 @@ import com.commoditymanagement.core.data.User;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
+import com.commoditymanagement.userservice.response.ImportBillResponse;
 import com.commoditymanagement.userservice.service.ImportBillService;
 import com.commoditymanagement.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/import-bill")
@@ -35,6 +34,14 @@ public class ImportController {
 
     @Autowired
     private ImportBillService importBillService;
+
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> getListImportBill(){
+        ResponseModel response;
+        List<ImportBillResponse> listImportBill = importBillService.findAllImportBill();
+        response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listImportBill);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping(value = "/add-import-bill")
     public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,

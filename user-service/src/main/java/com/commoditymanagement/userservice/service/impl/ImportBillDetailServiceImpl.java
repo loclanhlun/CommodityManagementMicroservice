@@ -5,6 +5,7 @@ import com.commoditymanagement.userservice.repository.*;
 import com.commoditymanagement.userservice.request.add.AddImportBillDetailRequest;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.request.add.ImportBillDetailRequest;
+import com.commoditymanagement.userservice.response.ImportBillDetailResponse;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,6 +33,23 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
 
     @Autowired
     private ImportBillDetailRepository importBillDetailRepository;
+
+    @Override
+    public List<ImportBillDetailResponse> findAllImportBillDetailByImportBillId(Long id) {
+        List<ImportBillDetailResponse> listResponse = new ArrayList<>();
+        List<ImportBillDetail> listEntity = importBillDetailRepository.findByImportBillId(id);
+        for(ImportBillDetail item : listEntity){
+            ImportBillDetailResponse response = new ImportBillDetailResponse();
+            response.setId(item.getId());
+            response.setImportBillId(item.getImportBill().getId());
+            response.setCommodityName(item.getCommodities().getName());
+            response.setQuantity(item.getQuantity());
+            response.setPrice(item.getPrice());
+            listResponse.add(response);
+        }
+        return listResponse;
+    }
+
     @Override
     public void save(AddImportBillDetailRequest request) throws Exception {
         ImportBill importBill = importBillRepository.findImportBillOderByIdDesc().get(0);
@@ -45,7 +64,7 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
             count ++;
         }
         if(count == listImportBillDetail.size()){
-            Warehouse warehouse = warehouseRepository.findById(importBill.getWarehouse().getId()).orElse(null);
+            Warehouse warehouse = warehouseRepository.findById(importBill.getWarehouses().getId()).orElse(null);
             for(ImportBillDetailRequest item : listImportBillDetail){
                 commodity = commodityRepository.findByCode(item.getCommodityCode()).get(0);
                 ImportBillDetail importBillDetail = new ImportBillDetail();

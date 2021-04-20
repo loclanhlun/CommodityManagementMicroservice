@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ImportBillRepository extends JpaRepository<ImportBill, Long> {
-
     @Query(value = "select im from ImportBill as im order by im.id desc")
     List<ImportBill> findImportBillOderByIdDesc();
 }
