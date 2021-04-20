@@ -1,19 +1,14 @@
 package com.commoditymanagement.userservice.controller;
 
-import com.commoditymanagement.core.data.User;
-import com.commoditymanagement.userservice.request.GetUserRequest;
+import com.commoditymanagement.userservice.request.edit.EditUserRequest;
 import com.commoditymanagement.userservice.response.UserResponse;
 import com.commoditymanagement.userservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +18,6 @@ import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.request.SignInRequest;
-import com.commoditymanagement.userservice.request.UserInput;
 import com.commoditymanagement.userservice.request.UserRequest;
 import com.commoditymanagement.userservice.response.JwtResponse;
 import com.commoditymanagement.userservice.service.UserService;
@@ -64,15 +58,16 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/get-user")
-    public User getUserByIdFromImportBill(@RequestBody GetUserRequest request) throws Exception {
-		User userResponse = null;
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getUserById(@PathVariable("id") long userId){
+		ResponseModel responseModel;
 		try {
-			userResponse = userService.findByIdFromImportBill(request.getUserId());
+			UserResponse userResponse = userService.findById(userId);
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success", userResponse);
 		}catch (Exception e){
-			throw new Exception(e.getMessage());
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,e.getMessage(), null);
 		}
-		return userResponse;
+		return ResponseEntity.ok(responseModel);
 	}
 
 
@@ -105,6 +100,35 @@ public class UserController {
 		}
     	return ResponseEntity.ok(response);
     }
+
+    @PutMapping(value = "/edit-user")
+	public ResponseEntity<?> editUser(@RequestBody EditUserRequest request){
+    	ResponseModel responseModel;
+    	try {
+			userService.updateUser(request);
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+		}catch (Exception e){
+    		responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
+		}
+
+    	return ResponseEntity.ok(responseModel);
+	}
+
+	@PutMapping(value = "/remove-user/{id}")
+	public ResponseEntity<?> removeUser(HttpServletRequest httpServletRequest,
+										@PathVariable("id") Long userId){
+		String jwt = parseJwt(httpServletRequest);
+		String email = jwtUtils.getEmailFormJwtToken(jwt);
+    	ResponseModel responseModel;
+
+    	try {
+			userService.removeUser(userId,email);
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+		}catch (Exception e){
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
+		}
+    	return ResponseEntity.ok(responseModel);
+	}
     
     private JwtResponse addResponse(UserDetailImpl userDetailImpl, String token) {
     	JwtResponse jwtResponse = new JwtResponse();

@@ -3,17 +3,14 @@ package com.commoditymanagement.userservice.service.impl;
 import com.commoditymanagement.core.data.*;
 import com.commoditymanagement.userservice.repository.*;
 import com.commoditymanagement.userservice.request.add.AddImportBillDetailRequest;
-import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
-import com.commoditymanagement.userservice.request.add.ImportBillDetailRequest;
+import com.commoditymanagement.userservice.request.add.ItemImportBillDetailRequest;
 import com.commoditymanagement.userservice.response.ImportBillDetailResponse;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -53,11 +50,11 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
     @Override
     public void save(AddImportBillDetailRequest request) throws Exception {
         ImportBill importBill = importBillRepository.findImportBillOderByIdDesc().get(0);
-        List<ImportBillDetailRequest> listImportBillDetail = request.getData();
+        List<ItemImportBillDetailRequest> listImportBillDetail = request.getData();
         Commodity commodity = null;
 
         int count = 0;
-        for(ImportBillDetailRequest item : listImportBillDetail){
+        for(ItemImportBillDetailRequest item : listImportBillDetail){
             if(checkCommodityCode(item.getCommodityCode())){
                 throw new Exception("Commodity " + item.getCommodityCode() + "is not found!");
             }
@@ -65,7 +62,7 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
         }
         if(count == listImportBillDetail.size()){
             Warehouse warehouse = warehouseRepository.findById(importBill.getWarehouses().getId()).orElse(null);
-            for(ImportBillDetailRequest item : listImportBillDetail){
+            for(ItemImportBillDetailRequest item : listImportBillDetail){
                 commodity = commodityRepository.findByCode(item.getCommodityCode()).get(0);
                 ImportBillDetail importBillDetail = new ImportBillDetail();
                 importBillDetail.setImportBill(importBill);
@@ -83,8 +80,6 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
                     commodityWarehouseRepository.save(commodityWarehouse);
                 }else{
                     CommodityWarehouse oldCommodityWarehouses = commodityWarehouseRepository.findCommodityWarehouseByCommodityAndWarehouse(commodity, warehouse).get(0);
-                    oldCommodityWarehouses.setCommodity(commodity);
-                    oldCommodityWarehouses.setWarehouse(warehouse);
                     oldCommodityWarehouses.setQuantity(oldCommodityWarehouses.getQuantity() + item.getQuantity());
                     commodityWarehouseRepository.save(oldCommodityWarehouses);
                 }

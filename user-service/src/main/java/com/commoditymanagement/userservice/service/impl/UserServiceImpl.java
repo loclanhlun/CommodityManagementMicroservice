@@ -3,6 +3,7 @@ package com.commoditymanagement.userservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.commoditymanagement.userservice.request.edit.EditUserRequest;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -32,32 +33,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> findAll() {
         List<UserResponse> listUser = new ArrayList<>();
-        List<User> userEntity = userRepository.findAll();
+        List<User> userEntity = userRepository.findAllByStatus(0);
         for(User item : userEntity){
             UserResponse dto = new UserResponse();
             dto.setId(item.getId());
             dto.setEmail(item.getEmail());
             dto.setAddress(item.getAddress());
             dto.setGender(item.getGender());
-            dto.setRoleCode(item.getRole().getCode());
+            dto.setRole(item.getRole().getName());
             dto.setFullName(item.getFullName());
             dto.setPhoneNumber(item.getPhoneNumber());
             dto.setStatus(item.getStatus());
             listUser.add(dto);
         }
-
         return listUser;
     }
 
 	@Override
-	public UserResponse findById(Long id) {
+	public UserResponse findById(Long id) throws Exception {
     	User user = userRepository.findById(id).orElse(null);
+    	if(user == null){
+    		throw new Exception("User does not exist");
+		}
 		UserResponse dto = new UserResponse();
 		dto.setId(user.getId());
 		dto.setEmail(user.getEmail());
 		dto.setAddress(user.getAddress());
 		dto.setGender(user.getGender());
-		dto.setRoleCode(user.getRole().getCode());
+		dto.setRole(user.getRole().getName());
 		dto.setFullName(user.getFullName());
 		dto.setPhoneNumber(user.getPhoneNumber());
 		dto.setStatus(user.getStatus());
@@ -90,14 +93,48 @@ public class UserServiceImpl implements UserService {
 		user.setAddress(userRequest.getAddress());
 		userRepository.save(user);
 	}
-	
+
+	@Override
+	public void updateUser(EditUserRequest request) throws Exception {
+    	Role role = getRoleCode(request.getRoleCode());
+    	User oldUser = userRepository.findById(request.getId()).orElse(null);
+    	if(oldUser == null){
+    		throw new Exception("User does not exist!");
+		}
+    	userRepository.save(setUser(request,oldUser,role));
+	}
+
+	@Override
+	public void removeUser(Long id, String email) throws Exception {
+		User oldUser = userRepository.findById(id).orElse(null);
+		if(oldUser.getEmail().equals(email)){
+			throw new Exception("Cannot remove yourself!");
+		}
+		if(oldUser == null){
+			throw new Exception("User does not exist!");
+		}
+		oldUser.setStatus(1);
+		userRepository.save(oldUser);
+	}
+
+	public User setUser(EditUserRequest request, User oldUser, Role role){
+		oldUser.setFullName(request.getFullName());
+		oldUser.setAddress(request.getAddress());
+		oldUser.setPassword(passwordEncoder.encode(request.getPassword()));
+		oldUser.setPhoneNumber(request.getPhoneNumber());
+		oldUser.setGender(request.getGender());
+		oldUser.setRole(role);
+		oldUser.setStatus(request.getStatus());
+		return oldUser;
+	}
+
 	private Role getRoleCode(String code)throws Exception {
 		if(StringUtils.isEmpty(code)) {
 			throw new Exception("Role cannot null");
 		}
 		List<Role> role = roleRepository.findByCode(code);
 		if(role.size() < 1) {
-			throw new Exception("Role is not exist");
+			throw new Exception("Role does not exist");
 		}
 		
 		return role.get(0);

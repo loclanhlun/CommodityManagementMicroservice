@@ -1,10 +1,11 @@
-package com.commoditymanagement.restapiservice.request.add;
+package com.commoditymanagement.userservice.request.add;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
-public class ImportBillDetailRequest {
+public class ItemImportBillDetailRequest {
 
     @JsonProperty
     private String commodityCode;

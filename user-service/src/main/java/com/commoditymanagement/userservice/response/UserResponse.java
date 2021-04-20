@@ -8,22 +8,22 @@ public class UserResponse {
     private Long id;
 
     @JsonProperty
+    private String fullName;
+
+    @JsonProperty
     private String email;
 
     @JsonProperty
     private String address;
 
     @JsonProperty
-    private int gender;
-
-    @JsonProperty
     private String phoneNumber;
 
     @JsonProperty
-    private String roleCode;
+    private int gender;
 
     @JsonProperty
-    private String fullName;
+    private String role;
 
     @JsonProperty
     private int status;
@@ -69,12 +69,12 @@ public class UserResponse {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRoleCode() {
-        return roleCode;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getFullName() {

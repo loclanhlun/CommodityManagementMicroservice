@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/import-bill")
-public class ImportController {
+public class ImportBillController {
 
     private static final String URL = "http://user-service/rest/v1/authenticate/import-bill";
 

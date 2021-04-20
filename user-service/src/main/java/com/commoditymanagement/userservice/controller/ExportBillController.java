@@ -4,27 +4,22 @@ import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.data.User;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
-import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
-import com.commoditymanagement.userservice.response.ImportBillResponse;
-import com.commoditymanagement.userservice.service.ImportBillService;
+import com.commoditymanagement.userservice.request.add.AddExportBillRequest;
+import com.commoditymanagement.userservice.service.ExportBillService;
 import com.commoditymanagement.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/import-bill")
-public class ImportController {
-
-    private static final String URL = "http://warehouse-service/rest/v1/import-bill";
+@RequestMapping(value = "/rest/v1/authenticate/export-bill")
+public class ExportBillController {
 
     @Autowired
-    private RestTemplate restTemplate;
+    private ExportBillService exportBillService;
 
     @Autowired
     private UserService userService;
@@ -32,33 +27,25 @@ public class ImportController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
-    private ImportBillService importBillService;
 
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getListImportBill(){
-        ResponseModel response;
-        List<ImportBillResponse> listImportBill = importBillService.findAllImportBill();
-        response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listImportBill);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getListExportBill(){
+        return ResponseEntity.ok("1");
     }
 
-    @PostMapping(value = "/add-import-bill")
-    public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,
-                                           @RequestBody AddImportBillRequest request) throws Exception {
-
-        ResponseModel responseModel ;
+    @PostMapping(value = "/add-export-bill")
+    public ResponseEntity<?> addExportBill(HttpServletRequest httpServletRequest,
+                                           @RequestBody AddExportBillRequest request){
+        ResponseModel responseModel;
         String jwt = parseJwt(httpServletRequest);
         String email = jwtUtils.getEmailFormJwtToken(jwt);
         User user = userService.findByEmail(email);
         try {
-            importBillService.save(request,user);
+            exportBillService.save(request, user);
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
         }catch (Exception e){
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR,e.getMessage(), null);
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
-
-
         return ResponseEntity.ok(responseModel);
     }
 
@@ -70,5 +57,4 @@ public class ImportController {
         }
         return null;
     }
-
 }

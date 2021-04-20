@@ -3,6 +3,8 @@ package com.commoditymanagement.restapiservice.controller;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.commoditymanagement.restapiservice.request.edit.EditUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,21 +31,30 @@ public class UserController {
     private RestTemplate restTemplate;
 
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getListUser(HttpServletRequest httpServletRequest,
-                                         @RequestParam("page") int page,
-                                         @RequestParam("limit") int limit) throws URISyntaxException {
-        String url = USER_SERVICE_URL+"list?page={page}&limit={limit}";
+    public ResponseEntity<?> getListUser(HttpServletRequest httpServletRequest) {
+        String url = USER_SERVICE_URL+"list";
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
-        Map<String, Integer> params = new HashMap<>();
-        params.put("page", page);
-        params.put("limit", limit);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
         return response;
+    }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getUserById(HttpServletRequest httpServletRequest,
+                                         @PathVariable("id") Long userId ) {
+        String url = USER_SERVICE_URL+"{id}";
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        Map<String, Long> params = new HashMap<>();
+        params.put("id", userId);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class,params);
+        return response;
     }
     
     @PostMapping(value = "/login")
@@ -55,7 +66,8 @@ public class UserController {
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
-    
+
+
     @PostMapping(value = "/add-user")
     public ResponseEntity<?> addUser(HttpServletRequest httpServletRequest,@RequestBody AddUserRequest request){
     	String url = USER_SERVICE_URL+"add-user";
@@ -66,6 +78,16 @@ public class UserController {
         HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
     	return response;
+    }
+
+    @PutMapping(value = "/edit-user")
+    public ResponseEntity<?> editUser(@RequestBody EditUserRequest request){
+        String url = USER_SERVICE_URL+"edit-user";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
+        return response;
     }
     
  

@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CommodityWarehouseRepository extends JpaRepository<CommodityWarehouse, Long> {
+    List<CommodityWarehouse> findCommodityWarehouseByCommodityAndWarehouse(String commodityCode, Warehouse warehouse);
     List<CommodityWarehouse> findCommodityWarehouseByCommodityAndWarehouse(Commodity commodity, Warehouse warehouse);
 }
