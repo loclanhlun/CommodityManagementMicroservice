@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/commodity")
+
 public class CommodityController {
 
     @Autowired
@@ -52,9 +53,8 @@ public class CommodityController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(value = "/edit-commodity/{id}")
-    public ResponseEntity<?> editCommodity(@PathVariable("id") Long commodityId,
-                                           @RequestBody EditCommodityRequest request){
+    @PutMapping(value = "/edit-commodity")
+    public ResponseEntity<?> editCommodity( @RequestBody EditCommodityRequest request){
         ResponseModel response;
         try {
             commodityService.update(request);

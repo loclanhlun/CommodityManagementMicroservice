@@ -17,6 +17,9 @@ public class CommodityResponse {
 	private String categoryName;
 
 	@JsonProperty
+	private Long categoryId;
+
+	@JsonProperty
 	private int status;
 
 	public Long getId() {
@@ -57,5 +60,13 @@ public class CommodityResponse {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 }

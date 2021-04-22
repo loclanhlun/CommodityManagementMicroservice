@@ -17,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/category")
+@CrossOrigin("http://localhost:8080")
 public class CategoryController {
     private static final String URL = "http://user-service/rest/v1/authenticate/category";
 
@@ -34,6 +35,8 @@ public class CategoryController {
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
         return response;
     }
+
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getCategoryById(HttpServletRequest httpServletRequest,
                                              @PathVariable("id") Long categoryId){
@@ -64,19 +67,16 @@ public class CategoryController {
         return response;
     }
 
-    @PutMapping(value = "/edit-category/{id}")
+    @PutMapping(value = "/edit-category")
     public ResponseEntity<?> editCategory(HttpServletRequest httpServletRequest,
-                                         @PathVariable("id") Long categoryId,
                                          @Valid @RequestBody EditCategoryRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-category/{id}";
+        String url = URL + "/edit-category";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", categoryId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class);
         return response;
     }
 

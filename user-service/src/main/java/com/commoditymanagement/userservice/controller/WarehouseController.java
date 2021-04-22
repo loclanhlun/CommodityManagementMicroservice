@@ -51,9 +51,8 @@ public class WarehouseController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(value = "/edit-warehouse/{id}")
-    public ResponseEntity<?> editWarehouse(@PathVariable("id") Long warehouseId,
-                                           @RequestBody EditWarehouseRequest request){
+    @PutMapping(value = "/edit-warehouse")
+    public ResponseEntity<?> editWarehouse(@RequestBody EditWarehouseRequest request){
         ResponseModel response;
         try {
             warehouseService.update(request);

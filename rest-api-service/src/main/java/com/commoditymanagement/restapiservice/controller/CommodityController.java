@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/commodity")
+@CrossOrigin("http://localhost:8080")
 public class CommodityController {
     private static final String URL = "http://user-service/rest/v1/authenticate/commodity";
 
@@ -63,19 +64,16 @@ public class CommodityController {
         return response;
     }
 
-    @PutMapping(value = "/edit-commodity/{id}")
+    @PutMapping(value = "/edit-commodity")
     public ResponseEntity<?> editCategory(HttpServletRequest httpServletRequest,
-                                          @PathVariable("id") Long commodityId,
                                           @Valid @RequestBody EditCommodityRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-commodity/{id}";
+        String url = URL + "/edit-commodity";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", commodityId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class);
         return response;
     }
 

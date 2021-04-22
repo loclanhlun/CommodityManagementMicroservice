@@ -52,8 +52,8 @@ public class AgencyController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(value = "/edit-agency/{id}")
-    public ResponseEntity<?> editAgency(@PathVariable("id") Long agencyId,@RequestBody EditAgencyRequest request){
+    @PutMapping(value = "/edit-agency")
+    public ResponseEntity<?> editAgency(@RequestBody EditAgencyRequest request){
         ResponseModel response;
         try {
             agencyService.update(request);

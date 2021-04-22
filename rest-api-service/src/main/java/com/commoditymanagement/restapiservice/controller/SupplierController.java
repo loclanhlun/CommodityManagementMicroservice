@@ -18,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/supplier")
+@CrossOrigin("http://localhost:8080")
 public class SupplierController {
     private static final String URL = "http://user-service/rest/v1/authenticate/supplier";
 
@@ -64,19 +65,16 @@ public class SupplierController {
         return response;
     }
 
-    @PutMapping(value = "/edit-supplier/{id}")
+    @PutMapping(value = "/edit-supplier")
     public ResponseEntity<?> editSupplier(HttpServletRequest httpServletRequest,
-                                        @PathVariable("id") Long supplierId,
                                         @Valid @RequestBody EditSupplierRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-supplier/{id}";
+        String url = URL + "/edit-supplier";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", supplierId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
         return response;
     }
 

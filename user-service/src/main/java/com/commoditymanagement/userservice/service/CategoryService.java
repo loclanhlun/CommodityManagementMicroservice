@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
 	
-	List<CategoryResponse> findAllCategory();
+	List<CategoryResponse> findAllCategoryByStatus();
 
 	CategoryResponse findById(Long id) throws Exception;
 	

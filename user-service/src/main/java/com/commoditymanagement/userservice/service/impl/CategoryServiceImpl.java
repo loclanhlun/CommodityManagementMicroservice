@@ -19,8 +19,9 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+
 	@Override
-	public List<CategoryResponse> findAllCategory() {
+	public List<CategoryResponse> findAllCategoryByStatus() {
 		List<CategoryResponse> categoriesDTO = new ArrayList<>();
 		List<Category> categoriesEntity = categoryRepository.findCategoriesByStatus(0);
 		for(Category item : categoriesEntity) {

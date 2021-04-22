@@ -54,6 +54,7 @@ public class CommodityServiceImpl implements CommodityService {
         response.setCode(commodity.getCode());
         response.setName(commodity.getName());
         response.setCategoryName(commodity.getCategory().getName());
+        response.setCategoryId(commodity.getCategory().getId());
         response.setStatus(commodity.getStatus());
         return response;
     }

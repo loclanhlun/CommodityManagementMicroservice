@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/authenticate/category")
+@CrossOrigin("http://localhost:8080")
 public class CategoryController {
 	
 	@Autowired
@@ -22,10 +23,14 @@ public class CategoryController {
 	
 	@GetMapping(value = "/list")
 	public ResponseEntity<?> getListCategory(){
-		List<CategoryResponse> lists = categoryService.findAllCategory();
+		List<CategoryResponse> lists = categoryService.findAllCategoryByStatus();
 		ResponseModel response = buildResponse(lists);
 		return ResponseEntity.ok(response);
 	}
+
+
+
+
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getCategoryById(@PathVariable("id") Long categoryId) throws Exception {
@@ -59,8 +64,8 @@ public class CategoryController {
 		return ResponseEntity.ok(response);
 	}
 
-	@PutMapping(value = "/edit-category/{id}")
-	public ResponseEntity<?> editCategory(@PathVariable("id") Long categoryId,@RequestBody EditCategoryRequest request){
+	@PutMapping(value = "/edit-category")
+	public ResponseEntity<?> editCategory(@RequestBody EditCategoryRequest request){
 		ResponseModel response = new ResponseModel();
 		try {
 			categoryService.update(request);

@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/agency")
+@CrossOrigin("http://localhost:8080")
 public class AgencyController {
     private static final String URL = "http://user-service/rest/v1/authenticate/agency";
 
@@ -62,19 +63,16 @@ public class AgencyController {
         return response;
     }
 
-    @PutMapping(value = "/edit-agency/{id}")
+    @PutMapping(value = "/edit-agency")
     public ResponseEntity<?> editAgency(HttpServletRequest httpServletRequest,
-                                        @PathVariable("id") Long agencyId,
                                         @Valid @RequestBody EditAgencyRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-agency/{id}";
+        String url = URL + "/edit-agency";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", agencyId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
         return response;
     }
 

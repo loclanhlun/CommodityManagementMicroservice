@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/warehouse")
+@CrossOrigin("http://localhost:8080")
 public class WarehouseController {
 
     private static final String URL = "http://user-service/rest/v1/authenticate/warehouse";
@@ -62,19 +63,16 @@ public class WarehouseController {
         return response;
     }
 
-    @PutMapping(value = "/edit-warehouse/{id}")
+    @PutMapping(value = "/edit-warehouse")
     public ResponseEntity<?> editWarehouse(HttpServletRequest httpServletRequest,
-                                        @PathVariable("id") Long warehouseId,
                                         @Valid @RequestBody EditWarehouseRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-warehouse/{id}";
+        String url = URL + "/edit-warehouse";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", warehouseId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
         return response;
     }
 
