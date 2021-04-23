@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             dto.setEmail(item.getEmail());
             dto.setAddress(item.getAddress());
             dto.setGender(item.getGender());
-            dto.setRole(item.getRole().getName());
+            dto.setRoleName(item.getRole().getName());
             dto.setFullName(item.getFullName());
             dto.setPhoneNumber(item.getPhoneNumber());
             dto.setStatus(item.getStatus());
@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserService {
 		dto.setEmail(user.getEmail());
 		dto.setAddress(user.getAddress());
 		dto.setGender(user.getGender());
-		dto.setRole(user.getRole().getName());
+		dto.setRoleCode(user.getRole().getCode());
+		dto.setRoleName(user.getRole().getName());
 		dto.setFullName(user.getFullName());
 		dto.setPhoneNumber(user.getPhoneNumber());
 		dto.setStatus(user.getStatus());
@@ -120,7 +121,6 @@ public class UserServiceImpl implements UserService {
 	public User setUser(EditUserRequest request, User oldUser, Role role){
 		oldUser.setFullName(request.getFullName());
 		oldUser.setAddress(request.getAddress());
-		oldUser.setPassword(passwordEncoder.encode(request.getPassword()));
 		oldUser.setPhoneNumber(request.getPhoneNumber());
 		oldUser.setGender(request.getGender());
 		oldUser.setRole(role);

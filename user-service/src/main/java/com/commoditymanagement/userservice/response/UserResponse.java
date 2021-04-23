@@ -23,7 +23,10 @@ public class UserResponse {
     private int gender;
 
     @JsonProperty
-    private String role;
+    private String roleCode;
+
+    @JsonProperty
+    private String roleName;
 
     @JsonProperty
     private int status;
@@ -69,12 +72,20 @@ public class UserResponse {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleCode() {
+        return roleCode;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public String getFullName() {

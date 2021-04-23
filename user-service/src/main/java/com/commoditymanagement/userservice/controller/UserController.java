@@ -1,7 +1,9 @@
 package com.commoditymanagement.userservice.controller;
 
 import com.commoditymanagement.userservice.request.edit.EditUserRequest;
+import com.commoditymanagement.userservice.response.RoleResponse;
 import com.commoditymanagement.userservice.response.UserResponse;
+import com.commoditymanagement.userservice.service.impl.RoleServiceImpl;
 import com.commoditymanagement.userservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,9 @@ public class UserController {
 	
     @Autowired
     private UserService userService;
+
+    @Autowired
+	private RoleServiceImpl roleService;
     
     @Autowired
     private PasswordEncoder encoder;
@@ -58,6 +63,14 @@ public class UserController {
         ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
         return ResponseEntity.ok(response);
     }
+
+	@GetMapping(value = "/list-role")
+	public ResponseEntity<?> getListRole(){
+		List<RoleResponse> listRole = roleService.getAllRole();
+		ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listRole);
+		return ResponseEntity.ok(response);
+	}
+    
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") long userId){

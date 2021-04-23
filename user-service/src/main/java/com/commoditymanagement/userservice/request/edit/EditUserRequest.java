@@ -10,9 +10,6 @@ public class EditUserRequest {
     private Long id;
 
     @JsonProperty
-    private String password;
-
-    @JsonProperty
     private String fullName;
 
     @JsonProperty
@@ -36,15 +33,6 @@ public class EditUserRequest {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFullName() {

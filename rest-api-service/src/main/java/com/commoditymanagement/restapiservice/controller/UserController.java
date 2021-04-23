@@ -42,6 +42,18 @@ public class UserController {
         return response;
     }
 
+    @GetMapping(value = "/list-role")
+    public ResponseEntity<?> getListRole(HttpServletRequest httpServletRequest){
+        String url = USER_SERVICE_URL+"list-role";
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getUserById(HttpServletRequest httpServletRequest,
                                          @PathVariable("id") Long userId ) {
@@ -81,12 +93,30 @@ public class UserController {
     }
 
     @PutMapping(value = "/edit-user")
-    public ResponseEntity<?> editUser(@RequestBody EditUserRequest request){
+    public ResponseEntity<?> editUser(HttpServletRequest httpServletRequest,
+                                      @RequestBody EditUserRequest request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         String url = USER_SERVICE_URL+"edit-user";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @PutMapping(value = "/remove-user/{id}")
+    public ResponseEntity<?> removeUser(HttpServletRequest httpServletRequest,
+                                      @PathVariable("id") Long userId){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        String url = USER_SERVICE_URL+"remove-user/{id}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        Map<String, Long> params = new HashMap<>();
+        params.put("id", userId);
+        HttpEntity<?> httpEntity  = new HttpEntity<>( headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
         return response;
     }
     
