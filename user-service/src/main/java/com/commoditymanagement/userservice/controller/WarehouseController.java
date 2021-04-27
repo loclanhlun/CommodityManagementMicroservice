@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/warehouse")
+@RequestMapping(value = "/rest/v1/admin/warehouse")
 public class WarehouseController {
 
     @Autowired

@@ -1,12 +1,17 @@
 package com.commoditymanagement.userservice.config;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.text.DateFormat;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.commoditymanagement.core.response.ResponseModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.commoditymanagement.userservice.jwt.JwtUtils;
@@ -33,20 +39,34 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+
 		try {
-			String jwt = parseJwt(request);
-			if(jwt != null && jwtUtils.validateJwtToken(jwt)) {
-				String email = jwtUtils.getEmailFormJwtToken(jwt);
-				
-				UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-						userDetails,null, userDetails.getAuthorities());
-				auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				
-				SecurityContextHolder.getContext().setAuthentication(auth);
+			String requestURI = request.getRequestURI();
+			if (!requestURI.equals("/rest/v1/login")) {
+				String jwt = parseJwt(request);
+				if (org.apache.commons.lang.StringUtils.isEmpty(jwt)) {
+					throw new AccessDeniedException("Thiếu token!");
+				}
+				if(jwt != null && jwtUtils.validateJwtToken(jwt)) {
+					String email = jwtUtils.getEmailFormJwtToken(jwt);
+
+					UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+							userDetails, null, userDetails.getAuthorities());
+					auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+					SecurityContextHolder.getContext().setAuthentication(auth);
+				}
 			}
+
 		} catch (Exception e) {
 			logger.error("Cannot set email authentication: {}", e.getMessage());
+			SecurityContextHolder.getContext().setAuthentication(null);
+			ResponseModel responseModel = new ResponseModel();
+			responseModel.setResultCode("401");
+			responseModel.setMessage(e.getMessage());
+			responseModel.setObject(null);
+			response.getWriter().write(convertObjectToJson(responseModel));
 		}
 		
 		filterChain.doFilter(request, response);
@@ -60,6 +80,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			return headerAuth.substring(7, headerAuth.length());
 		}
 		return null;
+	}
+
+	private String convertObjectToJson(Object object)throws JsonProcessingException {
+		if(object == null){
+			return null;
+		}
+		ObjectMapper  mapper = new ObjectMapper();
+		return mapper.writer(DateFormat.getDateInstance()).writeValueAsString(object);
 	}
 
 }

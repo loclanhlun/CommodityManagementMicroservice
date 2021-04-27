@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/category")
+@RequestMapping(value = "/rest/v1/admin/category")
 @CrossOrigin("http://localhost:8080")
 public class CategoryController {
 	

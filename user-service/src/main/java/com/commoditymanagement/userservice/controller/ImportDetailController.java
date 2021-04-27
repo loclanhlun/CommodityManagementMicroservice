@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/import-bill-detail")
+@RequestMapping(value = "/rest/v1/import-bill-detail")
 public class ImportDetailController {
 
     @Autowired

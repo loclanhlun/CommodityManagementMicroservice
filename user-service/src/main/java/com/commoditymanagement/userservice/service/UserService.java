@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserResponse> findAll();
+    List<UserResponse> findAll(String name, String status);
 
     UserResponse findById(Long id) throws Exception;
 

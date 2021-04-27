@@ -24,21 +24,27 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin("http://localhost:8080")
 public class UserController {
 	
-	private static final String USER_SERVICE_URL = "http://user-service/rest/v1/authenticate/user/";
+	private static final String USER_SERVICE_URL = "http://user-service/rest/v1/admin/user/";
+    private static final String LOGIN_URL = "http://user-service/rest/v1/";
 	
 
     @Autowired
     private RestTemplate restTemplate;
 
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getListUser(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> getListUser(HttpServletRequest httpServletRequest,
+                                         @RequestParam(value = "fullName", required = false) String fullName,
+                                         @RequestParam(value = "status", required = false) String status) {
         String url = USER_SERVICE_URL+"list";
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        Map<String, String> params = new HashMap<>();
+        params.put("fullName", fullName);
+        params.put("status", status);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
@@ -76,7 +82,8 @@ public class UserController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
-        return response;
+//       ResponseModel response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);/
+        return ResponseEntity.ok(response.getBody());
     }
 
 
@@ -119,9 +126,8 @@ public class UserController {
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
         return response;
     }
-    
- 
-  
+
+
 
 
 }

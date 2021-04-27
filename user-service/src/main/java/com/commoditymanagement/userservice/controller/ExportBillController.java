@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/export-bill")
+@RequestMapping(value = "/rest/v1/export-bill")
 public class ExportBillController {
 
     @Autowired

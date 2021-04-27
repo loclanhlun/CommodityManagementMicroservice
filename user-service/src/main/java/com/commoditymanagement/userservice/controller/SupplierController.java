@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/supplier")
+@RequestMapping(value = "/rest/v1/admin/supplier")
 public class SupplierController {
 
     @Autowired

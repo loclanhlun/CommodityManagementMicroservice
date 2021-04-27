@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/export-bill-detail")
+@RequestMapping(value = "/rest/v1/export-bill-detail")
 public class ExportBillDetailController {
     
     @Autowired

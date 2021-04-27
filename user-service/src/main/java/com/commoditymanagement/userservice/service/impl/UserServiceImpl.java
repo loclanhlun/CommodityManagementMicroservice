@@ -31,21 +31,27 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     
     @Override
-    public List<UserResponse> findAll() {
-        List<UserResponse> listUser = new ArrayList<>();
-        List<User> userEntity = userRepository.findAllByStatus(0);
-        for(User item : userEntity){
-            UserResponse dto = new UserResponse();
-            dto.setId(item.getId());
-            dto.setEmail(item.getEmail());
-            dto.setAddress(item.getAddress());
-            dto.setGender(item.getGender());
-            dto.setRoleName(item.getRole().getName());
-            dto.setFullName(item.getFullName());
-            dto.setPhoneNumber(item.getPhoneNumber());
-            dto.setStatus(item.getStatus());
-            listUser.add(dto);
-        }
+    public List<UserResponse> findAll(String name, String status) {
+		List<UserResponse> listUser = new ArrayList<>();
+		List<User> userEntity = new ArrayList<>();
+    	if(StringUtils.isEmpty(name) && StringUtils.isEmpty(status)){
+			userEntity = userRepository.findAllByStatus(0);
+			for(User item : userEntity){
+				listUser.add(getUser(item));
+			}
+		}else if(!StringUtils.isEmpty(name)){
+			userEntity = userRepository.findByFullNameLike(name);
+			for(User item : userEntity){
+				listUser.add(getUser(item));
+			}
+		}else if(!StringUtils.isEmpty(status)){
+			userEntity = userRepository.findAllByStatus(Integer.parseInt(status));
+			for(User item : userEntity){
+				listUser.add(getUser(item));
+			}
+		}
+
+
         return listUser;
     }
 
@@ -116,6 +122,19 @@ public class UserServiceImpl implements UserService {
 		}
 		oldUser.setStatus(1);
 		userRepository.save(oldUser);
+	}
+
+	private UserResponse getUser(User userEntity){
+		UserResponse dto = new UserResponse();
+		dto.setId(userEntity.getId());
+		dto.setEmail(userEntity.getEmail());
+		dto.setAddress(userEntity.getAddress());
+		dto.setGender(userEntity.getGender());
+		dto.setRoleName(userEntity.getRole().getName());
+		dto.setFullName(userEntity.getFullName());
+		dto.setPhoneNumber(userEntity.getPhoneNumber());
+		dto.setStatus(userEntity.getStatus());
+		return  dto;
 	}
 
 	public User setUser(EditUserRequest request, User oldUser, Role role){

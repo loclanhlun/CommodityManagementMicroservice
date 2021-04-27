@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/import-bill")
+@RequestMapping(value = "/rest/v1/import-bill")
 public class ImportBillController {
 
     private static final String URL = "http://warehouse-service/rest/v1/import-bill";

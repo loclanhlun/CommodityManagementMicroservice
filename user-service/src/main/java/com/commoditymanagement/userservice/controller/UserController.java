@@ -7,6 +7,7 @@ import com.commoditymanagement.userservice.service.impl.RoleServiceImpl;
 import com.commoditymanagement.userservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest/v1/authenticate/user")
+@RequestMapping(value = "/rest/v1/admin/user")
+
 @CrossOrigin("http://localhost:8080")
 public class UserController {
 
@@ -58,9 +60,17 @@ public class UserController {
     
 
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getListUser(){
-		List<UserResponse> listUser = userService.findAll();
-        ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
+    public ResponseEntity<?> getListUser(@RequestParam(name = "fullName", required = false) String fullName,
+										 @RequestParam(name = "status", required = false) String status){
+		ResponseModel response;
+    	List<UserResponse> listUser = null;
+    	try {
+    		listUser = userService.findAll(fullName, status);
+    		response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
+		}catch (Exception e){
+    		response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), listUser);
+		}
+
         return ResponseEntity.ok(response);
     }
 
@@ -84,23 +94,7 @@ public class UserController {
 		return ResponseEntity.ok(responseModel);
 	}
 
-
-    @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@Validated @RequestBody SignInRequest request){
-    	Authentication authentication = 
-    			authenticationManager.authenticate(
-    			new UsernamePasswordAuthenticationToken(
-    					request.getEmail(), 
-    					request.getPassword()));
-  
-    	SecurityContextHolder.getContext().setAuthentication(authentication);
-    	String jwt = jwtUtils.generateJwtToken(authentication);
-    	UserDetailImpl userDetailImpl = (UserDetailImpl) authentication.getPrincipal();
-    	JwtResponse jwtResponse = addResponse(userDetailImpl,jwt);
-    	ResponseModel responseModel = buildResponse(jwtResponse);
-    	return ResponseEntity.ok(responseModel);
-    }
-    
+	@PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/add-user")
     public ResponseEntity<?> addUser(@RequestBody UserRequest request){
     	ResponseModel response = new ResponseModel();
