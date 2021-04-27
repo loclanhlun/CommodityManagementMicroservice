@@ -7,6 +7,7 @@ import com.commoditymanagement.userservice.service.impl.RoleServiceImpl;
 import com.commoditymanagement.userservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,17 +62,19 @@ public class UserController {
 
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListUser(@RequestParam(name = "fullName", required = false) String fullName,
-										 @RequestParam(name = "status", required = false) String status){
+										 @RequestParam(name = "status", required = false) String status)throws AccessDeniedException{
 		ResponseModel response;
     	List<UserResponse> listUser = null;
     	try {
     		listUser = userService.findAll(fullName, status);
     		response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
-		}catch (Exception e){
+		} catch (AccessDeniedException e){
+			response = new ResponseModel("401", e.getMessage(), null);
+		} catch (Exception e){
     		response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), listUser);
 		}
 
-        return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response);
     }
 
 	@GetMapping(value = "/list-role")

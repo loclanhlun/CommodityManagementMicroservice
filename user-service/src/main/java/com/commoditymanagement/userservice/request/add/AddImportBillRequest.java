@@ -2,6 +2,8 @@ package com.commoditymanagement.userservice.request.add;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class AddImportBillRequest {
 
     @JsonProperty
@@ -9,6 +11,9 @@ public class AddImportBillRequest {
 
     @JsonProperty
     private String supplierCode;
+
+    @JsonProperty
+    private List<ItemImportBillDetailRequest> data;
 
     public String getWarehouseCode() {
         return warehouseCode;
@@ -26,4 +31,11 @@ public class AddImportBillRequest {
         this.supplierCode = supplierCode;
     }
 
+    public List<ItemImportBillDetailRequest> getData() {
+        return data;
+    }
+
+    public void setData(List<ItemImportBillDetailRequest> data) {
+        this.data = data;
+    }
 }

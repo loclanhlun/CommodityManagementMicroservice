@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/agency")
 @CrossOrigin("http://localhost:8080")
 public class AgencyController {
-    private static final String URL = "http://user-service/rest/v1/authenticate/agency";
+    private static final String URL = "http://user-service/rest/v1/admin/agency";
 
     @Autowired
     private RestTemplate restTemplate;

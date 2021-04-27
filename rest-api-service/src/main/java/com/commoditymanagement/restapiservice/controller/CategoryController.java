@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/category")
 @CrossOrigin("http://localhost:8080")
 public class CategoryController {
-    private static final String URL = "http://user-service/rest/v1/authenticate/category";
+    private static final String URL = "http://user-service/rest/v1/admin/category";
 
     @Autowired
     private RestTemplate restTemplate;

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/rest/v1/")
+@RequestMapping(value = "/rest/v1")
 public class loginController {
 
     @Autowired
@@ -63,15 +63,9 @@ public class loginController {
             UserDetailImpl userDetailImpl = (UserDetailImpl) authentication.getPrincipal();
             JwtResponse jwtResponse = addResponse(userDetailImpl,jwt);
             responseModel.setObject(jwtResponse);
-
-        } catch (AccessDeniedException e) {
-            responseModel.setResultCode("401");
-
-        } catch (UsernameNotFoundException e) {
-            responseModel.setResultCode("404");
         } catch (Exception e) {
-            responseModel.setResultCode("999");
-            responseModel.setMessage(e.getMessage());
+            responseModel.setResultCode("202");
+            responseModel.setMessage("Invalid email or password");
         }
 
 

@@ -26,12 +26,13 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint{
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 //		logger.error("Unauthorized error: {}", authException.getMessage());
-//		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");\
+//		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
 		response.setContentType("application/json;charset=UTF-8");
-		response.getWriter().flush();
-
-
-
+		ResponseModel responseModel = new ResponseModel();
+		responseModel.setResultCode("401");
+		responseModel.setMessage(authException.getMessage());
+		responseModel.setObject(null);
+		response.getWriter().write(convertObjectToJson(responseModel));
 	}
 
 	private String convertObjectToJson(Object object)throws JsonProcessingException {

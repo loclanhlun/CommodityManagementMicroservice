@@ -15,6 +15,17 @@ public class AddImportBillRequest {
     @JsonProperty
     private String supplierCode;
 
+    @JsonProperty
+    private List<ItemImportBillDetailRequest> data;
+
+    public List<ItemImportBillDetailRequest> getData() {
+        return data;
+    }
+
+    public void setData(List<ItemImportBillDetailRequest> data) {
+        this.data = data;
+    }
+
     public String getWarehouseCode() {
         return warehouseCode;
     }

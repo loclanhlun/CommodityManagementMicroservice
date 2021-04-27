@@ -41,12 +41,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		try {
-			String requestURI = request.getRequestURI();
-			if (!requestURI.equals("/rest/v1/login")) {
 				String jwt = parseJwt(request);
-				if (org.apache.commons.lang.StringUtils.isEmpty(jwt)) {
-					throw new AccessDeniedException("Thiếu token!");
-				}
 				if(jwt != null && jwtUtils.validateJwtToken(jwt)) {
 					String email = jwtUtils.getEmailFormJwtToken(jwt);
 
@@ -57,16 +52,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 					SecurityContextHolder.getContext().setAuthentication(auth);
 				}
-			}
 
 		} catch (Exception e) {
 			logger.error("Cannot set email authentication: {}", e.getMessage());
-			SecurityContextHolder.getContext().setAuthentication(null);
-			ResponseModel responseModel = new ResponseModel();
-			responseModel.setResultCode("401");
-			responseModel.setMessage(e.getMessage());
-			responseModel.setObject(null);
-			response.getWriter().write(convertObjectToJson(responseModel));
 		}
 		
 		filterChain.doFilter(request, response);

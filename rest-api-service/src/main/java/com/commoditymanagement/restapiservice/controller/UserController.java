@@ -77,7 +77,7 @@ public class UserController {
     
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@Validated @RequestBody SignInRequest request ){
-    	String url = USER_SERVICE_URL+"login";
+    	String url = LOGIN_URL+"login";
     	HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);

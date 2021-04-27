@@ -15,9 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/import-bill")
+@CrossOrigin("http://localhost:8080")
 public class ImportBillController {
 
-    private static final String URL = "http://user-service/rest/v1/authenticate/import-bill";
+    private static final String URL = "http://user-service/rest/v1/import-bill";
 
     @Autowired
     private RestTemplate restTemplate;

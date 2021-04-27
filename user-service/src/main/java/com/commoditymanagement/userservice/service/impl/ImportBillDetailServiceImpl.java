@@ -3,6 +3,7 @@ package com.commoditymanagement.userservice.service.impl;
 import com.commoditymanagement.core.data.*;
 import com.commoditymanagement.userservice.repository.*;
 import com.commoditymanagement.userservice.request.add.AddImportBillDetailRequest;
+import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.request.add.ItemImportBillDetailRequest;
 import com.commoditymanagement.userservice.response.ImportBillDetailResponse;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;

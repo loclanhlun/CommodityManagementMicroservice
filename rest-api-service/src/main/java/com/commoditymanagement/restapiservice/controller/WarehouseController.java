@@ -18,7 +18,7 @@ import java.util.Map;
 @CrossOrigin("http://localhost:8080")
 public class WarehouseController {
 
-    private static final String URL = "http://user-service/rest/v1/authenticate/warehouse";
+    private static final String URL = "http://user-service/rest/v1/admin/warehouse";
 
     @Autowired
     private RestTemplate restTemplate;

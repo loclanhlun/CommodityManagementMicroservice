@@ -6,6 +6,7 @@ import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.response.ImportBillResponse;
+import com.commoditymanagement.userservice.service.ImportBillDetailService;
 import com.commoditymanagement.userservice.service.ImportBillService;
 import com.commoditymanagement.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ImportBillController {
 
     @Autowired
     private ImportBillService importBillService;
+
+    @Autowired
+    private ImportBillDetailService importBillDetailService;
 
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListImportBill(){

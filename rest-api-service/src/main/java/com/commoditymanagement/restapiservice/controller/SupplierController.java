@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/supplier")
 @CrossOrigin("http://localhost:8080")
 public class SupplierController {
-    private static final String URL = "http://user-service/rest/v1/authenticate/supplier";
+    private static final String URL = "http://user-service/rest/v1/admin/supplier";
 
     @Autowired
     private RestTemplate restTemplate;

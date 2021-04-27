@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/commodity")
 @CrossOrigin("http://localhost:8080")
 public class CommodityController {
-    private static final String URL = "http://user-service/rest/v1/authenticate/commodity";
+    private static final String URL = "http://user-service/rest/v1/admin/commodity";
 
     @Autowired
     private RestTemplate restTemplate;
