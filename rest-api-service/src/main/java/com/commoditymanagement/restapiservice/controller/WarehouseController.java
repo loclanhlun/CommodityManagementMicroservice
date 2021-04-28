@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/rest/v1/warehouse")
+@RequestMapping(value = "/rest/v1/admin/warehouse")
 @CrossOrigin("http://localhost:8080")
 public class WarehouseController {
 

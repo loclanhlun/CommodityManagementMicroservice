@@ -21,12 +21,9 @@ import org.springframework.stereotype.Component;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint{
 	private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
-	Gson gson = new Gson();
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-//		logger.error("Unauthorized error: {}", authException.getMessage());
-//		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
 		response.setContentType("application/json;charset=UTF-8");
 		ResponseModel responseModel = new ResponseModel();
 		responseModel.setResultCode("401");

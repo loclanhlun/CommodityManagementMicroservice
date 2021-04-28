@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rest/v1/import-bill-detail")
+@CrossOrigin("http://localhost:8080")
 public class ImportBillDetailController {
 
     private static final String URL = "http://user-service/rest/v1/import-bill-detail";

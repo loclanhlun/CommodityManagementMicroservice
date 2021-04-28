@@ -1,6 +1,6 @@
 package com.commoditymanagement.restapiservice.controller;
 
-import java.net.URISyntaxException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,16 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.restapiservice.request.add.AddUserRequest;
-import com.commoditymanagement.restapiservice.request.SignInRequest;
+
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/rest/v1/user")
+@RequestMapping(value = "/rest/v1/admin/user")
 @CrossOrigin("http://localhost:8080")
 public class UserController {
 	
 	private static final String USER_SERVICE_URL = "http://user-service/rest/v1/admin/user/";
-    private static final String LOGIN_URL = "http://user-service/rest/v1/";
 	
 
     @Autowired
@@ -73,17 +72,6 @@ public class UserController {
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
         ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class,params);
         return response;
-    }
-    
-    @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@Validated @RequestBody SignInRequest request ){
-    	String url = LOGIN_URL+"login";
-    	HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
-//       ResponseModel response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);/
-        return ResponseEntity.ok(response.getBody());
     }
 
 

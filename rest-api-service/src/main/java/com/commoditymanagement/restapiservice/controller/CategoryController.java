@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(value = "/rest/v1/category")
+@RequestMapping(value = "/rest/v1/admin/category")
 @CrossOrigin("http://localhost:8080")
 public class CategoryController {
     private static final String URL = "http://user-service/rest/v1/admin/category";

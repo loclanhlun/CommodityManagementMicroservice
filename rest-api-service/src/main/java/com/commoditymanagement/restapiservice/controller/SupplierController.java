@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/rest/v1/supplier")
+@RequestMapping(value = "/rest/v1/admin/supplier")
 @CrossOrigin("http://localhost:8080")
 public class SupplierController {
     private static final String URL = "http://user-service/rest/v1/admin/supplier";

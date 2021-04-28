@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/rest/v1/commodity")
+@RequestMapping(value = "/rest/v1/admin/commodity")
 @CrossOrigin("http://localhost:8080")
 public class CommodityController {
     private static final String URL = "http://user-service/rest/v1/admin/commodity";
