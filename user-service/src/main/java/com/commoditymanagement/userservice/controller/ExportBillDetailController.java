@@ -3,10 +3,13 @@ package com.commoditymanagement.userservice.controller;
 import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddExportDetailRequest;
+import com.commoditymanagement.userservice.response.ExportBillDetailResponse;
 import com.commoditymanagement.userservice.service.ExportBillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/export-bill-detail")
@@ -17,7 +20,9 @@ public class ExportBillDetailController {
 
     @GetMapping(value = "/list/{id}")
     public ResponseEntity<?> getListExportBillDetailByExportBillId(@PathVariable("id") Long exportBillId){
-        return ResponseEntity.ok("1");
+        List<ExportBillDetailResponse> list = exportBillDetailService.findAllByExportBillId(exportBillId);
+        ResponseModel responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,ResponseConstant.MESSAGE_SUCCESS, list);
+        return ResponseEntity.ok(responseModel);
     }
 
     @PostMapping(value = "/add-export-bill-detail")
@@ -25,7 +30,7 @@ public class ExportBillDetailController {
         ResponseModel responseModel;
         try {
             exportBillDetailService.save(request);
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }

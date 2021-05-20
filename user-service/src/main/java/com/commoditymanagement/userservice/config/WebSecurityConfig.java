@@ -54,6 +54,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests().antMatchers("/rest/v1/login").permitAll()
+				.antMatchers("/rest/v1/admin/commodity/list").hasAnyRole("ADMIN","USER")
+				.antMatchers("/rest/v1/admin/supplier/list").hasAnyRole("ADMIN","USER")
+				.antMatchers("/rest/v1/admin/warehouse/list").hasAnyRole("ADMIN","USER")
+				.antMatchers("/rest/v1/admin/agency/list").hasAnyRole("ADMIN","USER")
+				.antMatchers("/rest/v1/admin/category/list").hasAnyRole("ADMIN","USER")
+				.antMatchers("/rest/v1/admin/commodity/list-commodity").hasAnyRole("ADMIN","USER")
 				.antMatchers("/rest/v1/admin/**").hasRole("ADMIN")
 				.antMatchers("/rest/v1/**").hasAnyRole("ADMIN", "USER")
 			.anyRequest().authenticated();

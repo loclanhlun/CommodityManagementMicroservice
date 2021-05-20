@@ -2,6 +2,8 @@ package com.commoditymanagement.userservice.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public class ImportBillResponse {
 
     @JsonProperty
@@ -15,6 +17,12 @@ public class ImportBillResponse {
 
     @JsonProperty
     private String warehouseName;
+
+    @JsonProperty
+    private String importDate;
+
+    @JsonProperty
+    private BigDecimal totalPrice;
 
     public Long getId() {
         return id;
@@ -46,5 +54,21 @@ public class ImportBillResponse {
 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
+    }
+
+    public String getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(String importDate) {
+        this.importDate = importDate;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

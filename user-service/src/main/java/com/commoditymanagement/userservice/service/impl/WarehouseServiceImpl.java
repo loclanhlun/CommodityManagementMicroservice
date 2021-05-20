@@ -5,6 +5,7 @@ import com.commoditymanagement.core.data.Warehouse;
 import com.commoditymanagement.userservice.repository.WarehouseRepository;
 import com.commoditymanagement.userservice.request.add.AddWarehouseRequest;
 import com.commoditymanagement.userservice.request.edit.EditWarehouseRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.WarehouseResponse;
 import com.commoditymanagement.userservice.service.WarehouseService;
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +40,26 @@ public class WarehouseServiceImpl implements WarehouseService {
         }
         WarehouseResponse response = getWarehouseResponse(warehouseEntity);
         return response;
+    }
+
+    @Override
+    public List<WarehouseResponse> searchAllWarehouse(SearchByNameAndStatus request) throws Exception {
+        List<WarehouseResponse> listResponse = new ArrayList<>();
+        List<Warehouse> listEntity = null;
+        if(StringUtils.isEmpty(request.getName()) && request.getStatus() != null){
+            listEntity = warehouseRepository.findWarehouseByStatus(Integer.parseInt(request.getStatus()));
+        }else if(request.getStatus() == null && StringUtils.isEmpty(request.getName())){
+            listEntity = warehouseRepository.findWarehouseByStatus(0);
+        }else if(!StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+            listEntity = warehouseRepository.findWarehouseByLikeName(request.getName());
+        }else{
+            listEntity = warehouseRepository.findWarehouseByLikeNameAndStatus(request.getName(),Integer.parseInt(request.getStatus()));
+        }
+        for(Warehouse item : listEntity){
+            WarehouseResponse response = getWarehouseResponse(item);
+            listResponse.add(response);
+        }
+        return listResponse;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.commoditymanagement.restapiservice.controller;
 
+import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
+import com.commoditymanagement.restapiservice.request.SearchByNameAndStatus;
 import com.commoditymanagement.restapiservice.request.add.AddAgencyRequest;
 import com.commoditymanagement.restapiservice.request.edit.EditAgencyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/admin/agency")
 @CrossOrigin("http://localhost:8080")
 public class AgencyController {
-    private static final String URL = "http://user-service/rest/v1/admin/agency";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -26,12 +27,23 @@ public class AgencyController {
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListAgency(HttpServletRequest httpServletRequest){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/list";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_AGENCY_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchAgencyByLikeNameAndStatus(HttpServletRequest httpServletRequest,
+                                                             @RequestBody SearchByNameAndStatus request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SEARCH_AGENCY, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -39,14 +51,13 @@ public class AgencyController {
     public ResponseEntity<?> getAgencyById(HttpServletRequest httpServletRequest,
                                            @PathVariable("id") Long agencyId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", agencyId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_AGENCY_BY_ID_URL, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
@@ -54,12 +65,11 @@ public class AgencyController {
     public ResponseEntity<?> addAgency(HttpServletRequest httpServletRequest,
                                        @Valid @RequestBody AddAgencyRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/add-agency";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_AGENCY_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -67,12 +77,11 @@ public class AgencyController {
     public ResponseEntity<?> editAgency(HttpServletRequest httpServletRequest,
                                         @Valid @RequestBody EditAgencyRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-agency";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.EDIT_AGENCY_URL, HttpMethod.PUT,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -80,14 +89,13 @@ public class AgencyController {
     public ResponseEntity<?> removeAgency(HttpServletRequest httpServletRequest,
                                           @PathVariable("id") Long agencyId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/remove-agency/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", agencyId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.REMOVE_AGENCY_BY_ID_URL, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
         return response;
     }
 

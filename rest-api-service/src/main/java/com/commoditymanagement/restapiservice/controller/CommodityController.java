@@ -1,7 +1,10 @@
 package com.commoditymanagement.restapiservice.controller;
 
+import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
+import com.commoditymanagement.restapiservice.request.SearchByNameAndStatus;
 import com.commoditymanagement.restapiservice.request.add.AddCommodityRequest;
+import com.commoditymanagement.restapiservice.request.add.GetResultById;
 import com.commoditymanagement.restapiservice.request.edit.EditCommodityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -18,7 +21,6 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/admin/commodity")
 @CrossOrigin("http://localhost:8080")
 public class CommodityController {
-    private static final String URL = "http://user-service/rest/v1/admin/commodity";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -26,26 +28,36 @@ public class CommodityController {
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListCommodity(HttpServletRequest httpServletRequest){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/list";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_COMMODITY_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @PostMapping(value = "/list-commodity")
+    public ResponseEntity<?> getCommodityByCategoryId(HttpServletRequest httpServletRequest,
+                                                      @RequestBody GetResultById request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_COMMODITY_LIST_BY_CATEGORY_ID_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getCommodityById(HttpServletRequest httpServletRequest,
                                              @PathVariable("id") Long commodityId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", commodityId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_COMMODITY_BY_ID_URL, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
@@ -55,12 +67,22 @@ public class CommodityController {
     public ResponseEntity<?> addCategory(HttpServletRequest httpServletRequest,
                                          @Valid @RequestBody AddCommodityRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/add-commodity";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_COMMODITY_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+        return response;
+    }
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchCommodityByLikeNameAndStatus(HttpServletRequest httpServletRequest,
+                                                               @RequestBody SearchByNameAndStatus request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SEARCH_COMMODITY, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -68,12 +90,11 @@ public class CommodityController {
     public ResponseEntity<?> editCategory(HttpServletRequest httpServletRequest,
                                           @Valid @RequestBody EditCommodityRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-commodity";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.EDIT_COMMODITY_URL, HttpMethod.PUT, httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -81,14 +102,13 @@ public class CommodityController {
     public ResponseEntity<?> removeCategory(HttpServletRequest httpServletRequest,
                                             @PathVariable("id") Long commodityId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/remove-commodity/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", commodityId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.REMOVE_COMMODITY_BY_ID_URL, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
         return response;
     }
 

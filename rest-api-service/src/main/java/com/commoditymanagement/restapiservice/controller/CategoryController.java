@@ -1,6 +1,8 @@
 package com.commoditymanagement.restapiservice.controller;
 
+import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
+import com.commoditymanagement.restapiservice.request.SearchByNameAndStatus;
 import com.commoditymanagement.restapiservice.request.add.AddCategoryRequest;
 import com.commoditymanagement.restapiservice.request.edit.EditCategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import java.util.Map;
 @RequestMapping(value = "/rest/v1/admin/category")
 @CrossOrigin("http://localhost:8080")
 public class CategoryController {
-    private static final String URL = "http://user-service/rest/v1/admin/category";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -27,12 +28,11 @@ public class CategoryController {
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListCategory(HttpServletRequest httpServletRequest){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/list";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_CATEGORY_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -41,29 +41,37 @@ public class CategoryController {
     public ResponseEntity<?> getCategoryById(HttpServletRequest httpServletRequest,
                                              @PathVariable("id") Long categoryId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", categoryId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_CATEGORY_BY_ID_URL, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
-
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchCategoryByLikeNameAndStatus(HttpServletRequest httpServletRequest,
+                                                             @RequestBody SearchByNameAndStatus request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SEARCH_CATEGORY, HttpMethod.POST,httpEntity, ResponseModel.class);
+        return response;
+    }
 
     @PostMapping(value = "/add-category")
     public ResponseEntity<?> addCategory(HttpServletRequest httpServletRequest,
                                          @Valid @RequestBody AddCategoryRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/add-category";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_CATEGORY_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -71,12 +79,11 @@ public class CategoryController {
     public ResponseEntity<?> editCategory(HttpServletRequest httpServletRequest,
                                          @Valid @RequestBody EditCategoryRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/edit-category";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.EDIT_CATEGORY_URL, HttpMethod.PUT, httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -84,14 +91,13 @@ public class CategoryController {
     public ResponseEntity<?> removeCategory(HttpServletRequest httpServletRequest,
                                             @PathVariable("id") Long categoryId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/remove-category/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", categoryId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.REMOVE_CATEGORY_BY_ID_URL, HttpMethod.PUT, httpEntity, ResponseModel.class, params);
         return response;
     }
 

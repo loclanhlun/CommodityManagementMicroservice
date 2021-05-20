@@ -23,7 +23,7 @@ public class ImportDetailController {
     public ResponseEntity<?> getListImportBillDetail(@PathVariable("id") Long importBillId){
         ResponseModel responseModel;
         List<ImportBillDetailResponse> listImportBillDetail = importBillDetailService.findAllImportBillDetailByImportBillId(importBillId);
-        responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listImportBillDetail);
+        responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, listImportBillDetail);
         return ResponseEntity.ok(responseModel);
     }
 
@@ -32,7 +32,7 @@ public class ImportDetailController {
         ResponseModel responseModel;
         try {
             importBillDetailService.save(request);
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success",null);
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS,null);
         }catch (Exception e){
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
         }

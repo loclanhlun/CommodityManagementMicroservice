@@ -1,6 +1,8 @@
 package com.commoditymanagement.restapiservice.controller;
 
+import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
+import com.commoditymanagement.restapiservice.request.SearchByNameAndStatus;
 import com.commoditymanagement.restapiservice.request.add.AddWarehouseRequest;
 import com.commoditymanagement.restapiservice.request.edit.EditWarehouseRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,11 @@ public class WarehouseController {
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListWarehouse(HttpServletRequest httpServletRequest){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/list";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_WAREHOUSE_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -39,14 +40,13 @@ public class WarehouseController {
     public ResponseEntity<?> getWarehouseById(HttpServletRequest httpServletRequest,
                                            @PathVariable("id") Long warehouseId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", warehouseId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_WAREHOUSE_BY_ID_URL, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
@@ -54,12 +54,23 @@ public class WarehouseController {
     public ResponseEntity<?> addWarehouse(HttpServletRequest httpServletRequest,
                                        @Valid @RequestBody AddWarehouseRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/add-warehouse";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_WAREHOUSE_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchWarehouseByLikeNameAndStatus(HttpServletRequest httpServletRequest,
+                                                                @RequestBody SearchByNameAndStatus request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SEARCH_WAREHOUSE, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -72,7 +83,7 @@ public class WarehouseController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.EDIT_WAREHOUSE_URL, HttpMethod.PUT,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -87,7 +98,7 @@ public class WarehouseController {
         Map<String, Long> params = new HashMap<>();
         params.put("id", warehouseId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.REMOVE_WAREHOUSE_BY_ID_URL, HttpMethod.PUT,httpEntity, ResponseModel.class, params);
         return response;
     }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.commoditymanagement.userservice.request.edit.EditUserRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -78,6 +79,25 @@ public class UserServiceImpl implements UserService {
 	public User findByIdFromImportBill(Long id) {
 		User user = userRepository.findById(id).orElse(null);
 		return user;
+	}
+
+	@Override
+	public List<UserResponse> searchAllUser(SearchByNameAndStatus request) {
+		List<UserResponse> listResponse = new ArrayList<>();
+		List<User> listEntity = null;
+		if(StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+			listEntity = userRepository.findAllByStatus(0);
+		}else if(StringUtils.isEmpty(request.getName()) && request.getStatus() != null){
+			listEntity = userRepository.findAllByStatus(Integer.parseInt(request.getStatus()));
+		}else if(!StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+			listEntity = userRepository.findByFullNameLike(request.getName());
+		}else {
+			listEntity = userRepository.findByFullNameLikeAndStatus(request.getName(), Integer.parseInt(request.getStatus()));
+		}
+		for(User item : listEntity){
+			listResponse.add(getUser(item));
+		}
+		return listResponse;
 	}
 
 	@Override

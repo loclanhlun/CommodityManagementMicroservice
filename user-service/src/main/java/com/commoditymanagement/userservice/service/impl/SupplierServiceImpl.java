@@ -1,10 +1,13 @@
 package com.commoditymanagement.userservice.service.impl;
 
 
+import com.commoditymanagement.core.data.Commodity;
 import com.commoditymanagement.core.data.Supplier;
 import com.commoditymanagement.userservice.repository.SupplierRepository;
 import com.commoditymanagement.userservice.request.add.AddSupplierRequest;
 import com.commoditymanagement.userservice.request.edit.EditSupplierRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
+import com.commoditymanagement.userservice.response.CommodityResponse;
 import com.commoditymanagement.userservice.response.SupplierResponse;
 import com.commoditymanagement.userservice.service.SupplierService;
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +42,26 @@ public class SupplierServiceImpl implements SupplierService {
         }
         SupplierResponse response = getSupplierResponse(supplierEntity);
         return response;
+    }
+
+    @Override
+    public List<SupplierResponse> searchAllSupplier(SearchByNameAndStatus request) throws Exception {
+        List<SupplierResponse> listResponse =  new ArrayList<>();
+        List<Supplier> listEntity = null;
+        if(StringUtils.isEmpty(request.getName()) && request.getStatus() != null){
+            listEntity = supplierRepository.findSuppliersByStatus(Integer.parseInt(request.getStatus()));
+        }else if(StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+            listEntity = supplierRepository.findSuppliersByStatus(0);
+        }else if(request.getStatus() == null){
+            listEntity = supplierRepository.findSupplierByLikeName(request.getName());
+        }else{
+            listEntity = supplierRepository.findSupplierByLikeNameAndStatus(request.getName(), Integer.parseInt(request.getStatus()));
+        }
+        for(Supplier item : listEntity){
+            SupplierResponse response = getSupplierResponse(item);
+            listResponse.add(response);
+        }
+        return listResponse;
     }
 
     @Override

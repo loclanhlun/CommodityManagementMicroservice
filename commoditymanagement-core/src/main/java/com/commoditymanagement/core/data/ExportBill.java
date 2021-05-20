@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -40,10 +41,11 @@ public class ExportBill {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date exportDate;
 
-    @Column(name = "status")
+
+    @Column(name = "totalprice")
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int status;
+    private BigDecimal totalPrice = BigDecimal.valueOf(0);
 
 
     @OneToMany(mappedBy = "exportBill")
@@ -93,13 +95,6 @@ public class ExportBill {
         this.exportDate = exportDate;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
     public Set<ExportBillDetail> getExportBillDetails() {
         return exportBillDetails;
@@ -107,5 +102,13 @@ public class ExportBill {
 
     public void setExportBillDetails(Set<ExportBillDetail> exportBillDetails) {
         this.exportBillDetails = exportBillDetails;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

@@ -6,6 +6,7 @@ import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.repository.AgencyRepository;
 import com.commoditymanagement.userservice.request.add.AddAgencyRequest;
 import com.commoditymanagement.userservice.request.edit.EditAgencyRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.AgencyResponse;
 import com.commoditymanagement.userservice.service.AgencyService;
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +40,26 @@ public class AgencyServiceImpl implements AgencyService {
             throw new Exception("Agency id does not exist!");
         }
         AgencyResponse response = getAgency(agency);
+        return response;
+    }
+
+    @Override
+    public List<AgencyResponse> searchAllAgency(SearchByNameAndStatus request) throws Exception {
+        List<AgencyResponse> response = new ArrayList<>();
+        List<Agency> listEntity = null;
+        if(StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+             listEntity = agencyRepository.findAgenciesByStatus(0);
+        }else if(request.getStatus() == null){
+             listEntity = agencyRepository.findAgenciesByLikeName(request.getName());
+        }else if(StringUtils.isEmpty(request.getName()) && request.getStatus() != null){
+             listEntity = agencyRepository.findAgenciesByStatus(Integer.parseInt(request.getStatus()));
+        }else {
+            listEntity = agencyRepository.findAgenciesByLikeNameAndStatus(request.getName(),Integer.parseInt(request.getStatus()));
+        }
+        for(Agency item: listEntity) {
+            AgencyResponse agencyResponse = getAgency(item);
+            response.add(agencyResponse);
+        }
         return response;
     }
 

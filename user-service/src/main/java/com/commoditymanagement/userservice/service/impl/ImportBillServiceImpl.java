@@ -7,12 +7,17 @@ import com.commoditymanagement.userservice.repository.SupplierRepository;
 import com.commoditymanagement.userservice.repository.WarehouseRepository;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.response.ImportBillResponse;
+import com.commoditymanagement.userservice.response.ItemStatisticalImportBill;
+import com.commoditymanagement.userservice.response.StatisticalImportBillResponse;
 import com.commoditymanagement.userservice.service.ImportBillService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +34,7 @@ public class ImportBillServiceImpl implements ImportBillService {
     @Autowired
     private ImportBillRepository importBillRepository;
 
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public List<ImportBillResponse> findAllImportBill() {
@@ -40,10 +46,66 @@ public class ImportBillServiceImpl implements ImportBillService {
             response.setFullName(item.getUser().getFullName());
             response.setSupplierName(item.getSupplier().getName());
             response.setWarehouseName(item.getWarehouses().getName());
+            response.setImportDate(formatter.format(item.getImportDate()));
+            response.setTotalPrice(item.getTotalPrice());
             listResult.add(response);
         }
         return listResult;
     }
+
+    @Override
+    public List<ImportBillResponse> searchImportBillByImportDateAndWarehouseCode(String fromDate, String toDate, String warehouseCode) {
+        List<ImportBillResponse> importBillResponses = new ArrayList<>();
+        if(StringUtils.isEmpty(warehouseCode)){
+            List<ImportBill> importBills = importBillRepository.findImportBillByImportDateNamedParams(fromDate,toDate);
+            for(ImportBill item : importBills){
+                ImportBillResponse response = new ImportBillResponse();
+                response.setId(item.getId());
+                response.setFullName(item.getUser().getFullName());
+                response.setSupplierName(item.getSupplier().getName());
+                response.setWarehouseName(item.getWarehouses().getName());
+                response.setImportDate(formatter.format(item.getImportDate()));
+                response.setTotalPrice(item.getTotalPrice());
+                importBillResponses.add(response);
+            }
+        }else {
+            List<ImportBill> importBills = importBillRepository.findImportBillByWarehouseCodeAndImportDate(fromDate,toDate,warehouseCode);
+            for(ImportBill item : importBills){
+                ImportBillResponse response = new ImportBillResponse();
+                response.setId(item.getId());
+                response.setFullName(item.getUser().getFullName());
+                response.setSupplierName(item.getSupplier().getName());
+                response.setWarehouseName(item.getWarehouses().getName());
+                response.setImportDate(formatter.format(item.getImportDate()));
+                response.setTotalPrice(item.getTotalPrice());
+                importBillResponses.add(response);
+            }
+        }
+        return importBillResponses;
+    }
+
+    @Override
+    public List<StatisticalImportBillResponse> statisticalImportBillByYear(String year) {
+        List<StatisticalImportBillResponse> listResponse = new ArrayList<>();
+        List<ImportBill> listEntity = importBillRepository.statisticalImportBillByYear(year);
+
+        for(int month = 1; month <= 12 ; month ++){
+            StatisticalImportBillResponse response = new StatisticalImportBillResponse();
+            ItemStatisticalImportBill itemStatisticalImportBill = new ItemStatisticalImportBill();
+            response.setMonth(month);
+            itemStatisticalImportBill.setTotalPrice(BigDecimal.valueOf(0));
+            for(ImportBill item : listEntity){
+                if(item.getImportDate().getMonth()+1 == month){
+                    itemStatisticalImportBill.setTotalPrice(item.getTotalPrice());
+                }
+            }
+            response.setData(itemStatisticalImportBill);
+
+            listResponse.add(response);
+        }
+        return listResponse;
+    }
+
 
     @Override
     public void save(AddImportBillRequest request, User user) throws Exception {
@@ -55,8 +117,13 @@ public class ImportBillServiceImpl implements ImportBillService {
         importBill.setSupplier(supplier.get(0));
         importBill.setWarehouses(warehouse.get(0));
         importBill.setImportDate(new Date());
-        importBill.setStatus(0);
         importBillRepository.save(importBill);
+    }
+
+    @Override
+    public void delete() {
+        ImportBill importBill = importBillRepository.findImportBillOderByIdDesc().get(0);
+        importBillRepository.delete(importBill);
     }
 
     public void validateRequest(String warehouseCode, String supplierCode)throws Exception{

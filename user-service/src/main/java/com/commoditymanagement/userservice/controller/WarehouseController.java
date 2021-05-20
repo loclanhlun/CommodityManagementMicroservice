@@ -3,10 +3,13 @@ import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddWarehouseRequest;
 import com.commoditymanagement.userservice.request.edit.EditWarehouseRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
+import com.commoditymanagement.userservice.response.CommodityResponse;
 import com.commoditymanagement.userservice.response.WarehouseResponse;
 import com.commoditymanagement.userservice.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +21,11 @@ public class WarehouseController {
     @Autowired
     private WarehouseService warehouseService;
 
+
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListWarehouse() throws Exception {
         List<WarehouseResponse> listsWarehouse = warehouseService.findAllWarehouse();
-        ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listsWarehouse);
+        ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, listsWarehouse);
         return ResponseEntity.ok(response);
     }
 
@@ -32,7 +36,7 @@ public class WarehouseController {
         WarehouseResponse warehouseResponse = null;
         try {
             warehouseResponse = warehouseService.findById(warehouseId);
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", warehouseResponse);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, warehouseResponse);
         }catch (Exception e){
             response  = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), warehouseResponse);
         }
@@ -44,10 +48,17 @@ public class WarehouseController {
         ResponseModel response;
         try {
             warehouseService.save(request);
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, e.getMessage(), null);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchWarehouseByLikeNameAndStatus(@RequestBody SearchByNameAndStatus request) throws Exception {
+        List<WarehouseResponse> lists = warehouseService.searchAllWarehouse(request);
+        ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success", lists);
         return ResponseEntity.ok(response);
     }
 
@@ -56,7 +67,7 @@ public class WarehouseController {
         ResponseModel response;
         try {
             warehouseService.update(request);
-            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         } catch (Exception e) {
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
@@ -68,7 +79,7 @@ public class WarehouseController {
         ResponseModel response;
         try {
             warehouseService.remove(warehouseId);
-            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }

@@ -5,6 +5,7 @@ import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddCategoryRequest;
 import com.commoditymanagement.userservice.request.edit.EditCategoryRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.CategoryResponse;
 import com.commoditymanagement.userservice.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +29,13 @@ public class CategoryController {
 		return ResponseEntity.ok(response);
 	}
 
-
-
-
-
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getCategoryById(@PathVariable("id") Long categoryId) throws Exception {
 		ResponseModel response = new ResponseModel();
 		CategoryResponse categoryResponse = new CategoryResponse();
 		try {
 			categoryResponse = categoryService.findById(categoryId);
-			response.setMessage("Success");
+			response.setMessage(ResponseConstant.MESSAGE_SUCCESS);
 			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 			response.setObject(categoryResponse);
 		}catch (Exception e){
@@ -49,12 +46,21 @@ public class CategoryController {
 		return ResponseEntity.ok(response);
 	}
 
+	@PostMapping(value = "/search")
+	public ResponseEntity<?> searchCategoryByLikeNameAndStatus(@RequestBody SearchByNameAndStatus request){
+		List<CategoryResponse> list = categoryService.searchAllCategory(request);
+		ResponseModel responseModel = new ResponseModel(
+				ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, list
+		);
+		return ResponseEntity.ok(responseModel);
+	}
+
 	@PostMapping(value = "/add-category")
 	public ResponseEntity<?> addCategory(@RequestBody AddCategoryRequest request){
 		ResponseModel response = new ResponseModel();
 		try {
 			categoryService.save(request);
-			response.setMessage("Success");
+			response.setMessage(ResponseConstant.MESSAGE_SUCCESS);
 			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 		}catch (Exception e){
 			response.setMessage(e.getMessage());
@@ -69,7 +75,7 @@ public class CategoryController {
 		ResponseModel response = new ResponseModel();
 		try {
 			categoryService.update(request);
-			response.setMessage("success");
+			response.setMessage(ResponseConstant.MESSAGE_SUCCESS);
 			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 		} catch (Exception e) {
 			response.setMessage(e.getMessage());
@@ -83,7 +89,7 @@ public class CategoryController {
 		ResponseModel response = new ResponseModel();
 		try {
 			categoryService.remove(categoryId);
-			response.setMessage("Success");
+			response.setMessage(ResponseConstant.MESSAGE_SUCCESS);
 			response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 		}catch (Exception e){
 			response.setMessage(e.getMessage());
@@ -94,7 +100,7 @@ public class CategoryController {
 
 	private ResponseModel buildResponse(List<CategoryResponse> lists) {
     	ResponseModel responseModel = new ResponseModel();
-    	responseModel.setMessage("Success");
+    	responseModel.setMessage(ResponseConstant.MESSAGE_SUCCESS);
     	responseModel.setResultCode("0");
     	responseModel.setObject(lists);
     	return responseModel;

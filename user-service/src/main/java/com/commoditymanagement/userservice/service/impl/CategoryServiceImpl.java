@@ -4,8 +4,10 @@ import com.commoditymanagement.core.data.Category;
 import com.commoditymanagement.userservice.repository.CategoryRepository;
 import com.commoditymanagement.userservice.request.add.AddCategoryRequest;
 import com.commoditymanagement.userservice.request.edit.EditCategoryRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.CategoryResponse;
 import com.commoditymanagement.userservice.service.CategoryService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,31 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryResponse> findAllByCode(String code) {
 		
 		return null;
+	}
+
+	@Override
+	public List<CategoryResponse> searchAllCategory(SearchByNameAndStatus request) {
+		List<CategoryResponse> response = new ArrayList<>();
+		List<Category> listEntity = null;
+		if(StringUtils.isEmpty(request.getName()) && request.getStatus() != null){
+			listEntity = categoryRepository.findCategoriesByStatus(Integer.parseInt(request.getStatus()));
+
+		}else if(request.getStatus() == null && !StringUtils.isEmpty(request.getName())){
+			 listEntity = categoryRepository.findCategoryByLikeName(request.getName());
+		}else if(StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+			 listEntity = categoryRepository.findCategoriesByStatus(0);
+		}else{
+			 listEntity = categoryRepository.findCategoryByLikeNameAndStatus(request.getName(), Integer.parseInt(request.getStatus()));
+		}
+		for(Category item : listEntity){
+			CategoryResponse categoryResponse = new CategoryResponse();
+			categoryResponse.setId(item.getId());
+			categoryResponse.setCode(item.getCode());
+			categoryResponse.setName(item.getName());
+			categoryResponse.setStatus(item.getStatus());
+			response.add(categoryResponse);
+		}
+		return response;
 	}
 
 

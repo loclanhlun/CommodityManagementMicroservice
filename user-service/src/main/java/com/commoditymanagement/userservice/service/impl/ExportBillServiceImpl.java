@@ -6,11 +6,15 @@ import com.commoditymanagement.userservice.repository.ExportBillRepository;
 import com.commoditymanagement.userservice.repository.WarehouseRepository;
 import com.commoditymanagement.userservice.request.add.AddExportBillRequest;
 import com.commoditymanagement.userservice.response.ExportBillResponse;
+import com.commoditymanagement.userservice.response.ImportBillResponse;
 import com.commoditymanagement.userservice.service.ExportBillService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +30,25 @@ public class ExportBillServiceImpl implements ExportBillService {
     @Autowired
     private WarehouseRepository warehouseRepository;
 
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
     @Override
     public List<ExportBillResponse> findAllExportBill() {
-        return null;
+        List<ExportBillResponse> listResponse = new ArrayList<>();
+        List<ExportBill> listExportBillsEntity = exportBillRepository.findAll();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        for(ExportBill item : listExportBillsEntity){
+            ExportBillResponse dto = new ExportBillResponse();
+            dto.setId(item.getId());
+            dto.setFullName(item.getUser().getFullName());
+            dto.setAgencyName(item.getAgency().getName());
+            dto.setWarehouseName(item.getWarehouse().getName());
+            dto.setExportDate(formatter.format(item.getExportDate()));
+            dto.setTotalPrice(item.getTotalPrice());
+            listResponse.add(dto);
+
+        }
+        return listResponse;
     }
 
     @Override
@@ -40,9 +60,45 @@ public class ExportBillServiceImpl implements ExportBillService {
         exportBill.setAgency(agencies.get(0));
         exportBill.setWarehouse(warehouses.get(0));
         exportBill.setUser(user);
-        exportBill.setExportDate(new Date(0));
-        exportBill.setStatus(0);
+        exportBill.setExportDate(new Date());
         exportBillRepository.save(exportBill);
+    }
+
+    @Override
+    public List<ExportBillResponse> searchExportBillByExportDateAndWarehouseCode(String fromDate, String toDate, String warehouseCode) {
+        List<ExportBillResponse> exportBillResponses = new ArrayList<>();
+        if(StringUtils.isEmpty(warehouseCode)){
+            List<ExportBill> exportBills = exportBillRepository.findExportBillByExportDateNamedParams(fromDate,toDate);
+            for(ExportBill item : exportBills){
+                ExportBillResponse response = new ExportBillResponse();
+                response.setId(item.getId());
+                response.setFullName(item.getUser().getFullName());
+                response.setAgencyName(item.getAgency().getName());
+                response.setWarehouseName(item.getWarehouse().getName());
+                response.setExportDate(formatter.format(item.getExportDate()));
+                response.setTotalPrice(item.getTotalPrice());
+                exportBillResponses.add(response);
+            }
+        }else {
+            List<ExportBill> exportBills = exportBillRepository.findExportBillByWarehouseCodeAndExportDate(fromDate,toDate,warehouseCode);
+            for(ExportBill item : exportBills){
+                ExportBillResponse response = new ExportBillResponse();
+                response.setId(item.getId());
+                response.setFullName(item.getUser().getFullName());
+                response.setAgencyName(item.getAgency().getName());
+                response.setWarehouseName(item.getWarehouse().getName());
+                response.setExportDate(formatter.format(item.getExportDate()));
+                response.setTotalPrice(item.getTotalPrice());
+                exportBillResponses.add(response);
+            }
+        }
+        return exportBillResponses;
+    }
+
+    @Override
+    public void delete() {
+        ExportBill exportBill = exportBillRepository.findExportBillOderByIdDesc().get(0);
+        exportBillRepository.delete(exportBill);
     }
 
     public void validateRequest(String warehouseCode, String agencyCode)throws Exception{

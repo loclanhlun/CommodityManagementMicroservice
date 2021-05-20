@@ -4,6 +4,8 @@ package com.commoditymanagement.restapiservice.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.commoditymanagement.core.constant.UrlConstants;
+import com.commoditymanagement.restapiservice.request.SearchByNameAndStatus;
 import com.commoditymanagement.restapiservice.request.edit.EditUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -24,8 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin("http://localhost:8080")
 public class UserController {
 	
-	private static final String USER_SERVICE_URL = "http://user-service/rest/v1/admin/user/";
-	
 
     @Autowired
     private RestTemplate restTemplate;
@@ -34,7 +34,6 @@ public class UserController {
     public ResponseEntity<?> getListUser(HttpServletRequest httpServletRequest,
                                          @RequestParam(value = "fullName", required = false) String fullName,
                                          @RequestParam(value = "status", required = false) String status) {
-        String url = USER_SERVICE_URL+"list";
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -43,26 +42,36 @@ public class UserController {
         params.put("fullName", fullName);
         params.put("status", status);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class, params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_USER_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class, params);
         return response;
     }
 
     @GetMapping(value = "/list-role")
     public ResponseEntity<?> getListRole(HttpServletRequest httpServletRequest){
-        String url = USER_SERVICE_URL+"list-role";
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_ROLE_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchWarehouseByLikeNameAndStatus(HttpServletRequest httpServletRequest,
+                                                                @RequestBody SearchByNameAndStatus request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SEARCH_USER, HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getUserById(HttpServletRequest httpServletRequest,
                                          @PathVariable("id") Long userId ) {
-        String url = USER_SERVICE_URL+"{id}";
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -70,20 +79,19 @@ public class UserController {
         Map<String, Long> params = new HashMap<>();
         params.put("id", userId);
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, ResponseModel.class,params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_USER_BY_ID_URL, HttpMethod.GET,httpEntity, ResponseModel.class,params);
         return response;
     }
 
 
     @PostMapping(value = "/add-user")
     public ResponseEntity<?> addUser(HttpServletRequest httpServletRequest,@RequestBody AddUserRequest request){
-    	String url = USER_SERVICE_URL+"add-user";
     	String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
     	HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_USER_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
     	return response;
     }
 
@@ -91,12 +99,11 @@ public class UserController {
     public ResponseEntity<?> editUser(HttpServletRequest httpServletRequest,
                                       @RequestBody EditUserRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = USER_SERVICE_URL+"edit-user";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(request, headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.EDIT_USER_URL, HttpMethod.PUT,httpEntity, ResponseModel.class);
         return response;
     }
 
@@ -104,14 +111,13 @@ public class UserController {
     public ResponseEntity<?> removeUser(HttpServletRequest httpServletRequest,
                                       @PathVariable("id") Long userId){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = USER_SERVICE_URL+"remove-user/{id}";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         Map<String, Long> params = new HashMap<>();
         params.put("id", userId);
         HttpEntity<?> httpEntity  = new HttpEntity<>( headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.REMOVE_USER_BY_ID_URL, HttpMethod.PUT,httpEntity, ResponseModel.class,params);
         return response;
     }
 

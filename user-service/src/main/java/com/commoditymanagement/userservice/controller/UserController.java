@@ -1,6 +1,7 @@
 package com.commoditymanagement.userservice.controller;
 
 import com.commoditymanagement.userservice.request.edit.EditUserRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.RoleResponse;
 import com.commoditymanagement.userservice.response.UserResponse;
 import com.commoditymanagement.userservice.service.impl.RoleServiceImpl;
@@ -33,8 +34,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/admin/user")
-
-@CrossOrigin("http://localhost:8080")
 public class UserController {
 
 	@Autowired
@@ -67,7 +66,7 @@ public class UserController {
     	List<UserResponse> listUser = null;
     	try {
     		listUser = userService.findAll(fullName, status);
-    		response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listUser);
+    		response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, listUser);
 		} catch (AccessDeniedException e){
 			response = new ResponseModel("401", e.getMessage(), null);
 		} catch (Exception e){
@@ -80,8 +79,17 @@ public class UserController {
 	@GetMapping(value = "/list-role")
 	public ResponseEntity<?> getListRole(){
 		List<RoleResponse> listRole = roleService.getAllRole();
-		ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listRole);
+		ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, listRole);
 		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping(value = "/search")
+	public ResponseEntity<?> searchUserByLikeFullNameAndStatus(@RequestBody SearchByNameAndStatus request){
+    	List<UserResponse> list = userService.searchAllUser(request);
+    	ResponseModel responseModel = new ResponseModel(
+    			ResponseConstant.RESULT_CODE_SUCCESS,ResponseConstant.MESSAGE_SUCCESS,list
+		);
+    	return ResponseEntity.ok(responseModel);
 	}
     
 
@@ -90,20 +98,20 @@ public class UserController {
 		ResponseModel responseModel;
 		try {
 			UserResponse userResponse = userService.findById(userId);
-			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success", userResponse);
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,ResponseConstant.MESSAGE_SUCCESS, userResponse);
 		}catch (Exception e){
 			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,e.getMessage(), null);
 		}
 		return ResponseEntity.ok(responseModel);
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/add-user")
     public ResponseEntity<?> addUser(@RequestBody UserRequest request){
     	ResponseModel response = new ResponseModel();
     	try {
     		userService.addUser(request);
-    		response.setMessage("Success");
+    		response.setMessage(ResponseConstant.MESSAGE_SUCCESS);
     		response.setResultCode(ResponseConstant.RESULT_CODE_SUCCESS);
 		} catch (Exception e) {
 			response.setMessage(e.getMessage());
@@ -117,7 +125,7 @@ public class UserController {
     	ResponseModel responseModel;
     	try {
 			userService.updateUser(request);
-			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
 		}catch (Exception e){
     		responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
 		}
@@ -134,7 +142,7 @@ public class UserController {
 
     	try {
 			userService.removeUser(userId,email);
-			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
 		}catch (Exception e){
 			responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
 		}
@@ -152,7 +160,7 @@ public class UserController {
     
     private ResponseModel buildResponse(JwtResponse jwtResponse) {
     	ResponseModel responseModel = new ResponseModel();
-    	responseModel.setMessage("Success");
+    	responseModel.setMessage(ResponseConstant.MESSAGE_SUCCESS);
     	responseModel.setResultCode("0");
     	responseModel.setObject(jwtResponse);
     	return responseModel;

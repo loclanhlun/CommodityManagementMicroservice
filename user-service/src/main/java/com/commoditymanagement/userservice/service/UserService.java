@@ -3,6 +3,7 @@ package com.commoditymanagement.userservice.service;
 import com.commoditymanagement.core.data.User;
 import com.commoditymanagement.userservice.request.UserRequest;
 import com.commoditymanagement.userservice.request.edit.EditUserRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.UserResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +16,8 @@ public interface UserService {
     UserResponse findById(Long id) throws Exception;
 
     User findByIdFromImportBill(Long id);
+
+    List<UserResponse> searchAllUser(SearchByNameAndStatus request);
 
     User findByEmail(String email);
 

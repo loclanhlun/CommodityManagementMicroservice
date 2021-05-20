@@ -1,14 +1,12 @@
 package com.commoditymanagement.restapiservice.controller;
 
+import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.restapiservice.request.add.AddExportBillRequest;
-import com.commoditymanagement.restapiservice.request.add.AddImportBillRequest;
+import com.commoditymanagement.restapiservice.request.add.SearchImportBillByDateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,23 +14,56 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/rest/v1/export-bill")
+@CrossOrigin("http://localhost:8080")
 public class ExportBillController {
-
-    private static final String URL = "http://user-service/rest/v1/authenticate/export-bill";
 
     @Autowired
     private RestTemplate restTemplate;
+
+
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> getListExportBill(HttpServletRequest httpServletRequest){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.GET_EXPORT_LIST_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchExportBill(HttpServletRequest httpServletRequest,
+                                              @RequestBody SearchImportBillByDateRequest request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SEARCH_EXPORT_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+        return response;
+    }
 
     @PostMapping(value = "/add-export-bill")
     public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,
                                            @Valid @RequestBody AddExportBillRequest request){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        String url = URL + "/add-export-bill";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_EXPORT_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @DeleteMapping(value = "/delete-export-bill")
+    public ResponseEntity<?> deleteExportBillById(HttpServletRequest httpServletRequest){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.DELETE_EXPORT_BY_MAX_ID_URL, HttpMethod.DELETE,httpEntity, ResponseModel.class);
         return response;
     }
 }

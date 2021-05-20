@@ -5,6 +5,8 @@ import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddSupplierRequest;
 import com.commoditymanagement.userservice.request.edit.EditSupplierRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
+import com.commoditymanagement.userservice.response.CommodityResponse;
 import com.commoditymanagement.userservice.response.SupplierResponse;
 import com.commoditymanagement.userservice.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,14 @@ public class SupplierController {
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListSupplier() throws Exception {
         List<SupplierResponse> listsSupplier = supplierService.findAllSupplier();
-        ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listsSupplier);
+        ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, listsSupplier);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchSupplierByLikeNameAndStatus(@RequestBody SearchByNameAndStatus request) throws Exception {
+        List<SupplierResponse> lists = supplierService.searchAllSupplier(request);
+        ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS,"Success", lists);
         return ResponseEntity.ok(response);
     }
 
@@ -33,7 +42,7 @@ public class SupplierController {
         SupplierResponse supplierResponse = null;
         try {
             supplierResponse = supplierService.findById(supplierId);
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", supplierResponse);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, supplierResponse);
         }catch (Exception e){
             response  = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), supplierResponse);
         }
@@ -45,7 +54,7 @@ public class SupplierController {
         ResponseModel response;
         try {
             supplierService.save(request);
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, e.getMessage(), null);
         }
@@ -57,7 +66,7 @@ public class SupplierController {
         ResponseModel response;
         try {
             supplierService.update(request);
-            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         } catch (Exception e) {
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
@@ -69,7 +78,7 @@ public class SupplierController {
         ResponseModel response;
         try {
             supplierService.remove(supplierId);
-            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }

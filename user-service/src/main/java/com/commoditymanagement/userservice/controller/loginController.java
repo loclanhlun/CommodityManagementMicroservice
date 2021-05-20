@@ -1,5 +1,6 @@
 package com.commoditymanagement.userservice.controller;
 
+import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.service.UserService;
@@ -83,7 +84,7 @@ public class loginController {
 
     private ResponseModel buildResponse() {
         ResponseModel responseModel = new ResponseModel();
-        responseModel.setMessage("Success");
+        responseModel.setMessage(ResponseConstant.MESSAGE_SUCCESS);
         responseModel.setResultCode("0");
         return responseModel;
     }

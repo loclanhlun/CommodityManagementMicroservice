@@ -9,10 +9,6 @@ public class ResponseModel {
     private String message;
     
     private Object object;
-    
-   
-    
-    
 
     public ResponseModel() {
     	

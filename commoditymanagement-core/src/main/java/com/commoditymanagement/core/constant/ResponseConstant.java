@@ -10,9 +10,7 @@ public class ResponseConstant {
 	
 	public final static String RESULT_CODE_ERROR = "999";
 
-	public final static String RESULT_CODE_INVALID_AGENCY = "100";
-
-	public final static String RESULT_CODE_EXIST_EMAIL = "101";
+	public final static String MESSAGE_SUCCESS = "Thành công!";
 	
 	public final static String ADMIN_ROLE = "ROLE_ADMIN";
 	

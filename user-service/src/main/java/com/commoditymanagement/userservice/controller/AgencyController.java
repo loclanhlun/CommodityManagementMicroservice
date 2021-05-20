@@ -4,6 +4,7 @@ import com.commoditymanagement.core.constant.ResponseConstant;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.request.add.AddAgencyRequest;
 import com.commoditymanagement.userservice.request.edit.EditAgencyRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.AgencyResponse;
 import com.commoditymanagement.userservice.service.AgencyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class AgencyController {
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListAgency() throws Exception {
         List<AgencyResponse> listsAgency = agencyService.findAllAgency();
-        ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", listsAgency);
+        ResponseModel response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, listsAgency);
         return ResponseEntity.ok(response);
     }
 
@@ -33,11 +34,20 @@ public class AgencyController {
         AgencyResponse agencyResponse = null;
         try {
             agencyResponse = agencyService.findById(agencyId);
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", agencyResponse);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, agencyResponse);
         }catch (Exception e){
             response  = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), agencyResponse);
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchAgencyByLikeNameAndStatus(@RequestBody SearchByNameAndStatus request) throws Exception {
+        List<AgencyResponse> list = agencyService.searchAllAgency(request);
+        ResponseModel responseModel = new ResponseModel(
+                ResponseConstant.RESULT_CODE_SUCCESS,ResponseConstant.MESSAGE_SUCCESS,list
+        );
+        return ResponseEntity.ok(responseModel);
     }
 
     @PostMapping(value = "/add-agency")
@@ -45,7 +55,7 @@ public class AgencyController {
         ResponseModel response;
         try {
             agencyService.save(request);
-            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             response  = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, e.getMessage(), null);
         }
@@ -57,7 +67,7 @@ public class AgencyController {
         ResponseModel response;
         try {
             agencyService.update(request);
-            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
@@ -69,7 +79,7 @@ public class AgencyController {
         ResponseModel response;
         try {
             agencyService.remove(agencyId);
-            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             response = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }

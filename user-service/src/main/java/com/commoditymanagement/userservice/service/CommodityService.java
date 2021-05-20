@@ -1,7 +1,9 @@
 package com.commoditymanagement.userservice.service;
 
 import com.commoditymanagement.userservice.request.add.AddCommodityRequest;
+import com.commoditymanagement.userservice.request.get.GetResultById;
 import com.commoditymanagement.userservice.request.edit.EditCommodityRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.CommodityResponse;
 
 import java.util.List;
@@ -14,7 +16,9 @@ public interface CommodityService {
 
     List<CommodityResponse> findAllByCode(String code);
 
-    List<CommodityResponse> findAllByCategoryId(Long categoryId);
+    List<CommodityResponse> searchAllCommodity(SearchByNameAndStatus request);
+
+    List<CommodityResponse> findAllByCategoryId(GetResultById request);
 
     void save(AddCommodityRequest request) throws Exception;
 

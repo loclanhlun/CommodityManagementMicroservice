@@ -5,6 +5,9 @@ import com.commoditymanagement.core.data.User;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.request.add.AddExportBillRequest;
+import com.commoditymanagement.userservice.request.get.SearchImportBillByDateRequest;
+import com.commoditymanagement.userservice.response.ExportBillResponse;
+import com.commoditymanagement.userservice.response.ImportBillResponse;
 import com.commoditymanagement.userservice.service.ExportBillService;
 import com.commoditymanagement.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/v1/export-bill")
@@ -30,7 +34,17 @@ public class ExportBillController {
 
     @GetMapping(value = "/list")
     public ResponseEntity<?> getListExportBill(){
-        return ResponseEntity.ok("1");
+        List<ExportBillResponse> list = exportBillService.findAllExportBill();
+        ResponseModel responseModel;
+        responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, list);
+        return ResponseEntity.ok(responseModel);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> searchExportBill(@RequestBody SearchImportBillByDateRequest request){
+        List<ExportBillResponse> list = exportBillService.searchExportBillByExportDateAndWarehouseCode(request.getFromDate(),request.getToDate(), request.getWarehouseCode());
+        ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, list);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/add-export-bill")
@@ -42,10 +56,17 @@ public class ExportBillController {
         User user = userService.findByEmail(email);
         try {
             exportBillService.save(request, user);
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, "Success", null);
+            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
+        return ResponseEntity.ok(responseModel);
+    }
+
+    @DeleteMapping(value = "/delete-export-bill")
+    public ResponseEntity<?> deleteExportBillById(){
+        exportBillService.delete();
+        ResponseModel responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         return ResponseEntity.ok(responseModel);
     }
 

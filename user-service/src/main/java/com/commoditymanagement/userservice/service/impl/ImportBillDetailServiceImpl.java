@@ -7,15 +7,20 @@ import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.request.add.ItemImportBillDetailRequest;
 import com.commoditymanagement.userservice.response.ImportBillDetailResponse;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ImportBillDetailServiceImpl implements ImportBillDetailService {
+
+    Logger logger = LoggerFactory.getLogger(ImportBillDetailServiceImpl.class);
 
     @Autowired
     private ImportBillRepository importBillRepository;
@@ -31,6 +36,8 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
 
     @Autowired
     private ImportBillDetailRepository importBillDetailRepository;
+
+
 
     @Override
     public List<ImportBillDetailResponse> findAllImportBillDetailByImportBillId(Long id) {
@@ -51,17 +58,31 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
     @Override
     public void save(AddImportBillDetailRequest request) throws Exception {
         ImportBill importBill = importBillRepository.findImportBillOderByIdDesc().get(0);
+
         List<ItemImportBillDetailRequest> listImportBillDetail = request.getData();
         Commodity commodity = null;
 
         int count = 0;
+        int count1 = 0;
         for(ItemImportBillDetailRequest item : listImportBillDetail){
             if(checkCommodityCode(item.getCommodityCode())){
                 throw new Exception("Commodity " + item.getCommodityCode() + "is not found!");
             }
             count ++;
         }
+
         if(count == listImportBillDetail.size()){
+            for(ItemImportBillDetailRequest item : listImportBillDetail){
+                commodity = commodityRepository.findByCode(item.getCommodityCode()).get(0);
+                if(item.getQuantity() < 0){
+                    throw new Exception("Số lượng của " + commodity.getName() + " phải từ 0 trở lên");
+                }
+                count1++;
+            }
+
+        }
+        double totalPrice = 0;
+        if(count1 == listImportBillDetail.size()){
             Warehouse warehouse = warehouseRepository.findById(importBill.getWarehouses().getId()).orElse(null);
             for(ItemImportBillDetailRequest item : listImportBillDetail){
                 commodity = commodityRepository.findByCode(item.getCommodityCode()).get(0);
@@ -70,8 +91,11 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
                 importBillDetail.setCommodities(commodity);
                 importBillDetail.setPrice(item.getPrice());
                 importBillDetail.setQuantity(item.getQuantity());
+                totalPrice += item.getQuantity() * item.getPrice().doubleValue();
                 importBillDetailRepository.save(importBillDetail);
                 //
+
+
 
                 CommodityWarehouse commodityWarehouse = new CommodityWarehouse();
                 if(checkCommodityWarehouseByCommodityCodeAndWarehouseCode(commodity,warehouse)){
@@ -85,6 +109,9 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
                     commodityWarehouseRepository.save(oldCommodityWarehouses);
                 }
             }
+            importBill.setTotalPrice(BigDecimal.valueOf(totalPrice));
+            importBillRepository.save(importBill);
+
         }
     }
 

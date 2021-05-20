@@ -6,9 +6,12 @@ import com.commoditymanagement.core.data.Commodity;
 import com.commoditymanagement.userservice.repository.CategoryRepository;
 import com.commoditymanagement.userservice.repository.CommodityRepository;
 import com.commoditymanagement.userservice.request.add.AddCommodityRequest;
+import com.commoditymanagement.userservice.request.get.GetResultById;
 import com.commoditymanagement.userservice.request.edit.EditCommodityRequest;
+import com.commoditymanagement.userservice.request.get.SearchByNameAndStatus;
 import com.commoditymanagement.userservice.response.CommodityResponse;
 import com.commoditymanagement.userservice.service.CommodityService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,8 +68,45 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public List<CommodityResponse> findAllByCategoryId(Long categoryId) {
-        return null;
+    public List<CommodityResponse> searchAllCommodity(SearchByNameAndStatus request) {
+        List<CommodityResponse> listResponse =  new ArrayList<>();
+        List<Commodity> listEntity = null;
+        if(StringUtils.isEmpty(request.getName()) && request.getStatus() != null){
+            listEntity = commodityRepository.findCommoditiesByStatus(Integer.parseInt(request.getStatus()));
+        }else if(StringUtils.isEmpty(request.getName()) && request.getStatus() == null){
+            listEntity = commodityRepository.findCommoditiesByStatus(0);
+        }else if(request.getStatus() == null){
+            listEntity = commodityRepository.findCategoryByLikeName(request.getName());
+        }else{
+            listEntity = commodityRepository.findCategoryByLikeNameAndStatus(request.getName(), Integer.parseInt(request.getStatus()));
+        }
+        for(Commodity item : listEntity){
+            CommodityResponse commodityResponse = new CommodityResponse();
+            commodityResponse.setId(item.getId());
+            commodityResponse.setCode(item.getCode());
+            commodityResponse.setName(item.getName());
+            commodityResponse.setCategoryName(item.getCategory().getName());
+            commodityResponse.setStatus(item.getStatus());
+            listResponse.add(commodityResponse);
+        }
+        return listResponse;
+    }
+
+    @Override
+    public List<CommodityResponse> findAllByCategoryId(GetResultById request) {
+        List<CommodityResponse> commodityResponses = new ArrayList<>();
+        Category category = categoryRepository.findById(request.getId()).orElse(null);
+        List<Commodity> listEntity = commodityRepository.findCommoditiesByCategory(category);
+        for(Commodity item : listEntity){
+            CommodityResponse commodityResponse = new CommodityResponse();
+            commodityResponse.setId(item.getId());
+            commodityResponse.setCode(item.getCode());
+            commodityResponse.setName(item.getName());
+            commodityResponse.setCategoryName(item.getCategory().getName());
+            commodityResponse.setStatus(item.getStatus());
+            commodityResponses.add(commodityResponse);
+        }
+        return commodityResponses;
     }
 
     @Override
