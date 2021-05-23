@@ -15,8 +15,7 @@ public interface ImportBillRepository extends JpaRepository<ImportBill, Long> {
             nativeQuery = true)
     List<ImportBill> findImportBillByImportDateNamedParams(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
 
-    @Query(value = "select im.id, im.importdate, sum(im.totalprice) as 'totalprice', im.supplierid, im.warehouseid, im.userid from ImportBill im where year(im.importdate) = ?1 group by month(im.importdate)", nativeQuery = true)
-    List<ImportBill> statisticalImportBillByYear(String year);
+
 
     @Query(value = "select * from ImportBill as im " +
             "inner join warehouse as w " +

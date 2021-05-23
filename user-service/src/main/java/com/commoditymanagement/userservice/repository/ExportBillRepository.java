@@ -16,6 +16,9 @@ public interface ExportBillRepository extends JpaRepository<ExportBill, Long> {
             nativeQuery = true)
     List<ExportBill> findExportBillByExportDateNamedParams(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
 
+    @Query(value = "select im.id, im.exportdate, sum(im.totalprice) as 'totalprice', im.agency_id, im.warehouse_id, im.user_id from ExportBill im where year(im.exportdate) = ?1 group by month(im.exportdate)", nativeQuery = true)
+    List<ExportBill> statisticalExportBillByYear(String year);
+
     @Query(value = "select * from ExportBill as ex " +
             "inner join warehouse as w " +
             "where ex.warehouse_id = w.id " +

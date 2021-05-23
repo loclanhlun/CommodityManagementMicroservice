@@ -1,23 +1,28 @@
 package com.commoditymanagement.userservice.controller;
 
 import com.commoditymanagement.core.constant.ResponseConstant;
+import com.commoditymanagement.core.data.ImportBill;
 import com.commoditymanagement.core.data.User;
 import com.commoditymanagement.core.response.ResponseModel;
+import com.commoditymanagement.userservice.ExcelGenerator;
 import com.commoditymanagement.userservice.jwt.JwtUtils;
+import com.commoditymanagement.userservice.repository.ImportBillRepository;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.request.get.SearchImportBillByDateRequest;
 import com.commoditymanagement.userservice.response.ImportBillResponse;
-import com.commoditymanagement.userservice.response.StatisticalImportBillResponse;
 import com.commoditymanagement.userservice.service.ImportBillDetailService;
 import com.commoditymanagement.userservice.service.ImportBillService;
 import com.commoditymanagement.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -26,6 +31,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/rest/v1/import-bill")
 public class ImportBillController {
+    @Autowired
+    private ImportBillRepository importBillRepository;
 
     @Autowired
     private UserService userService;
@@ -54,14 +61,14 @@ public class ImportBillController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/statistical-import-bill")
-    public ResponseEntity<?> statisticalImportBillByYear(){
-        Date date = new Date();
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        String year = String.valueOf(localDate.getYear());
-        List<StatisticalImportBillResponse> list = importBillService.statisticalImportBillByYear(year);
-        ResponseModel responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, list);
-        return ResponseEntity.ok(responseModel);
+    @GetMapping(value = "/download/import-bill.xlsx")
+    public ResponseEntity<?> toExcelImportBillReport() throws IOException {
+        List<ImportBill> importBill = importBillRepository.findAll();
+        ByteArrayInputStream in = ExcelGenerator.importBillToExcel(importBill);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=import-bill.xlsx");
+        return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
     }
 
     @DeleteMapping(value = "/delete-import-bill")

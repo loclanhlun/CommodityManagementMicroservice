@@ -3,8 +3,9 @@ package com.commoditymanagement.userservice.service;
 import com.commoditymanagement.core.data.User;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.response.ImportBillResponse;
-import com.commoditymanagement.userservice.response.StatisticalImportBillResponse;
+import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ImportBillService {
@@ -12,10 +13,6 @@ public interface ImportBillService {
     List<ImportBillResponse> findAllImportBill();
 
     List<ImportBillResponse> searchImportBillByImportDateAndWarehouseCode(String fromDate, String toDate, String warehouseCode);
-
-//    List<ImportBillResponse> searchImportBillByWarehouseCodeAndImportDate(String fromDate, String toDate, String warehouseCode);
-
-    List<StatisticalImportBillResponse> statisticalImportBillByYear(String year);
 
     void save(AddImportBillRequest request, User user) throws Exception;
 

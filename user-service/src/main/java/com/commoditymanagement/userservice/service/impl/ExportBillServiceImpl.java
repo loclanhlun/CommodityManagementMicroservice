@@ -6,13 +6,15 @@ import com.commoditymanagement.userservice.repository.ExportBillRepository;
 import com.commoditymanagement.userservice.repository.WarehouseRepository;
 import com.commoditymanagement.userservice.request.add.AddExportBillRequest;
 import com.commoditymanagement.userservice.response.ExportBillResponse;
-import com.commoditymanagement.userservice.response.ImportBillResponse;
+import com.commoditymanagement.userservice.response.ItemStatisticalImportBill;
+import com.commoditymanagement.userservice.response.StatisticalExportBillResponse;
 import com.commoditymanagement.userservice.service.ExportBillService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,6 +95,27 @@ public class ExportBillServiceImpl implements ExportBillService {
             }
         }
         return exportBillResponses;
+    }
+    @Override
+    public List<StatisticalExportBillResponse> statisticalExportBillByYear(String year) {
+        List<StatisticalExportBillResponse> listResponse = new ArrayList<>();
+        List<ExportBill> listEntity = exportBillRepository.statisticalExportBillByYear(year);
+
+        for(int month = 1; month <= 12 ; month ++){
+            StatisticalExportBillResponse response = new StatisticalExportBillResponse();
+            ItemStatisticalImportBill itemStatisticalImportBill = new ItemStatisticalImportBill();
+            response.setMonth(month);
+            itemStatisticalImportBill.setTotalPrice(BigDecimal.valueOf(0));
+            for(ExportBill item : listEntity){
+                if(item.getExportDate().getMonth()+1 == month){
+                    itemStatisticalImportBill.setTotalPrice(item.getTotalPrice());
+                }
+            }
+            response.setData(itemStatisticalImportBill);
+
+            listResponse.add(response);
+        }
+        return listResponse;
     }
 
     @Override

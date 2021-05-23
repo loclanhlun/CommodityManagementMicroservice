@@ -32,6 +32,18 @@ public class ExportBillController {
         return response;
     }
 
+    @GetMapping(value = "/statistical-export-bill")
+    public ResponseEntity<?> StatisticalImportBill(HttpServletRequest httpServletRequest){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        String URL = "http://user-service/rest/v1/export-bill/statistical-export-bill";
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
     @PostMapping(value = "/search")
     public ResponseEntity<?> searchExportBill(HttpServletRequest httpServletRequest,
                                               @RequestBody SearchImportBillByDateRequest request){

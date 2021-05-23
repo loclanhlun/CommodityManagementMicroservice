@@ -7,7 +7,7 @@ import com.commoditymanagement.userservice.jwt.JwtUtils;
 import com.commoditymanagement.userservice.request.add.AddExportBillRequest;
 import com.commoditymanagement.userservice.request.get.SearchImportBillByDateRequest;
 import com.commoditymanagement.userservice.response.ExportBillResponse;
-import com.commoditymanagement.userservice.response.ImportBillResponse;
+import com.commoditymanagement.userservice.response.StatisticalExportBillResponse;
 import com.commoditymanagement.userservice.service.ExportBillService;
 import com.commoditymanagement.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -45,6 +48,16 @@ public class ExportBillController {
         List<ExportBillResponse> list = exportBillService.searchExportBillByExportDateAndWarehouseCode(request.getFromDate(),request.getToDate(), request.getWarehouseCode());
         ResponseModel response = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, list);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/statistical-export-bill")
+    public ResponseEntity<?> statisticalExportBillByYear(){
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        String year = String.valueOf(localDate.getYear());
+        List<StatisticalExportBillResponse> list = exportBillService.statisticalExportBillByYear(year);
+        ResponseModel responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, list);
+        return ResponseEntity.ok(responseModel);
     }
 
     @PostMapping(value = "/add-export-bill")

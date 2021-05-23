@@ -1,22 +1,16 @@
 package com.commoditymanagement.userservice.service.impl;
 
 import com.commoditymanagement.core.data.*;
-import com.commoditymanagement.userservice.repository.CommodityRepository;
 import com.commoditymanagement.userservice.repository.ImportBillRepository;
 import com.commoditymanagement.userservice.repository.SupplierRepository;
 import com.commoditymanagement.userservice.repository.WarehouseRepository;
 import com.commoditymanagement.userservice.request.add.AddImportBillRequest;
 import com.commoditymanagement.userservice.response.ImportBillResponse;
-import com.commoditymanagement.userservice.response.ItemStatisticalImportBill;
-import com.commoditymanagement.userservice.response.StatisticalImportBillResponse;
 import com.commoditymanagement.userservice.service.ImportBillService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
-import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,28 +76,6 @@ public class ImportBillServiceImpl implements ImportBillService {
             }
         }
         return importBillResponses;
-    }
-
-    @Override
-    public List<StatisticalImportBillResponse> statisticalImportBillByYear(String year) {
-        List<StatisticalImportBillResponse> listResponse = new ArrayList<>();
-        List<ImportBill> listEntity = importBillRepository.statisticalImportBillByYear(year);
-
-        for(int month = 1; month <= 12 ; month ++){
-            StatisticalImportBillResponse response = new StatisticalImportBillResponse();
-            ItemStatisticalImportBill itemStatisticalImportBill = new ItemStatisticalImportBill();
-            response.setMonth(month);
-            itemStatisticalImportBill.setTotalPrice(BigDecimal.valueOf(0));
-            for(ImportBill item : listEntity){
-                if(item.getImportDate().getMonth()+1 == month){
-                    itemStatisticalImportBill.setTotalPrice(item.getTotalPrice());
-                }
-            }
-            response.setData(itemStatisticalImportBill);
-
-            listResponse.add(response);
-        }
-        return listResponse;
     }
 
 
