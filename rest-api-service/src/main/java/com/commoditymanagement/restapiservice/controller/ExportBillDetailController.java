@@ -22,17 +22,17 @@ public class ExportBillDetailController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @PostMapping(value = "/add-export-bill-detail")
-    public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,
-                                           @Valid @RequestBody AddExportDetailRequest request){
-        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
-        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_EXPORT_DETAIL_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
-        return response;
-    }
+//    @PostMapping(value = "/add-export-bill-detail")
+//    public ResponseEntity<?> addImportBill(HttpServletRequest httpServletRequest,
+//                                           @Valid @RequestBody AddExportDetailRequest request){
+//        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
+//        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+//        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_EXPORT_DETAIL_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+//        return response;
+//    }
 
     @GetMapping(value = "/list/{id}")
     public ResponseEntity<?> getExportBillDetailByExportBillId(HttpServletRequest httpServletRequest,

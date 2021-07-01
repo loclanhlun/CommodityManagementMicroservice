@@ -2,6 +2,7 @@ package com.commoditymanagement.core.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -30,6 +31,12 @@ public class CommodityWarehouse {
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private int quantity;
+
+
+    @Column(name = "unitprice")
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private BigDecimal unitPrice = BigDecimal.valueOf(0);
 
     public Long getId() {
         return id;
@@ -62,5 +69,13 @@ public class CommodityWarehouse {
 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

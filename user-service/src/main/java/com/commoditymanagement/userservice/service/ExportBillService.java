@@ -5,9 +5,14 @@ import com.commoditymanagement.userservice.request.add.AddExportBillRequest;
 import com.commoditymanagement.userservice.response.ExportBillResponse;
 import com.commoditymanagement.userservice.response.StatisticalExportBillResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ExportBillService {
+
+    Long countExportBillByMonth();
+
+    BigDecimal sumTotalPriceByMonth();
 
     List<ExportBillResponse> findAllExportBill();
 

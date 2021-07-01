@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -71,10 +72,26 @@ public class ExportBillController {
             exportBillService.save(request, user);
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
+            exportBillService.delete();
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
         }
         return ResponseEntity.ok(responseModel);
     }
+
+    @GetMapping(value = "/count")
+    public ResponseEntity<?> countExportBill(){
+        long count = exportBillService.countExportBillByMonth();
+        ResponseModel responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, count);
+        return ResponseEntity.ok(responseModel);
+    }
+
+    @GetMapping(value = "/sum-total-price")
+    public ResponseEntity<?> sumTotalPriceByMonth(){
+        BigDecimal totalPrice = exportBillService.sumTotalPriceByMonth();
+        ResponseModel responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, totalPrice);
+        return ResponseEntity.ok(responseModel);
+    }
+
 
     @DeleteMapping(value = "/delete-export-bill")
     public ResponseEntity<?> deleteExportBillById(){

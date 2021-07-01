@@ -150,23 +150,23 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
     private void checkWarehouseName(String name)throws Exception{
         if(isExistName(name)){
-            throw new Exception("Supplier name is exist");
+            throw new Exception("Tên kho đã tồn tại!");
         }
     }
 
     private void checkWarehouseCode(String code)throws Exception{
         if(isExistCode(code)){
-            throw new Exception("Supplier code is exist");
+            throw new Exception("Mã kho đã tồn tại!");
         }
     }
 
     private void checkWarehouseCodeAndName(String code, String name)throws Exception{
         if(isExistCode(code) && isExistName(name)){
-            throw new Exception("Warehouse code and name is exist");
+            throw new Exception("Tên kho và mã kho đã tồn tại!");
         }else if(!isExistCode(code) && isExistName(name)){
-            throw new Exception("Warehouse name is exist");
+            throw new Exception("Tên kho đã tồn tại!");
         }else if(isExistCode(code) && !isExistName(name)){
-            throw new Exception("Warehouse code is exist");
+            throw new Exception("Mã kho đã tồn tại!");
         }
     }
 

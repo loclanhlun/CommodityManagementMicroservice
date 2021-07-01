@@ -27,16 +27,16 @@ public class ImportDetailController {
         return ResponseEntity.ok(responseModel);
     }
 
-    @PostMapping(value = "/add-import-bill-detail")
-    public ResponseEntity<?> addImportBill(@RequestBody AddImportBillDetailRequest request) throws Exception {
-        ResponseModel responseModel;
-        try {
-            importBillDetailService.save(request);
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS,null);
-        }catch (Exception e){
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
-        }
-
-        return ResponseEntity.ok(responseModel);
-    }
+//    @PostMapping(value = "/add-import-bill-detail")
+//    public ResponseEntity<?> addImportBill(@RequestBody AddImportBillDetailRequest request) throws Exception {
+//        ResponseModel responseModel;
+//        try {
+//            importBillDetailService.save(request);
+//            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS,null);
+//        }catch (Exception e){
+//            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(),null);
+//        }
+//
+//        return ResponseEntity.ok(responseModel);
+//    }
 }

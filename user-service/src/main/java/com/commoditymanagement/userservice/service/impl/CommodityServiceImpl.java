@@ -172,23 +172,23 @@ public class CommodityServiceImpl implements CommodityService {
 
     private void checkCommodityCodeAndName(String code, String name)throws Exception{
         if(isExistCode(code) && isExistName(name)){
-            throw new Exception("Commodity code and name is exist");
+            throw new Exception("Mã hàng và tên hàng đã tồn tại!");
         }else if(!isExistCode(code) && isExistName(name)){
-            throw new Exception("Commodity name is exist");
+            throw new Exception("Tên hàng đã tồn tại!");
         }else if(isExistCode(code) && !isExistName(name)){
-            throw new Exception("Commodity code is exist");
+            throw new Exception("Mã hàng đã tồn tại!");
         }
     }
 
     private void checkCommodityName(String name)throws Exception{
         if(isExistName(name)){
-            throw new Exception("Commodity name is exist");
+            throw new Exception("Tên hàng đã tồn tại!");
         }
     }
 
     private void checkCommodityCode(String code)throws Exception{
         if(isExistCode(code)){
-            throw new Exception("Commodity code is exist");
+            throw new Exception("Mã hàng đã tồn tại");
         }
     }
 

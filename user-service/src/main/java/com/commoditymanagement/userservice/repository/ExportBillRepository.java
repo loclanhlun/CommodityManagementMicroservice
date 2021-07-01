@@ -7,10 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
 public interface ExportBillRepository extends JpaRepository<ExportBill, Long> {
+
+    @Query(value = "select count(*) from ExportBill as ex where month(ex.exportdate) = :month", nativeQuery = true)
+    Long countExportBillByExportMonth(@Param("month") int month);
+
+    @Query(value = "select sum(ex.totalprice) from ExportBill ex where month(ex.exportdate) = :month", nativeQuery = true)
+    BigDecimal sumTotalPriceByExportMonth(@Param("month") int month);
 
     @Query(value = "select * from ExportBill as ex where date_format(ex.exportdate,'%d/%m/%Y') >= :fromDate and  date_format(ex.exportdate,'%d/%m/%Y') <= :toDate",
             nativeQuery = true)

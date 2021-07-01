@@ -54,6 +54,7 @@ public class UrlConstants {
 
     //URL of ImportBill
     public static final String GET_IMPORT_LIST_URL = "http://user-service/rest/v1/import-bill/list";
+    public static final String COUNT_IMPORT_BILL_URL = "http://user-service/rest/v1/import-bill/count";
     public static final String SEARCH_IMPORT_URL = "http://user-service/rest/v1/import-bill/search";
     public static final String ADD_IMPORT_URL = "http://user-service/rest/v1/import-bill/add-import-bill";
     public static final String DELETE_IMPORT_BY_MAX_ID_URL = "http://user-service/rest/v1/import-bill/delete-import-bill";
@@ -63,6 +64,9 @@ public class UrlConstants {
     public static final String ADD_IMPORT_DETAIL_URL = "http://user-service/rest/v1/import-bill-detail/add-import-bill-detail";
 
     //URL of ExportBill
+    public static final String STATISTICAL_EXPORT_BILL_URL = "http://user-service/rest/v1/export-bill/statistical-export-bill";
+    public static final String SUM_TOTAL_PRICE_URL = "http://user-service/rest/v1/export-bill/sum-total-price";
+    public static final String COUNT_EXPORT_BILL_URL = "http://user-service/rest/v1/export-bill/count";
     public static final String GET_EXPORT_LIST_URL = "http://user-service/rest/v1/export-bill/list";
     public static final String SEARCH_EXPORT_URL = "http://user-service/rest/v1/export-bill/search";
     public static final String ADD_EXPORT_URL = "http://user-service/rest/v1/export-bill/add-export-bill";
@@ -74,6 +78,9 @@ public class UrlConstants {
 
     //URL of CommodityWarehouse
     public static final String GET_COMMODITY_WAREHOUSE_LIST_URL = "http://user-service/rest/v1/commodity-warehouse/list";
+    public static final String GET_COMMODITY_WAREHOUSE_BY_ID_URL = "http://user-service/rest/v1/commodity-warehouse/{id}";
+    public static final String EDIT_COMMODITY_WAREHOUSE_URL = "http://user-service/rest/v1/commodity-warehouse/edit-commodity-warehouse";
     public static final String SEARCH_COMMODITY_WAREHOUSE_URL = "http://user-service/rest/v1/commodity-warehouse/search-commodity-warehouse";
+    public static final String SEARCH_PRICE_URL = "http://user-service/rest/v1/commodity-warehouse/search-price";
 
 }

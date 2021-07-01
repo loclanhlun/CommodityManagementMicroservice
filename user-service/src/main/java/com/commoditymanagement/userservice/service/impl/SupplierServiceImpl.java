@@ -152,23 +152,23 @@ public class SupplierServiceImpl implements SupplierService {
     }
     private void checkSupplierName(String name)throws Exception{
         if(isExistName(name)){
-            throw new Exception("Supplier name is exist");
+            throw new Exception("Tên nhà cung cấp đã tồn tại!");
         }
     }
 
     private void checkSupplierCode(String code)throws Exception{
         if(isExistCode(code)){
-            throw new Exception("Supplier code is exist");
+            throw new Exception("Mã nhà cung cấp đã tồn tại!");
         }
     }
 
     private void checkSupplierCodeAndName(String code, String name)throws Exception{
         if(isExistCode(code) && isExistName(name)){
-            throw new Exception("Supplier code and name is exist");
+            throw new Exception("Tên nhà cung cấp và mã nhà cung cấp đã tồn tại!");
         }else if(!isExistCode(code) && isExistName(name)){
-            throw new Exception("Supplier name is exist");
+            throw new Exception("Tên nhà cung cấp đã tồn tại!");
         }else if(isExistCode(code) && !isExistName(name)){
-            throw new Exception("Supplier code is exist");
+            throw new Exception("Mã nhà cung cấp đã tồn tại!");
         }
     }
 

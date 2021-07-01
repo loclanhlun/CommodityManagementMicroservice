@@ -32,15 +32,36 @@ public class ExportBillController {
         return response;
     }
 
+    @GetMapping(value = "/count")
+    public ResponseEntity<?> countExportBill(HttpServletRequest httpServletRequest){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.COUNT_EXPORT_BILL_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
+    @GetMapping(value = "/sum-total-price")
+    public ResponseEntity<?> sumTotalPrice(HttpServletRequest httpServletRequest){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.SUM_TOTAL_PRICE_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        return response;
+    }
+
     @GetMapping(value = "/statistical-export-bill")
     public ResponseEntity<?> StatisticalImportBill(HttpServletRequest httpServletRequest){
         String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
         HttpHeaders headers = new HttpHeaders();
-        String URL = "http://user-service/rest/v1/export-bill/statistical-export-bill";
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken );
         HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(URL, HttpMethod.GET,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.STATISTICAL_EXPORT_BILL_URL, HttpMethod.GET,httpEntity, ResponseModel.class);
         return response;
     }
 

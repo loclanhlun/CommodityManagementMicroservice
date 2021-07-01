@@ -3,6 +3,7 @@ package com.commoditymanagement.restapiservice.request.add;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public class AddExportBillRequest {
 
@@ -13,6 +14,10 @@ public class AddExportBillRequest {
     @NotBlank(message = "Please enter Agency!")
     @JsonProperty
     private String agencyCode;
+
+    @JsonProperty
+    private List<ItemExportDetailRequest> data;
+
 
     public String getWarehouseCode() {
         return warehouseCode;
@@ -28,5 +33,13 @@ public class AddExportBillRequest {
 
     public void setAgencyCode(String agencyCode) {
         this.agencyCode = agencyCode;
+    }
+
+    public List<ItemExportDetailRequest> getData() {
+        return data;
+    }
+
+    public void setData(List<ItemExportDetailRequest> data) {
+        this.data = data;
     }
 }

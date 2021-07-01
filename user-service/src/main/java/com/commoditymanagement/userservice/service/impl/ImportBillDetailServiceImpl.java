@@ -58,8 +58,10 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
     @Override
     public void save(AddImportBillDetailRequest request) throws Exception {
         ImportBill importBill = importBillRepository.findImportBillOderByIdDesc().get(0);
-
         List<ItemImportBillDetailRequest> listImportBillDetail = request.getData();
+        if(listImportBillDetail.size() == 0){
+            throw new Exception("Bạn chưa nhập hàng!");
+        }
         Commodity commodity = null;
 
         int count = 0;
@@ -94,9 +96,6 @@ public class ImportBillDetailServiceImpl implements ImportBillDetailService {
                 totalPrice += item.getQuantity() * item.getPrice().doubleValue();
                 importBillDetailRepository.save(importBillDetail);
                 //
-
-
-
                 CommodityWarehouse commodityWarehouse = new CommodityWarehouse();
                 if(checkCommodityWarehouseByCommodityCodeAndWarehouseCode(commodity,warehouse)){
                     commodityWarehouse.setCommodity(commodity);

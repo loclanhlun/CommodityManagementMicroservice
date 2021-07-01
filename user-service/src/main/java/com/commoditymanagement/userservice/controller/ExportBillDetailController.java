@@ -25,15 +25,16 @@ public class ExportBillDetailController {
         return ResponseEntity.ok(responseModel);
     }
 
-    @PostMapping(value = "/add-export-bill-detail")
-    public ResponseEntity<?> addExportBillDetail(@RequestBody AddExportDetailRequest request){
-        ResponseModel responseModel;
-        try {
-            exportBillDetailService.save(request);
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
-        }catch (Exception e){
-            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
-        }
-        return ResponseEntity.ok(responseModel);
-    }
+//    @PostMapping(value = "/add-export-bill-detail")
+//    public ResponseEntity<?> addExportBillDetail(@RequestBody AddExportDetailRequest request){
+//        ResponseModel responseModel;
+//        try {
+//            exportBillDetailService.save(request);
+//            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//            responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR, e.getMessage(), null);
+//        }
+//        return ResponseEntity.ok(responseModel);
+//    }
 }

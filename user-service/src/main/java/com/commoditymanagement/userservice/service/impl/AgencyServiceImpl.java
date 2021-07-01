@@ -153,23 +153,23 @@ public class AgencyServiceImpl implements AgencyService {
 
     private void checkAgencyName(String name)throws Exception{
         if(isExistName(name)){
-            throw new Exception("Agency name is exist");
+            throw new Exception("Tên đại lý đã tồn tại!");
         }
     }
 
     private void checkAgencyCode(String code)throws Exception{
         if(isExistCode(code)){
-            throw new Exception("Agency code is exist");
+            throw new Exception("Mã đại lý đã tồn tại!");
         }
     }
 
     private void checkAgencyCodeAndName(String code, String name)throws Exception{
         if(isExistCode(code) && isExistName(name)){
-            throw new Exception("Agency code and name is exist");
+            throw new Exception("Tên đại lý và mã đại lý đã tồn tại!");
         }else if(!isExistCode(code) && isExistName(name)){
-            throw new Exception("Agency name is exist");
+            throw new Exception("Tên đại lý đã tồn tại!");
         }else if(isExistCode(code) && !isExistName(name)){
-            throw new Exception("Agency code is exist");
+            throw new Exception("Mã đại lý đã tồn tại!");
         }
     }
 

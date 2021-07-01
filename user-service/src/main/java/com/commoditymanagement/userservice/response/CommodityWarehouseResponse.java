@@ -1,5 +1,7 @@
 package com.commoditymanagement.userservice.response;
 
+import java.math.BigDecimal;
+
 public class CommodityWarehouseResponse {
 
     private Long id;
@@ -13,6 +15,8 @@ public class CommodityWarehouseResponse {
     private String warehouseName;
 
     private int quantity;
+
+    private BigDecimal unitPrice;
 
     public Long getId() {
         return id;
@@ -60,5 +64,13 @@ public class CommodityWarehouseResponse {
 
     public void setWarehouseCode(String warehouseCode) {
         this.warehouseCode = warehouseCode;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

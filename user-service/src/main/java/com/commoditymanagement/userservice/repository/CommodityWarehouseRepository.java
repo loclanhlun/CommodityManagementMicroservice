@@ -23,4 +23,6 @@ public interface CommodityWarehouseRepository extends JpaRepository<CommodityWar
     List<CommodityWarehouse> findCommodityWarehouseByCategoryIdNamedParams(@Param("categoryId") Long categoryId);
 
     List<CommodityWarehouse> findCommodityWarehouseByWarehouseCode(String warehouseCode);
+
+    List<CommodityWarehouse> findCommodityWarehouseByCommodityCodeAndWarehouseCode(String commodityCode, String warehouseCode);
 }

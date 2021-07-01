@@ -140,23 +140,23 @@ public class CategoryServiceImpl implements CategoryService {
 
 	private void checkCategoryCodeAndName(String code, String name)throws Exception{
 		if(isExistCode(code) && isExistName(name)){
-			throw new Exception("Category code and name is exist");
+			throw new Exception("Mã loại hàng và tên loại hàng đã tồn tại!");
 		}else if(!isExistCode(code) && isExistName(name)){
-			throw new Exception("Category name is exist");
+			throw new Exception("Tên loại hàng đã tồn tại!");
 		}else if(isExistCode(code) && !isExistName(name)){
-			throw new Exception("Category code is exist");
+			throw new Exception("Mã loại hàng đã tồn tại!");
 		}
 	}
 
 	private void checkCategoryName(String name)throws Exception{
 		if(isExistName(name)){
-			throw new Exception("Category name is exist");
+			throw new Exception("Tên loại hàng đã tồn tại!");
 		}
 	}
 
 	private void checkCategoryCode(String code)throws Exception{
 		if(isExistCode(code)){
-			throw new Exception("Category code is exist");
+			throw new Exception("Mã loại hàng đã tồn tại!");
 		}
 	}
 

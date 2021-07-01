@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
 	
 	private void getEmail(String email) throws Exception {
 		if(isExistEmail(email)) {
-			throw new Exception("Email is exist");
+			throw new Exception("Email đã tồn tại!");
 		}	
 	}
 	

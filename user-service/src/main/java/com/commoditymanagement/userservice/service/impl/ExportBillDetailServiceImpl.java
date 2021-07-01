@@ -53,6 +53,9 @@ public class ExportBillDetailServiceImpl implements ExportBillDetailService {
     public void save(AddExportDetailRequest request) throws Exception {
         ExportBill exportBill = exportBillRepository.findExportBillOderByIdDesc().get(0);
         List<ItemExportDetailRequest> listExportBillDetail = request.getData();
+        if(listExportBillDetail.size() == 0){
+            throw new Exception("Bạn chưa nhập hàng!");
+        }
         Commodity commodity = null;
 
         Warehouse warehouse = warehouseRepository.findById(exportBill.getWarehouse().getId()).orElse(null);

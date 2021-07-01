@@ -91,6 +91,7 @@ public class ImportBillController {
             importBillService.save(request,user);
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_SUCCESS, ResponseConstant.MESSAGE_SUCCESS, null);
         }catch (Exception e){
+            importBillService.delete();
             responseModel = new ResponseModel(ResponseConstant.RESULT_CODE_ERROR,e.getMessage(), null);
         }
 
