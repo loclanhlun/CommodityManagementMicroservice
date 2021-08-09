@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 
 public class AddSupplierRequest {
-
     @NotBlank(message = "Supplier Code is mandatory")
     @JsonProperty
     private String code;

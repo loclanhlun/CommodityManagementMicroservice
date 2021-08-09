@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.restapiservice.request.SearchByNameAndStatus;
+import com.commoditymanagement.restapiservice.request.add.AddUserRequest;
 import com.commoditymanagement.restapiservice.request.edit.EditUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -13,11 +14,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import com.commoditymanagement.core.response.ResponseModel;
-import com.commoditymanagement.restapiservice.request.add.AddUserRequest;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -53,5 +53,4 @@ public class AddAgencyRequest {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 }

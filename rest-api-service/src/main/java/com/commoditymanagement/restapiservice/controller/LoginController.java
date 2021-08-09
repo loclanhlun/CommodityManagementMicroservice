@@ -2,9 +2,9 @@ package com.commoditymanagement.restapiservice.controller;
 
 import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
+import com.commoditymanagement.restapiservice.request.SignInRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import com.commoditymanagement.restapiservice.request.SignInRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping(value = "/rest/v1")
 @CrossOrigin("http://localhost:8080")
 public class LoginController {
-
     @Autowired
     private RestTemplate restTemplate;
 

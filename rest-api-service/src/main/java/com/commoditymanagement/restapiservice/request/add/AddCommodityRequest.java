@@ -3,10 +3,8 @@ package com.commoditymanagement.restapiservice.request.add;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 public class AddCommodityRequest {
-
     @NotBlank(message = "Commodity Code is mandatory")
     @JsonProperty
     private String code;

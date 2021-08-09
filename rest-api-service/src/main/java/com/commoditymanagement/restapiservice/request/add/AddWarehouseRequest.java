@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 
 public class AddWarehouseRequest {
-
     @NotBlank(message = "Warehouse code is mandatory")
     @JsonProperty
     private String code;

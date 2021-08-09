@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 
 public class AddCategoryRequest {
-
     @NotBlank(message = "Category Code is mandatory")
     @JsonProperty
     private String code;

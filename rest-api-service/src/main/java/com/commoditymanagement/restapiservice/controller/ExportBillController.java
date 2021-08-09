@@ -85,7 +85,7 @@ public class ExportBillController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
         HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_EXPORT_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange("http://user-service/rest/v1/export-bill/add-export-bill", HttpMethod.POST,httpEntity, ResponseModel.class);
         return response;
     }
 

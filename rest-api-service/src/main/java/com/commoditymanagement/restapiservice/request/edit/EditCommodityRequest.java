@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 
 public class EditCommodityRequest {
-
     @JsonProperty
     private Long id;
 

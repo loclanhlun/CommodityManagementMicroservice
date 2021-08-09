@@ -85,6 +85,7 @@ public class ExportBillServiceImpl implements ExportBillService {
     @Override
     public void save(AddExportBillRequest request, User user) throws Exception {
         List<ItemExportDetailRequest> listExportBillDetail = request.getData();
+        System.out.println(listExportBillDetail.size());
         if(listExportBillDetail.size() == 0){
             throw new Exception("Bạn chưa nhập hàng!");
         }

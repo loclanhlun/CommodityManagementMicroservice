@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addUser(UserRequest userRequest) throws Exception {
-		Role role = getRoleCode(userRequest.getRoleCode());
+		Role role = getRoleCode("ROLE_USER");
 		getEmail(userRequest.getEmail());
 		User user = new User();
 		user.setFullName(userRequest.getFullName());
@@ -123,12 +123,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateUser(EditUserRequest request) throws Exception {
-    	Role role = getRoleCode(request.getRoleCode());
     	User oldUser = userRepository.findById(request.getId()).orElse(null);
     	if(oldUser == null){
     		throw new Exception("User does not exist!");
 		}
-    	userRepository.save(setUser(request,oldUser,role));
+    	userRepository.save(setUser(request,oldUser));
 	}
 
 	@Override
@@ -157,12 +156,11 @@ public class UserServiceImpl implements UserService {
 		return  dto;
 	}
 
-	public User setUser(EditUserRequest request, User oldUser, Role role){
+	public User setUser(EditUserRequest request, User oldUser){
 		oldUser.setFullName(request.getFullName());
 		oldUser.setAddress(request.getAddress());
 		oldUser.setPhoneNumber(request.getPhoneNumber());
 		oldUser.setGender(request.getGender());
-		oldUser.setRole(role);
 		oldUser.setStatus(request.getStatus());
 		return oldUser;
 	}
@@ -175,7 +173,7 @@ public class UserServiceImpl implements UserService {
 		if(role.size() < 1) {
 			throw new Exception("Role does not exist");
 		}
-		
+
 		return role.get(0);
 	}
 	

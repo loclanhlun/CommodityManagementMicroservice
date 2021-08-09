@@ -3,7 +3,6 @@ package com.commoditymanagement.restapiservice.request.add;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GetResultById {
-
     @JsonProperty
     private Long id;
 

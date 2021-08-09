@@ -22,9 +22,6 @@ public class EditUserRequest {
     private int gender;
 
     @JsonProperty
-    private String roleCode;
-
-    @JsonProperty
     private int status;
 
     public Long getId() {
@@ -65,14 +62,6 @@ public class EditUserRequest {
 
     public void setGender(int gender) {
         this.gender = gender;
-    }
-
-    public String getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
     }
 
     public int getStatus() {

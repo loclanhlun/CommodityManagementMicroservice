@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class AddImportBillDetailRequest {
-
     @JsonProperty
     private List<ItemImportBillDetailRequest> data;
 

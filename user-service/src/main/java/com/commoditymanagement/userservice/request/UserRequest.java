@@ -22,9 +22,6 @@ public class UserRequest {
     @JsonProperty
     private String address;
 
-    @JsonProperty
-    private String roleCode;
-
 
     public String getPassword() {
         return password;
@@ -74,13 +71,7 @@ public class UserRequest {
         this.address = address;
     }
 
-	public String getRoleCode() {
-		return roleCode;
-	}
 
-	public void setRoleCode(String roleCode) {
-		this.roleCode = roleCode;
-	}
     
     
 

@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\Admin\Desktop\learn\SpringMVCTest"/>
 			<item value="D:\commodity-management-project\warehouse-service"/>
 			<item value="D:\commodity-management-project\user-service"/>
 			<item value="D:\commodity-management-project\rest-api-service"/>

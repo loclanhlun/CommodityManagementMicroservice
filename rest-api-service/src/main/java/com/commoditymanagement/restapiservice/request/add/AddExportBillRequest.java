@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class AddExportBillRequest {
-
     @NotBlank(message = "Please enter Warehouse!")
     @JsonProperty
     private String warehouseCode;
@@ -15,9 +14,9 @@ public class AddExportBillRequest {
     @JsonProperty
     private String agencyCode;
 
+
     @JsonProperty
     private List<ItemExportDetailRequest> data;
-
 
     public String getWarehouseCode() {
         return warehouseCode;

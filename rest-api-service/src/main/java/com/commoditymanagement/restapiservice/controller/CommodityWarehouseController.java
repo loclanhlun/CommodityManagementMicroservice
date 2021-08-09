@@ -3,7 +3,6 @@ package com.commoditymanagement.restapiservice.controller;
 import com.commoditymanagement.core.constant.UrlConstants;
 import com.commoditymanagement.core.response.ResponseModel;
 import com.commoditymanagement.restapiservice.request.add.GetResultByCode;
-import com.commoditymanagement.restapiservice.request.edit.EditCategoryRequest;
 import com.commoditymanagement.restapiservice.request.edit.EditCommodityWarehouseRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

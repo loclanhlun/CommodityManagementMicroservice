@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 public class EditCommodityWarehouseRequest {
-
     private Long id;
 
     @JsonProperty

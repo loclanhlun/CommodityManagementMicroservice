@@ -34,15 +34,15 @@ public class ImportBillDetailController {
         return response;
     }
 
-//    @PostMapping(value = "/add-import-bill-detail")
-//    public ResponseEntity<?> addImportBillDetail(HttpServletRequest httpServletRequest,
-//                                                @RequestBody AddImportBillDetailRequest request){
-//        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
-//        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
-//        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_IMPORT_DETAIL_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
-//        return response;
-//    }
+    @PostMapping(value = "/add-import-bill-detail")
+    public ResponseEntity<?> addImportBillDetail(HttpServletRequest httpServletRequest,
+                                                @RequestBody AddImportBillDetailRequest request){
+        String bearerToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, bearerToken);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(request,headers);
+        ResponseEntity<ResponseModel> response = restTemplate.exchange(UrlConstants.ADD_IMPORT_DETAIL_URL, HttpMethod.POST,httpEntity, ResponseModel.class);
+        return response;
+    }
 }

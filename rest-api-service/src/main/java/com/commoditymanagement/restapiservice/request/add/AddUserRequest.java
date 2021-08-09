@@ -3,19 +3,18 @@ package com.commoditymanagement.restapiservice.request.add;
 import javax.validation.constraints.NotBlank;
 
 public class AddUserRequest {
-	
-	@NotBlank(message = "Password is mandatory")
-	private String password;
+    @NotBlank(message = "Password is mandatory")
+    private String password;
 
-	@NotBlank(message = "Full name is mandatory")
+    @NotBlank(message = "Full name is mandatory")
     private String fullName;
 
-	@NotBlank(message = "Email is mandatory")
+    @NotBlank(message = "Email is mandatory")
     private String email;
 
     private int gender;
 
-	@NotBlank(message = "Phone number is mandatory")
+    @NotBlank(message = "Phone number is mandatory")
     private String phoneNumber;
 
     private String address;
@@ -72,13 +71,11 @@ public class AddUserRequest {
         this.address = address;
     }
 
-	public String getRoleCode() {
-		return roleCode;
-	}
+    public String getRoleCode() {
+        return roleCode;
+    }
 
-	public void setRoleCode(String roleCode) {
-		this.roleCode = roleCode;
-	}
-
-    
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
 }

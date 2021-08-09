@@ -2,11 +2,9 @@ package com.commoditymanagement.restapiservice.request.add;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class AddExportDetailRequest {
-
     @JsonProperty
     private List<ItemExportDetailRequest> data;
 
